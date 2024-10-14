@@ -1,0 +1,1 @@
+{"name":"Local: sieve","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/sieve.cpp","tests":[{"id":1728804238515,"input":"","output":"2, 3, 5, 7, 11, 13, 17, 19, 23, 29, \n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/sieve.cpp","group":"local","local":true}

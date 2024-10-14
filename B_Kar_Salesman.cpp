@@ -16,7 +16,6 @@ using namespace std;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
-#define sett(n)          cout<<fixed<<setprecision(n)
 
 typedef pair<int, int> pi;
 
@@ -25,7 +24,27 @@ const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
+   int2(n,x)
+    // vi a (n);
+
+//     FOR(i,n) cin >> a[i];
+
+
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    int totalCustomers = 0;
+    
+    // Maximum number of customers needed based on car models
+    for (int i = 0; i < n; i++) {
+        totalCustomers += (a[i] + x - 1) / x; // ceil(a[i] / x)
+    }
+
+    cout << totalCustomers << endl;
+
    
 }
 
@@ -37,6 +56,7 @@ signed main()
     testcase and cin >> t;
     while (t--)
     {
+        // cout <<"t: " << t << ln;
         solve();
     }
     return 0;

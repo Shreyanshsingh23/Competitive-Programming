@@ -19,14 +19,60 @@ using namespace std;
 
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
+bool sieve(int& t){
+    vi primes(31,1);
 
+    for(int i= 2; i*i <= 30; i++){
+        if(primes[i]== 1){
+            for(int j = i*i;j <= 30; j+= i){
+                primes[j] = 0;
+            }
+        }
+    }
+
+    
+
+   return primes[t]==1;
+
+}
 
 void solve()
 {
-   int1(n)
-   
+//    int n;
+//    cin >> n;
+
+   for(int i = 2; i<= 30; i++){
+    if(sieve(i)){
+         cout << i << ", ";
+    }
+    
+   }
+
 }
+
+// bool sieve(int t){
+//     vi primes(31, 1);
+
+//     for (int i = 2; i * i <= 30; i++) {
+//         if (primes[i] == 1) {
+//             for (int j = i * i; j <= 30; j += i) {
+//                 primes[j] = 0;
+//             }
+//         }
+//     }
+
+//     return primes[t] == 1;
+// }
+
+// void solve() {
+//    for (int i = 2; i <= 30; i++) {
+//         if (sieve(i)) {
+//             cout << i << ", ";
+//         }
+//    }
+//    cout << endl;
+// }
 
 signed main()
 {
