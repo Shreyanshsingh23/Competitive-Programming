@@ -6,15 +6,15 @@ int main()
     vector<int> a {3,4,6,7,4,3,25};
 
     int maxx = *max_element(a.begin(),a.end());
-    // cout << maxx << endl;
+    cout << maxx << endl;
 
     int ab = 5;
-    int* ptr = &ab;
-    cout << ptr << endl;
-    cout << *ptr << endl;
+    // int* ptr = &ab;
+    // cout << ptr << endl;
+    // cout << *ptr << endl;
 
-    cout << &max_element(a.begin(),a.end());
-
+    auto ams = max_element(a.begin(),a.end());
+    cout << ams << endl;
 
 
 }

@@ -7,7 +7,7 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x)   (int)x.size()
+#define sz(x) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -22,17 +22,51 @@ using namespace std;
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
+int mex(vi& a, int n)
+{
+    set<int> st {all(a)};
+   int res = 0;
+   while(st.count(res)) res++;
+   return res;
+}
+
+void solve()
+{
+   int1(n)
+   vi a(n);
+   FOR(i,n) cin >> a[i];
+
+    int operations = 0;
+   vi ans;
+   
+   bool ascending = true;
+    FOR(i,n-1){
+        if(a[i+1] < a[i]) 
+        {
+            ascending = false;
+            break;
+        }
+    }
+        if(!ascending){
+            int mexx = mex(a,sz(a));
+
+            FOR(i,n){
+                if(a[i] > mexx){
+                    operations++;
+                    ans.push_back(i);
+                    swap(a[i],mexx);
+                    break;
+                }
+            }
+        }
+    
+    cout << operations << ln;
+    for(auto& e : ans){
+        cout << e << ' ' ;
+    }
+    cout << ln;
 
 
-void solve(){
- string a, b;
- cin >>a >> b;
-
- int i = 0;
- while(i < sz(a) and i < sz(b) and a[i] == b[i]) i ++;
-
- cout << min((sz(a)+ sz(b)),(sz(a)+sz(b)+1-i ) );
-        
 }
 
 signed main()
@@ -47,7 +81,3 @@ signed main()
     }
     return 0;
 }
-
-    
-
-  

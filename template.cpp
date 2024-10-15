@@ -7,6 +7,7 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
+#define sz(x) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))

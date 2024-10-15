@@ -7,7 +7,7 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x)   (int)x.size()
+#define sz(x) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -21,18 +21,39 @@ using namespace std;
 
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
+void transpose(vii& a){
+    int n = sz(a);
+    int index = 0;
+   
+        for(int i = 0; i < n; i++){
+            for(int j = i;j < n; j++){
+            swap(a[i][j],a[j][i]);
+        }
+         index ++;
+    }
+   
+    
+}
 
+void solve()
+{
+    int n; cin >> n;
+  vii mat(n,vi(n));
 
-void solve(){
- string a, b;
- cin >>a >> b;
+    FOR(i,n){
+        FOR(j,n){
+            cin >> mat[i][j];
+        }
+    }
 
- int i = 0;
- while(i < sz(a) and i < sz(b) and a[i] == b[i]) i ++;
-
- cout << min((sz(a)+ sz(b)),(sz(a)+sz(b)+1-i ) );
-        
+    transpose(mat);
+   FOR(i,n){
+        FOR(j,n){
+            cout <<  mat[i][j] << " ";
+        }
+        cout << ln;
+    }
 }
 
 signed main()
@@ -47,7 +68,3 @@ signed main()
     }
     return 0;
 }
-
-    
-
-  
