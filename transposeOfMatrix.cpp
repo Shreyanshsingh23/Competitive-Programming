@@ -24,13 +24,11 @@ typedef pair<int, int> pi;
 const bool testcase = 0;
 void transpose(vii& a){
     int n = sz(a);
-    int index = 0;
    
         for(int i = 0; i < n; i++){
             for(int j = i;j < n; j++){
             swap(a[i][j],a[j][i]);
         }
-         index ++;
     }
    
     
