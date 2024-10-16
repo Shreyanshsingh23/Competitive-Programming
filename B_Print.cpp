@@ -18,7 +18,8 @@ typedef pair<int, int> pi;
 const bool testcase = 0;
 void print(int& n) 
 {
-    for(int i = 1 ; i<= n; i++) cout << i << " ";
+    for(int i = 1 ; i< n; i++) cout << i << " ";
+    cout << n ;
 }
 void solve()
 {

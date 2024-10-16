@@ -26,7 +26,20 @@ const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
+   int2(n,k)
+    vi a(n);
+   FOR(i,n) cin>> a[i];
+
+   int ans = 0;
+
+   sort(all(a));
+   if(k==1){
+    cout << 2*a[n-1] + a[n-2] + a[0] << ln;
+    return;
+   }
+
+   ans += a[n-1]+a[n-2]+a[n-k-1] + a[0];
+   cout << ans << ln;
    
 }
 

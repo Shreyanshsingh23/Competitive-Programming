@@ -3,7 +3,7 @@ using namespace std;
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ln '\n';
+#define ln endl;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
@@ -21,12 +21,35 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 
 void solve()
 {
-   int1(n)
+   int2(n,q);
+   vi ori(n);
+   FOR(i,n) cin >> ori[i];
+
+   vi a (n+10);
+
+   while(q--){
+    int l,r,x; cin >> l >> r >> x;
+    l--; r--;
+    a[l] += x;
+    a[r+1] -= x;
+   }
+
+    //prefix sum
+   for(int i = 1; i< n; i++){
+    a[i] += a[i-1];
+   }
+
+   FOR(i,n){
+    a[i] += ori[i];
+    cout << a[i] << " ";
+   }
+ cout << ln;
+
    
 }
 
