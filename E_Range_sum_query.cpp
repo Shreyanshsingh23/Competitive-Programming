@@ -26,16 +26,24 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
+   int2(n,q)
+   vi a(n);
    FOR(i,n) cin >> a[i];
 
-   sort(a.begin(),a.begin()+n);
-
-   for(int e: a){
-    cout << e << ' ';
+   for(int i = 1; i< n; i++){
+    a[i] += a[i-1];
    }
-   cout << ln;
+
+   while(q--)
+   {
+    int2(l,r);
+    l--;r--;
+    if(l== 0) cout << a[r];
+    else cout << a[r]-a[l-1];
+
+    cout << ln;
+    
+   }
    
 }
 

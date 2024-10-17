@@ -26,17 +26,21 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
+   int2(n,m)
+    vi freq((2*m)+10,0);
    vi a (n);
    FOR(i,n) cin >> a[i];
 
-   sort(a.begin(),a.begin()+n);
+    for(auto& e : a){ 
+        freq[e+m] ++;
+    }   
 
-   for(int e: a){
-    cout << e << ' ';
-   }
-   cout << ln;
-   
+    for(int i = 0; i<=2*m; i++){
+        if(freq[i]==0){
+            cout << i-m << ln;
+            return;
+        }
+    }
 }
 
 signed main()

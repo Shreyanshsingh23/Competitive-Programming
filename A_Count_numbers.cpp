@@ -23,19 +23,21 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
+int freq [100010];
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-
-   sort(a.begin(),a.begin()+n);
-
-   for(int e: a){
-    cout << e << ' ';
+   int2(n,q)
+    
+   while(q--){
+    int t,a;cin >> t >> a;
+    if(t==1){
+        freq[a]++;
+    }
+    else{
+        cout << freq[a] << ln;
+    }
    }
-   cout << ln;
    
 }
 

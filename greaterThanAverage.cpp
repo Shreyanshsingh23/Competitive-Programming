@@ -21,22 +21,38 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-
-   sort(a.begin(),a.begin()+n);
-
-   for(int e: a){
-    cout << e << ' ';
+   vi a ;
+   int sum = 0;
+   int x = 0;
+   while(x != -1){
+    cin >> x;
+    int a [] = {x};
+     sum += x;
    }
-   cout << ln;
+   int n = a.size();
+   int avg = sum/n;
+    int big = 0, small = 0;
+
+   FOR(i,n){
+    if(a[i] > avg){
+        big++;
+    }
+    else if (a[i] < avg) small ++;
+   }
+
+  
+  
    
+   
+
+   int avg = sum/n;
+
+   int big,small = 0;   
 }
 
 signed main()
