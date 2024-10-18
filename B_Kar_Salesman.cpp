@@ -3,11 +3,10 @@ using namespace std;
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ln '\n';
+#define ln endl;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -17,8 +16,7 @@ using namespace std;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
-#define sett(n)          cout<<fixed<<setprecision(n)
-int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
+
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
@@ -26,9 +24,27 @@ const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   int2(n,x)
+    // vi a (n);
+
+//     FOR(i,n) cin >> a[i];
+
+
+
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    int totalCustomers = 0;
+    
+    // Maximum number of customers needed based on car models
+    for (int i = 0; i < n; i++) {
+        totalCustomers += (a[i] + x - 1) / x; // ceil(a[i] / x)
+    }
+
+    cout << totalCustomers << endl;
+
    
 }
 
@@ -40,6 +56,7 @@ signed main()
     testcase and cin >> t;
     while (t--)
     {
+        // cout <<"t: " << t << ln;
         solve();
     }
     return 0;

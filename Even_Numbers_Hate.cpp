@@ -27,9 +27,25 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
+    vi a(n);
+    int odd= 0,even =0;
+   FOR(i,n){
+     cin>> a[i];
+     if(a[i]&1)odd++;
+     else even++;
+   }
+
+   if(odd == 0){
+    cout << 0 << ln;
+    return;
+   }
+   else{
+    cout << even + 1 + (odd-1)/2 << ln;
+   }
+
+
+
+
 }
 
 signed main()

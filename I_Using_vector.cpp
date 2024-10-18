@@ -21,14 +21,47 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 
 void solve()
 {
-   int1(n)
+   int2(n,q)
    vi a (n);
    FOR(i,n) cin >> a[i];
+
+   while(q--){
+    string s; cin >> s;
+    if(s == "sort"){
+        int l,r; cin >> l >> r;
+        l--;r--;
+        sort(a.begin()+l,a.begin()+r+1); 
+        continue;
+    }
+    else if(s == "pop_back"){
+        a.pop_back();
+    }
+    else if(s== "back"){
+        cout << a.back() << ln;
+    }
+    else if(s== "reverse"){
+        int l,r; cin >> l >> r;
+        l--;r--;
+        reverse(a.begin()+l, a.begin()+r+1);
+    }
+    else if(s=="front"){
+        cout << a.front() << ln;
+    }
+    else if(s=="push_back"){
+        int x; cin >> x;
+        a.pb(x);
+    }
+    else if(s == "print"){
+       
+        int x; cin >> x;
+        cout << a[x-1]<< ln;
+    }
+   }
    
 }
 

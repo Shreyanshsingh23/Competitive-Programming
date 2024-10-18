@@ -11,7 +11,8 @@ using namespace std;
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
-#define pii pair<int,int>#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
+#define all(v) v.begin(), v.end()
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
@@ -22,14 +23,37 @@ int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res+
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
-
+//AMORTISED TIME COMPLEXITY
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   vi a ;
+   int sum = 0;
+   int x = 0;
+   while(x != -1){
+    cin >> x;
+    int a [] = {x};
+     sum += x;
+   }
+   int n = a.size();
+   int avg = sum/n;
+    int big = 0, small = 0;
+
+   FOR(i,n){
+    if(a[i] > avg){
+        big++;
+    }
+    else if (a[i] < avg) small ++;
+   }
+
+  
+  
    
+   
+
+   int avg = sum/n;
+
+   int big,small = 0;   
 }
 
 signed main()

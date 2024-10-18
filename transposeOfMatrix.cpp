@@ -3,7 +3,7 @@ using namespace std;
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ln '\n';
+#define ln endl;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
@@ -18,18 +18,40 @@ using namespace std;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
-int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
+
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
-
+const bool testcase = 0;
+void transpose(vii& a){
+    int n = sz(a);
+   
+        for(int i = 0; i < n; i++){
+            for(int j = i;j < n; j++){
+            swap(a[i][j],a[j][i]);
+        }
+    }
+   
+    
+}
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
+    int n; cin >> n;
+  vii mat(n,vi(n));
+
+    FOR(i,n){
+        FOR(j,n){
+            cin >> mat[i][j];
+        }
+    }
+
+    transpose(mat);
+   FOR(i,n){
+        FOR(j,n){
+            cout <<  mat[i][j] << " ";
+        }
+        cout << ln;
+    }
 }
 
 signed main()

@@ -21,7 +21,7 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 
 void solve()
@@ -29,6 +29,13 @@ void solve()
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
+
+   sort(a.begin(),a.begin()+n);
+
+   for(int e: a){
+    cout << e << ' ';
+   }
+   cout << ln;
    
 }
 

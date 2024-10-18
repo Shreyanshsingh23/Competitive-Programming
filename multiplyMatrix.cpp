@@ -3,11 +3,11 @@ using namespace std;
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ln '\n';
+#define ln endl;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x) (int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -18,18 +18,55 @@ using namespace std;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
-int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
+
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 
+
+int mul(vii& a,vii& b,int n, int m){
+    int times = sz(a[0]);
+    int ans = 0;
+    for(int i = 0;i<times;i++){
+        ans += a[n][i]*b[i][m];
+        }
+    return ans;
+}
+
+
+void multiply(vii& a, vii& b){
+    int n = sz(a);
+    int m = sz(b[0]);
+    vii res(m,vi(n));
+
+    for(int i = 0; i< n; i++){
+        for(int j = 0;j < m; j++){
+            res[i][j]=  mul(a,b,i,j);
+        }
+    } 
+    
+
+   a=res;
+}
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
+    int n; cin >> n;
+  vii mat(n,vi(n));
+
+    FOR(i,n){
+        FOR(j,n){
+            cin >> mat[i][j];
+        }
+    }
+    multiply(mat,mat);
+    
+   FOR(i,n){
+        FOR(j,n){
+            cout <<  mat[i][j] << " ";
+        }
+        cout << ln;
+    }
 }
 
 signed main()

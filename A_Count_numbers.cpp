@@ -21,14 +21,23 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
+int freq [100010];
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   int2(n,q)
+    
+   while(q--){
+    int t,a;cin >> t >> a;
+    if(t==1){
+        freq[a]++;
+    }
+    else{
+        cout << freq[a] << ln;
+    }
+   }
    
 }
 

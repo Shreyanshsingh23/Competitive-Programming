@@ -1,0 +1,1 @@
+{"name":"Local: transposeOfMatrix","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/transposeOfMatrix.cpp","tests":[{"id":1728967866768,"input":"3\n1 2 3\n4 5 6\n7 8 9","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/transposeOfMatrix.cpp","group":"local","local":true}

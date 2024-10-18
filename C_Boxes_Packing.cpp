@@ -21,17 +21,38 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 
 void solve()
 {
    int1(n)
-   vi a (n);
+   vi a(n);
    FOR(i,n) cin >> a[i];
+
+   sort(all(a));
+   int i = 0;
+   int count= 0;
+
+   while(i < a.size()-1)
+   {
+    if(a[i] < a[i+1]){
+        a.erase(a.begin()+ i);
+        if(i < a.size()-1 and a[i] == a[i+1]){
+            a.erase(a.begin()+i);
+            count ++;
+            i--;
+        }
+    }
+    else{
+        i++;
+    }
+   }
+
+   cout << a.size() + count << ln;
    
 }
-
+//86 86 86 86 86 89 89 89 89 89
 signed main()
 {
     ShreyanshSinghGautam

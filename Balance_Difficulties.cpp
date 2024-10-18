@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
@@ -26,9 +26,42 @@ const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   int2(n,x)
+    vi b(n),c(n);
+   FOR(i,n) cin>> b[i];
+
+   int diff = -1;
+    bool flag = false;
+
+    while(!flag){
+        diff++;
+        c[0] = b[0] + diff;
+        for(int i= 1; i< n; i++){
+            c[i] = b[i]+diff;
+            if(c[i] - c[i-1]> x){
+                break;
+            }
+            if(i == n-1){
+                flag = true;
+                break;
+            }
+        }
+    }
+
+    cout << diff << ln;
+    for(auto& e:c){
+        cout << e << ' ';
+    }
+
+    cout << ln;
+
+   
+
+
+  
+
+  
+  
    
 }
 

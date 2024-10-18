@@ -3,11 +3,11 @@ using namespace std;
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ln '\n';
+#define ln endl;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)   (int)x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -18,18 +18,21 @@ using namespace std;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
-int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
+
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
 
 
-void solve()
-{
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
+void solve(){
+ string a, b;
+ cin >>a >> b;
+
+ int i = 0;
+ while(i < sz(a) and i < sz(b) and a[i] == b[i]) i ++;
+
+ cout << min((sz(a)+ sz(b)),(sz(a)+sz(b)+1-i ) );
+        
 }
 
 signed main()
@@ -44,3 +47,7 @@ signed main()
     }
     return 0;
 }
+
+    
+
+  
