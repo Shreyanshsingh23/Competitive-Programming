@@ -27,6 +27,8 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
 }
 

@@ -11,8 +11,7 @@ using namespace std;
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
-#define pii pair<int,int>
-#define all(v) v.begin(), v.end()
+#define pii pair<int,int>#define all(v) v.begin(), v.end()
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
@@ -22,38 +21,29 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
-//AMORTISED TIME COMPLEXITY
+const bool testcase = 0;
+
 
 void solve()
 {
-   vi a ;
-   int sum = 0;
-   int x = 0;
-   while(x != -1){
-    cin >> x;
-    int a [] = {x};
-     sum += x;
+   int2(n,k)
+   v <pi> a(n);
+   FOR(i,n) 
+   {
+    cin >> a[i].first;
+    a[i].second = i+1;
    }
-   int n = a.size();
-   int avg = sum/n;
-    int big = 0, small = 0;
+   
+   set<pi> st {all(a)};
 
-   FOR(i,n){
-    if(a[i] > avg){
-        big++;
-    }
-    else if (a[i] < avg) small ++;
+   if(k > sz(st)){
+    cout << "NO" << ln;
+    return;
    }
+   cout << "YES" << ln;
+   for(auto& e : st) cout << e.first << ' ' << e.second << ln;
+   cout << ln;
 
-  
-  
-   
-   
-
-   int avg = sum/n;
-
-   int big,small = 0;   
 }
 
 signed main()
