@@ -21,7 +21,8 @@
         "regex": "cpp",
         "valarray": "cpp",
         "random": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "iomanip": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
