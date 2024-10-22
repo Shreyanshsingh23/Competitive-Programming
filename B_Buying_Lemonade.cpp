@@ -17,7 +17,7 @@ using namespace std;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
-#define FOR(i, a, n) for (int i = a; i < n; i++)
+#define FORa(i, a, n) for (int i = a; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
@@ -28,31 +28,29 @@ const bool testcase = 1;
 void solve()
 {
    int2(n,k)
-    vector<int> cans(n);
-        long long total_cans = 0;
-        for (int i = 0; i < n; i++) {
-            cin >> cans[i];
-            total_cans += cans[i];
+    vi a (n);
+    FOR(i,n) cin >> a[i];
+    sort(all(a));
+    int pres = 0;
+    int req = k;
+    FOR(i,n){
+        if(a[i]*(n-i) >= req){
+            cout << pres + req << ln;
+            return;
         }
-        sort(cans.rbegin(), cans.rend());
-
-        long long presses = 0, collected = 0;
-        for (int i = 0; i < n; i++) {
-            if (collected >= k) break;
-            presses++;
-            collected += cans[i];
-            if (collected >= k) break;
-            if (i + 1 < n) {
-                presses += (cans[i] - 1);
-            }
+        else{
+            pres +=  a[i] + 1;
+            req -= a[i];
         }
+    }
 
-        cout << presses << endl;
+
+        
     
    }
 
 
-signed main()
+signed main() 
 {
     ShreyanshSinghGautam
 
