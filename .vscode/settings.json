@@ -22,7 +22,10 @@
         "valarray": "cpp",
         "random": "cpp",
         "functional": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "barrier": "cpp",
+        "algorithm": "cpp",
+        "variant": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

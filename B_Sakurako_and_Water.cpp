@@ -22,45 +22,48 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
-    }
 
-}
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
+   int1(n)
+   vii a (n,vi(n));
+   for(auto &i : a){
+       for(auto &j : i){
+           cin >> j;
        }
    }
-   print(a,n,m);
    
+   int ans = 0;
+
+   for(int i = n-1; i>= 0; i--){
+    int minn = MAX;
+    int k = i;
+    for(int j = 0;k <n and j< n;k++, j++){
+        if(a[k][j] < minn){
+            minn = a[k][j];
+        }
+    }
+    if(minn < 0){
+        ans += -1*minn;
+    }
+   }
+
+   for(int j = 1; j< n; j++){
+    int minn = MAX;
+    int k = j;
+    for(int i = 0;k <n and i< n;k++, i++){
+        if(a[i][k] < minn){
+            minn = a[i][k];
+        }
+    }
+    if(minn < 0){
+        ans += -1*minn;
+    }
+   }
+
+   cout << ans << ln;
 }
 
 signed main()
