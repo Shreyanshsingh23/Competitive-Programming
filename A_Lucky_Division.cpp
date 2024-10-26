@@ -24,42 +24,29 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-
+set<char> st = {'4','7'};
 void solve()
 {
-    string s; cin >> s;
-    int n = s.size();
-    map<char,int> mp;
-    FOR(i,n) mp[s[i]]++;
-
-    bool h1 = false,e1 = false,l1 = false,l2 = false,o1 = false;
-    if(mp['h'] > 0 and mp['e'] > 0 and mp['l'] > 1 and mp['o'] > 0){
-        FOR(i,n){
-        if(l2 and !o1 and s[i] == 'o'){
-            o1 = 1;
+   int1(n)
+   for(int i = 1; i<= n;i++){
+    string s = to_string(i);
+    bool flag = true;
+    for(int i = 0; i< s.size(); i++){
+        
+        if(st.count(s[i]) == 0){
+            flag = false;
+            break;
+            
         }
-        else if(l1 and !l2 and s[i] == 'l'){
-            l2 = 1;
-        }
-        else if(e1 and !l1 and s[i] == 'l'){
-            l1 = 1;  
-        }
-        else if(h1 and !e1 and s[i] == 'e'){
-            e1 = 1;
-        }
-        else if(!h1 and s[i] == 'h'){
-            h1 = 1;
-        }
-        }
-    } 
-
-    if(h1 and e1 and l1 and l2 and o1){
-        cout << "YES" << ln;
     }
-    else{
-        cout << "NO" << ln;
+        if(flag){   
+            if(n%i == 0){
+                cout << "YES" << ln;
+                return;
+            }
+        }
     }
-   
+    cout << "NO" << ln;
 }
 
 signed main()
@@ -74,4 +61,3 @@ signed main()
     }
     return 0;
 }
-

@@ -27,39 +27,11 @@ const bool testcase = 0;
 
 void solve()
 {
-    string s; cin >> s;
-    int n = s.size();
-    map<char,int> mp;
-    FOR(i,n) mp[s[i]]++;
-
-    bool h1 = false,e1 = false,l1 = false,l2 = false,o1 = false;
-    if(mp['h'] > 0 and mp['e'] > 0 and mp['l'] > 1 and mp['o'] > 0){
-        FOR(i,n){
-        if(l2 and !o1 and s[i] == 'o'){
-            o1 = 1;
-        }
-        else if(l1 and !l2 and s[i] == 'l'){
-            l2 = 1;
-        }
-        else if(e1 and !l1 and s[i] == 'l'){
-            l1 = 1;  
-        }
-        else if(h1 and !e1 and s[i] == 'e'){
-            e1 = 1;
-        }
-        else if(!h1 and s[i] == 'h'){
-            h1 = 1;
-        }
-        }
-    } 
-
-    if(h1 and e1 and l1 and l2 and o1){
-        cout << "YES" << ln;
-    }
-    else{
-        cout << "NO" << ln;
-    }
-   
+  int a,b,c;
+  cin>>a>>b>>c;
+  int ans = a+b+c;
+  ans = max({ans,a*b*c,(a+b)*c,a*(b+c)});
+  cout<<ans<<ln;
 }
 
 signed main()
@@ -74,4 +46,3 @@ signed main()
     }
     return 0;
 }
-
