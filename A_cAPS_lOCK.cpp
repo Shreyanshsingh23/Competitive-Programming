@@ -24,55 +24,45 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-int a,b,c,d,cnt;
 
 void solve()
 {
-   int1(n)
-   vi V (n);
-   FOR(i,n){
-     cin >> V[i];
-     if(V[i] == 1) a++;
-     else if(V[i] == 2) b++;
-     else if(V[i] == 3) c++;
-     else  d++;
-   }
+    string s; cin >> s;
+    int n = sz(s);
+    bool isUpper = true;
+    
+    for(int i = 0; i< n; i++){
+        if(islower(s[i])){
+            isUpper = false;
+            break;
+        }
+    }
+    if(isUpper){
 
-  cnt += d;
-  // for combination of 3 and 1
-  if(c >= a){
-    cnt += a;
-    c -= a;
-    a = 0;
-    cnt += c;
-  }else{
-    cnt += c;
-    a -= c;
-    c = 0;
-  }
+        transform(s.begin(),s.end(),s.begin(),::tolower);
+        cout << s << ln;
+        return;
+    }
+    bool firstLower = false,otherUpper = true;
+    if(islower(s[0])) firstLower = true;
+    for(int i = 1; i< n; i++){
+        if(islower(s[i])){
+            otherUpper = false;
+            break;
+        }
+    }
 
-  // for combination of 2 and 2
-  cnt += b/2;
-  b = b%2;
+    if(firstLower && otherUpper){
 
-//   cout << "b : " << b << ln;
-  // for combination of 2 and 1
-  
-    cnt += b;
-    a -= 2*b;
-    b = 0;
-//   cout << "a1: " << a1 << ln;
-//   cout << a1/4 << ln;
-  // for combination of 1 and 1
-  if(a>0){cnt += a/4;
-  a = a%4;
-  if(a){
-    cnt++;
-  }}
+        transform(s.begin(),s.end(),s.begin(),::tolower);
+        s[0] = toupper(s[0]);
+        cout << s << ln;
+        return;
+    }
+    cout << s << ln;
+   
 
-  cout << cnt << ln;
-  
-
+   
 }
 
 signed main()
