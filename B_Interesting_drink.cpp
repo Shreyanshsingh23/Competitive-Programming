@@ -27,21 +27,31 @@ const bool testcase = 0;
 
 void solve()
 {
-   int2(n,m)
-   vi a (m);
-   FOR(i,m) cin >> a[i];
-   int time = 0;
-   time += a[0]-1;
-   for(int i =1; i< m; ++i){
-    if(a[i] >= a[i-1]){
-        time += a[i]-a[i-1];
-    }else{
-        time += n-a[i-1];
-        time += a[i];
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+    sort(all(a));
+   int1(q)
+    while(q--){
+        int cnt = 0;
+        int1(x)
+       int l = 0, r = n-1;
+        while(l <= r){
+            int mid =   l+ (r-l)/2;
+            if(a[mid] > x){ 
+                r = mid-1;
+            }
+            else if(a[mid] <= x){
+                cnt = mid+1;
+                l = mid+1;
+            }
+            
+            
+        }
+        cout << cnt << ln;
     }
-   }
-   cout << time << ln;
-}   
+   
+}
 
 signed main()
 {
