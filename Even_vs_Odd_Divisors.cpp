@@ -22,18 +22,29 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 
 void solve()
 {
    int1(n)
-    
-    int cnt = 0;
-   
-   bitset<500> a = n;
+  int odd = 0, even = 0;
 
-    cout << a.count() << ln;
+   for(int i = 1; i*i <= n; i++){
+       if(n % i == 0){
+           if(!(i & 1)) even++;
+           else odd++;
+
+           if((n/i) != i){
+               if(!((n/i) & 1)) even++;
+               else odd++;
+           }
+       }
+   }
+
+   if(odd > even ) cout << "-1" << '\n';
+   else if(even > odd) cout << "1" << '\n';
+   else cout << "0" << '\n';
    
 }
 

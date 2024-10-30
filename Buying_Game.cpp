@@ -22,18 +22,39 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 
 void solve()
 {
    int1(n)
-    
-    int cnt = 0;
+   vi a (n),b(n);
+   FOR(i,n) cin >> a[i];
    
-   bitset<500> a = n;
+   FOR(i,n) cin >> b[i];
 
-    cout << a.count() << ln;
+   vector<pair<int, int>> items;
+    for (int i = 0; i < n; i++) {
+        items.push_back({b[i] - a[i], i});  // Sorting factor (B[i] - A[i])
+    }
+
+    // Sort items based on cost difference in ascending order
+    sort(all(items));
+    
+
+    int total_cost = 0;
+    vector<bool> used(n, false);
+
+    for (int i = 0; i < n; i++) {
+        int idx = items[i].second;
+        if (i < n - 1) {
+            total_cost += b[idx];
+        } else {
+            total_cost += a[idx];
+        }
+    }
+
+    cout << total_cost << ln;
    
 }
 

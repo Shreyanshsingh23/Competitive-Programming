@@ -28,13 +28,21 @@ const bool testcase = 0;
 void solve()
 {
    int1(n)
-    
-    int cnt = 0;
+   map<string,int> mp;
+   while(n--){
+       string s; cin >> s;
+       mp[s]++;
+   }
    
-   bitset<500> a = n;
-
-    cout << a.count() << ln;
-   
+   int mxx = -1;
+   string ans = "";
+   for(auto e : mp){
+    if(e.second > mxx){
+        mxx = e.second;
+        ans = e.first;
+    }
+   }
+   cout << ans << ln;
 }
 
 signed main()

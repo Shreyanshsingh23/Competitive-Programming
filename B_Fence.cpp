@@ -27,13 +27,30 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-    
-    int cnt = 0;
-   
-   bitset<500> a = n;
+   int2(n,k)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   vi pref(1e6+10,0);
+    int lessIndex = 0;
+    pref[0] = a[0];
+    cout << pref[0] << " ";
+   for(int i = 1; i < n; i++){
+        pref[i] = pref[i-1];
+        pref[i] += a[i];
+        cout << pref[i] << " ";
+   }
+   cout << ln;
 
-    cout << a.count() << ln;
+    int minn = 
+   for(int i = k-1; i < n; i++){
+    
+    if(pref[i] - pref[i-k] < minn){
+        minn = pref[i] - pref[i-k];
+        lessIndex = i-k+1;
+    }
+   }
+
+    cout << lessIndex << ln;
    
 }
 
