@@ -41,7 +41,7 @@ void solve()
    }
    cout << ln;
 
-    int minn = 
+    int minn = MAX;
    for(int i = k-1; i < n; i++){
     
     if(pref[i] - pref[i-k] < minn){

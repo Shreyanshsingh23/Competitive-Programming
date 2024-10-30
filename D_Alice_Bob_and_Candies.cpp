@@ -28,28 +28,38 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n),b(n);
+   vi a (n);
    FOR(i,n) cin >> a[i];
+
+   int cnt = 0,alice = 0, bob = 0, prev  = 0, curr = 0;
+   while(a.size()>0){
+
+        if(!(cnt & 1)){
+            while(curr <= prev){
+                curr += a[0];
+                a.erase(a.begin());
+                if(a.size() == 0) break;
+            }
+            alice += curr;
+            prev = curr;
+            curr = 0;
+            cnt++;
+        }else{
+            while(curr <= prev){
+                curr += a.back();
+                a.erase(a.begin()+ a.size());
+                if(a.size() == 0) break;
+
+            }
+            bob += curr;
+            prev = curr;
+            curr = 0;
+            cnt++;
+            
+            }
+   }
    
-   FOR(i,n) cin >> b[i];
-
-   v<pi> items;
-   int totalCost = 0;
-    for (int i = 0; i < n; i++) {
-        items.push_back({b[i] - a[i], b[i]}); 
-        totalCost += b[i];
-    }
-
-    sort(all(items));
-    int ans = totalCost;
-    totalCost = items[0].first;
-    for (int i = 1; i < n; i++) {
-        totalCost += items[i].first;
-        ans = min(ans, totalCost );
-    }
-
-    cout << ans << ln;
-   
+   cout << cnt << ' ' << alice << ' ' << bob << ln;
 }
 
 signed main()

@@ -28,14 +28,26 @@ const bool testcase = 1;
 void solve()
 {
    int2(n,k)
-   int ans = k;
-   while((k+n-1)/n >= n){
-    ans += (k+n-1)/n;
-    k = (k+n-1)/n;
+   
+   int prevDiv =0, currDiv, ans = 0, cnt = 0;
+   cnt = k;
+   currDiv = k /n;
+//    cout << "currDiv outside loop " << currDiv << ln;
+   while(currDiv > 0){ 
+
+   prevDiv += currDiv;
+//    cout << "prevDiv inside loop " << prevDiv << ln;
+   cnt += currDiv;
+//    cout << "cnt inside loop " << cnt << ln;
+   currDiv = cnt/n - prevDiv;
+//    cout << "currDiv inside loop " << currDiv << ln;
+  
+
    }
+
+   ans  = cnt;
+//    cout << "ans outside loop " << ans << ln;
    cout << ans << ln;
-   
-   
 }
 
 signed main()
