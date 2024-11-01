@@ -25,7 +25,9 @@
         "iomanip": "cpp",
         "barrier": "cpp",
         "algorithm": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "cstddef": "cpp",
+        "charconv": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }
