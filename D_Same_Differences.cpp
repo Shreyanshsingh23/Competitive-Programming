@@ -22,50 +22,27 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 
 void solve()
 {
    int1(n)
-   vi a (n),pref(n+1,0);
+   vi a (n);
    FOR(i,n) cin >> a[i];
-   for(int i = 1; i<= n; i++){
-       pref[i] = pref[i-1] + a[i-1];
-    //    cout << pref[i] << " ";
+
+   map<int,int> mp;
+   int cnt = 0;
+
+   for(int i = 0; i < n; i++){
+       mp[a[i]-i]++;
+   }
+
+   for(auto [x,y] : mp){
+       cnt += (y*(y-1))/2;
    }
 //    cout << ln;
-
-
-   int m; cin >> m;
-   while(m--){
-       int1(x)
-       bool flag = false;
-       int l = 1, r = n;
-       while(l <= r){
-        int mid = l + (r-l)/2;
-        if(pref[mid] <= x){
-            if(pref[mid]-a[mid-1] < x and pref[mid] >= x){
-                // cout << "first cond" << " ";
-                cout << mid << ln;
-                flag = true;
-                break;
-            }
-            if(pref[mid] < x and pref[mid]+ a[mid] >= x){
-                // cout << "second cond" << " ";
-                cout << mid+1 << ln;
-                flag = true;
-                break;
-            }
-            l = mid+1;
-        }else{
-            r = mid-1;
-        }
-       }
-
-      if(!flag) cout << (l > n? n:l) << ln;
-   }
-   
+   cout << cnt << ln;
 }
 
 signed main()

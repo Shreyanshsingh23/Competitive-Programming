@@ -27,7 +27,9 @@
         "algorithm": "cpp",
         "variant": "cpp",
         "cstddef": "cpp",
-        "charconv": "cpp"
+        "charconv": "cpp",
+        "bitset": "cpp",
+        "memory_resource": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

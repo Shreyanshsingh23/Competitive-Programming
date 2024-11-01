@@ -27,45 +27,35 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-   vi a (n),pref(n+1,0);
-   FOR(i,n) cin >> a[i];
-   for(int i = 1; i<= n; i++){
-       pref[i] = pref[i-1] + a[i-1];
-    //    cout << pref[i] << " ";
+   int a, b; cin >> a >> b;
+   int left = 0;
+  int cnt = 0;
+//   cout << "cnt: " << cnt << ln;
+//   cout << "left: " << left << ln;
+  while(a >= b){
+   cnt += a;
+   left += a%b;
+   a /= b;
+//    cout << "a: " << a << ln;
+//    cout << "cnt: " << cnt << ln;
+//   cout << "left: " << left << ln;
+  }
+  cnt +=  a;
+   a += left;
+   left = 0;
+   while(a >= b){
+      cnt += a/b;
+      left += a%b;
+      a /= b;
    }
-//    cout << ln;
 
+   cnt += (a+left)/b;
 
-   int m; cin >> m;
-   while(m--){
-       int1(x)
-       bool flag = false;
-       int l = 1, r = n;
-       while(l <= r){
-        int mid = l + (r-l)/2;
-        if(pref[mid] <= x){
-            if(pref[mid]-a[mid-1] < x and pref[mid] >= x){
-                // cout << "first cond" << " ";
-                cout << mid << ln;
-                flag = true;
-                break;
-            }
-            if(pref[mid] < x and pref[mid]+ a[mid] >= x){
-                // cout << "second cond" << " ";
-                cout << mid+1 << ln;
-                flag = true;
-                break;
-            }
-            l = mid+1;
-        }else{
-            r = mid-1;
-        }
-       }
-
-      if(!flag) cout << (l > n? n:l) << ln;
-   }
-   
+//   cout << "cnt : " << cnt << ln;
+//    cout << "left : " << left << ln;
+//    cout << "a : " << a << ln;
+  
+  cout << cnt << ln;
 }
 
 signed main()
