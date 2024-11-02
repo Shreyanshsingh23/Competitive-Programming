@@ -17,49 +17,39 @@ using namespace std;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
-#define FORa(i, a, n) for (int i = a; i < n; i++)
+#define FOR(i, a, n) for (int i = a; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
+bool cmp(pi& a,pi& b){
+     int sum1 = a.first + a.second;
+     int sum2 = b.first + b.second;
+        if(sum1 != sum2){
+            return sum1 < sum2;
+        }
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
+        else return min(a.first,a.second)  < min(b.first,b.second);
     }
 
-}
+
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
-   }
-   print(a,n,m);
+   int1(n)
+    v<pi> a(n);
+    for (int i = 0; i < n; ++i) {
+        int x, y;
+        cin >> x >> y;
+        a[i] = {x, y};
+    }
+    
+    sort(a.begin(), a.end(),cmp);
+    
+    for (int i = 0; i < n; ++i) {
+        cout << a[i].first << " " << a[i].second << " ";
+    }
+    cout << endl;
    
 }
 

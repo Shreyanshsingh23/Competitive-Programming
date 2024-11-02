@@ -22,47 +22,42 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
+
+bool check1100(const string &s, int pos) {
+    if (pos < 0 || pos + 3 >= s.size()) return false;
+    return (s[pos] == '1' && s[pos+1] == '1' && s[pos+2] == '0' && s[pos+3] == '0');
+}
+
+void solve() {
+    string s; cin >> s;
+    int n = s.size();
+    int q; cin >> q;
+    
+    int count1100 = 0;
+    for (int i = 0; i <= n - 4; i++) {
+        if (check1100(s, i)) count1100++;
     }
+    
+    while (q--) {
+        int i, v; cin >> i >> v;
+        i--;
+        char new_char = '0' + v;
+        
+        for (int j = i - 3; j <= i; j++) {
+            if (check1100(s, j)) count1100--;
+        }
 
-}
-void solve()
-{
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
-   }
-   print(a,n,m);
-   
-}
+        s[i] = new_char;
+        
+        for (int j = i - 3; j <= i; j++) {
+            if (check1100(s, j)) count1100++;
+        }
 
+        cout << (count1100 > 0 ? "YES" : "NO") << ln;
+    }
+}
 signed main()
 {
     ShreyanshSinghGautam
@@ -75,3 +70,5 @@ signed main()
     }
     return 0;
 }
+
+

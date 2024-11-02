@@ -22,45 +22,32 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
-    }
 
-}
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
-   }
-   print(a,n,m);
+   int2(n,k)
    
+   int prevDiv =0, currDiv, ans = 0, cnt = 0;
+   cnt = k;
+   currDiv = k /n;
+//    cout << "currDiv outside loop " << currDiv << ln;
+   while(currDiv > 0){ 
+
+   prevDiv += currDiv;
+//    cout << "prevDiv inside loop " << prevDiv << ln;
+   cnt += currDiv;
+//    cout << "cnt inside loop " << cnt << ln;
+   currDiv = cnt/n - prevDiv;
+//    cout << "currDiv inside loop " << currDiv << ln;
+  
+
+   }
+
+   ans  = cnt;
+//    cout << "ans outside loop " << ans << ln;
+   cout << ans << ln;
 }
 
 signed main()

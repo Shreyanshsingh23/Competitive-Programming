@@ -22,44 +22,23 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
-    }
 
-}
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
+   int1(n)
+   int mxh = 0, mxw = 0;
+   while(n--){
+    int w,h;cin >> w >> h;
+    mxw = max(mxw,w);
+    mxh = max(mxh,h);
+    // cout << "mxw: " << mxw << ln;
+    // cout << "mxh: " << mxh << ln;
    }
-   print(a,n,m);
+//    cout << ln;
+
+   cout << 2*(mxw+mxh) << ln;
    
 }
 

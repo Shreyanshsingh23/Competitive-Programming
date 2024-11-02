@@ -24,43 +24,29 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
-    }
-
-}
+set<char> st = {'4','7'};
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
-   }
-   print(a,n,m);
-   
+   int1(n)
+   for(int i = 1; i<= n;i++){
+    string s = to_string(i);
+    bool flag = true;
+    for(int i = 0; i< s.size(); i++){
+        
+        if(st.count(s[i]) == 0){
+            flag = false;
+            break;
+            
+        }
+    }
+        if(flag){   
+            if(n%i == 0){
+                cout << "YES" << ln;
+                return;
+            }
+        }
+    }
+    cout << "NO" << ln;
 }
 
 signed main()

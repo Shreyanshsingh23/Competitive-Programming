@@ -7,7 +7,7 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x) (int)x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -15,7 +15,7 @@ using namespace std;
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
-#define pb emplace_back
+#define pb push_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
@@ -24,43 +24,28 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
-    }
-
-}
+set<char> st = {'a','o','y','e','u','i','A','O','Y','E','U','I'};
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
-   }
-   print(a,n,m);
-   
+    string s; cin >> s;
+    string ans = "";
+    int n = sz(s);
+    for(int i = 0; i< n; i++){
+        if(st.count(s[i])){
+            continue;
+        }
+        else if(isupper(s[i])){
+            char ch = tolower(s[i]);
+            ans.pb('.');
+            ans.pb(ch);
+        }
+        else{
+            ans.pb('.');
+            ans.pb(s[i]);
+        }
+    }
+
+   cout << ans << ln;
 }
 
 signed main()

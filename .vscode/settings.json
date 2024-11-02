@@ -21,7 +21,15 @@
         "regex": "cpp",
         "valarray": "cpp",
         "random": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "iomanip": "cpp",
+        "barrier": "cpp",
+        "algorithm": "cpp",
+        "variant": "cpp",
+        "cstddef": "cpp",
+        "charconv": "cpp",
+        "bitset": "cpp",
+        "memory_resource": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

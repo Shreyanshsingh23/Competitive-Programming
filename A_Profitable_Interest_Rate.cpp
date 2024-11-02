@@ -17,50 +17,46 @@ using namespace std;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
 #define pb emplace_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
-#define FORa(i, a, n) for (int i = a; i < n; i++)
+#define FOR(i, a, n) for (int i = a; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
-    }
 
-}
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
+   int2(a,b)
+
+   if(b >= 2*a){
+    cout << 0 << ln;
+    return;
    }
-   print(a,n,m);
-   
+   if(a >= b){
+    cout << a << ln;
+    return;
+   }
+   int res = 0;
+   int left = 1, right = a;
+   while (left <= right) {
+        int mid = (left + right) / 2;
+
+        if (b - (2 * mid) > a - mid) {
+            
+            
+            left = mid +1;
+            
+        }
+         else {
+            res = mid; 
+            right = mid -1;  
+        }
+    }
+
+    cout << a-res << ln;
+
+
 }
 
 signed main()

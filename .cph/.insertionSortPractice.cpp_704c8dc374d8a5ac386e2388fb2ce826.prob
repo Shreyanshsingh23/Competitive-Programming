@@ -1,0 +1,1 @@
+{"name":"Local: insertionSortPractice","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/insertionSortPractice.cpp","tests":[{"id":1729666331967,"input":"5\n12 11 13 5 6","output":"5 6 11 12 13"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/insertionSortPractice.cpp","group":"local","local":true}

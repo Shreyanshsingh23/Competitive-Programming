@@ -24,43 +24,55 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-void print(vii & a,int n,int m){
-    int top = 0, bottom = n-1, left = 0, right = m-1;
-    while(top <= bottom and left <= right){
-        for(int j = left; j <= right; j++){
-            cout << a[top][j] << ' ';
-        }
-        top ++;
-        for(int i = top; i <= bottom; ++i){
-            cout << a[i][right] << ' ';
-        }
-        right--;
-        if(top <= bottom){
-            for(int j = right; j >= left; --j){
-            cout << a[bottom][j] << ' ';
-        }
-        bottom--;
-        }
-       if(left <= right){
-         for(int i = bottom; i>= top; --i){
-            cout << a[i][left] << ' ';
-        }
-        left++;
-       }
-    }
+int a,b,c,d,cnt;
 
-}
 void solve()
 {
-   int n,m; cin >> n >> m;
-   vii a (n,vi(m));
-   for(auto& e : a){
-       for(auto& f : e){
-           cin >> f;
-       }
+   int1(n)
+   vi V (n);
+   FOR(i,n){
+     cin >> V[i];
+     if(V[i] == 1) a++;
+     else if(V[i] == 2) b++;
+     else if(V[i] == 3) c++;
+     else  d++;
    }
-   print(a,n,m);
-   
+
+  cnt += d;
+  // for combination of 3 and 1
+  if(c >= a){
+    cnt += a;
+    c -= a;
+    a = 0;
+    cnt += c;
+  }else{
+    cnt += c;
+    a -= c;
+    c = 0;
+  }
+
+  // for combination of 2 and 2
+  cnt += b/2;
+  b = b%2;
+
+//   cout << "b : " << b << ln;
+  // for combination of 2 and 1
+  
+    cnt += b;
+    a -= 2*b;
+    b = 0;
+//   cout << "a1: " << a1 << ln;
+//   cout << a1/4 << ln;
+  // for combination of 1 and 1
+  if(a>0){cnt += a/4;
+  a = a%4;
+  if(a){
+    cnt++;
+  }}
+
+  cout << cnt << ln;
+  
+
 }
 
 signed main()
