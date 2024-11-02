@@ -22,25 +22,32 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 
 void solve()
 {
    int1(n)
-   vi a (n), b(n);
+   v<pi> a (n);
    FOR(i,n){
-     cin >> a[i];
-     b[i] = a[i]+ i;
+     cin >> a[i].first;
+     cin >> a[i].second;
    }
 
-   for(auto e : b){
-    cout << e << " ";
+   int1(q)
+   while(q--){
+       int2(x,d);
+       x--;
+       int q_i = a[x].first;
+        int r_i = a[x].second;
+
+        if (d % q_i == r_i) {
+            cout << d << ln;  
+        } else {
+            int next = d + ((r_i - (d % q_i) + q_i) % q_i);
+            cout << next << ln;
+        }
    }
-   cout << ln;
-
-    
-
    
 }
 

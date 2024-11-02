@@ -23,23 +23,39 @@ int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res+
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
-
+// bool cmp()
 
 void solve()
 {
-   int1(n)
-   vi a (n), b(n);
-   FOR(i,n){
-     cin >> a[i];
-     b[i] = a[i]+ i;
-   }
+   int2(n,k)
+   map<int ,int > mp;
+   int total = 0;
 
-   for(auto e : b){
-    cout << e << " ";
-   }
-   cout << ln;
+    while(k--){
+        int b, c; cin >> b >> c;
+        total += c;
+        if(mp.count(b) == 0){
+            mp[b] = 0;
+            mp[b] += c;
+        }else{
+            mp[b] += c;
+        }
+    }
 
-    
+    if(n >= mp.size()){
+        cout << total << ln;
+        return;
+    }
+    vi a;
+    for(auto [x,y] : mp){
+        a.pb(y);
+    }
+    sort(all(a),greater<int>());
+    int ans = 0;
+    for(int i = 0; i < n; i++){
+        ans += a[i];
+    }
+    cout << ans << ln;
 
    
 }

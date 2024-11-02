@@ -25,25 +25,39 @@ typedef pair<int, int> pi;
 const bool testcase = 1;
 
 
-void solve()
-{
-   int1(n)
-   vi a (n), b(n);
-   FOR(i,n){
-     cin >> a[i];
-     b[i] = a[i]+ i;
-   }
-
-   for(auto e : b){
-    cout << e << " ";
-   }
-   cout << ln;
-
-    
-
-   
+bool check1100(const string &s, int pos) {
+    if (pos < 0 || pos + 3 >= s.size()) return false;
+    return (s[pos] == '1' && s[pos+1] == '1' && s[pos+2] == '0' && s[pos+3] == '0');
 }
 
+void solve() {
+    string s; cin >> s;
+    int n = s.size();
+    int q; cin >> q;
+    
+    int count1100 = 0;
+    for (int i = 0; i <= n - 4; i++) {
+        if (check1100(s, i)) count1100++;
+    }
+    
+    while (q--) {
+        int i, v; cin >> i >> v;
+        i--;
+        char new_char = '0' + v;
+        
+        for (int j = i - 3; j <= i; j++) {
+            if (check1100(s, j)) count1100--;
+        }
+
+        s[i] = new_char;
+        
+        for (int j = i - 3; j <= i; j++) {
+            if (check1100(s, j)) count1100++;
+        }
+
+        cout << (count1100 > 0 ? "YES" : "NO") << ln;
+    }
+}
 signed main()
 {
     ShreyanshSinghGautam
@@ -56,3 +70,5 @@ signed main()
     }
     return 0;
 }
+
+

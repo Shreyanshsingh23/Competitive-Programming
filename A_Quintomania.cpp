@@ -28,19 +28,17 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n), b(n);
-   FOR(i,n){
-     cin >> a[i];
-     b[i] = a[i]+ i;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+
+   for(int i = 0; i< n-1; i++){
+    if(abs(a[i] - a[i+1]) != 5 and abs(a[i] - a[i+1]) != 7){
+        cout << "NO" << ln;
+        return;
+    }
    }
 
-   for(auto e : b){
-    cout << e << " ";
-   }
-   cout << ln;
-
-    
-
+   cout << "YES" << ln;
    
 }
 
