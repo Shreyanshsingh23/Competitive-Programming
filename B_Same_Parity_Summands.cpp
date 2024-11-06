@@ -27,8 +27,51 @@ const bool testcase = 1;
 
 void solve()
 {
-  int n,k; cin >> n > k;
-  if(n&1 and k&1 and n >= k )
+  int n,k; cin >> n >> k;
+  // cout << "n:" << n << " k:" << k << ln;
+
+  if(n&1 and k&1 and n >= k){   //odd n and odd k 
+   int left = n-k+1;
+   if(left > 0 and left&1){
+    cout << "YES" << ln;
+    FOR(i,k-1)cout << 1 << ' ';
+    cout << n-(k-1) << ln;
+    return;
+   }
+
+  }
+
+  //even n and odd k
+  if(!(n&1) and k&1 and n>= k*2){
+   int left = n-2*(k-1);
+   if(left > 0 and !(left&1)){
+    cout << "YES" << ln;
+    FOR(i,k-1)cout << 2 << ' ';
+    cout << left << ln;
+    return;
+   }
+  }
+
+  if(!(n&1) and !(k&1) and n >= k){  //even n and even k
+    int left = n-(k-1);
+    if(left > 0 and left&1){
+      cout << "YES" << ln;
+      FOR(i,k-1)cout << 1 << ' ';
+      cout << left << ln;
+      return;
+    }
+    left = n - 2*(k-1);
+    if(left > 0 and !(left&1)){
+      cout << "YES" << ln;
+      FOR(i,k-1)cout << 2 << ' ';
+      cout << left << ln;
+      return;
+    }
+  }
+
+
+
+  cout << "NO" << ln;
 }
 
 signed main()
