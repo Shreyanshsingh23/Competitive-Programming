@@ -7,34 +7,50 @@ using namespace std;
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x) (int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
-#define pii pair<int,int>#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
-#define pb emplace_back
+#define pb push_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
+#define FORa(i, a, n) for (int i = a; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
-int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
-int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans =
-poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 typedef pair<int, int> pi;
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 
 void solve()
 {
-   int1(n)
-//    vi a (n);
-//    FOR(i,n) cin >> a[i];
-int b; cin >> b;
-cout << poww(n,b) << ln
-   
+   string s; cin >> s;
+   int n = s.size();
+   int ans = 1;
+   for(int i = 0; i< n; i++){
+    if(s[i] == 'A'){
+        if(ans == 1) ans = 2;
+        else if(ans == 2) ans = 1;
+        else ans = 3;
+    }
+    else if(s[i] == 'B'){
+        if(ans == 1) ans = 1;
+        else if(ans == 2) ans = 3;
+        else ans = 2;
+    }
+    else{
+        if(ans == 1) ans = 3;
+        else if(ans == 3) ans = 1;
+        else ans = 2;
+    }
+    // cout << "ans = " << ans << ln;
+   }
+
+   cout << ans << ln;
+    
 }
 
 signed main()

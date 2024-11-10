@@ -28,7 +28,9 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   FOR(i,n-1) cout << 1 << ' ';
+
+   FOR(i,n-2) cout << 1 << ' ';
+   cout << n - (n-2) << ' ';
    cout << n << ln;
    
 }
