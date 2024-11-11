@@ -23,39 +23,52 @@ int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res+
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
-bool isPossible(int mid, vi& a, int n){
-    bool flag = false;
-    for(int i = 0; i< n-1; i++){
-        if(a[i+1]-a[i] <= mid) i++;
-        else flag = true;
 
-        if(flag and a[i+1]-a[i] >  mid) return false;
-    }
-
-    return true;
-}
 
 void solve()
 {
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
+   if(!(n&1)){
+    int ans = 0;
+    for(int i = 0; i < n; i+= 2)ans = max(ans,a[i+1]-a[i]);
+    cout << ans << ln;
+   }else{
+    int ans = 1e18;
+    for(int i =0; i< n; i+= 2){
+        int res = 0;
+        for(int j = 0; j< n; j+=2){
+            if(i==j){
+                j--;
+                continue;
+            }
+            res = max(res,a[j+1]- a[j]);
+        }
+        ans = min(ans,res);
+    }
+    ans =  max(ans,1LL);
+    cout << ans << ln;
 
-   int e = 0,ans = 0;
-   FOR(i,n-1) e = max(e,a[i+1]-a[i]);
-
-   int s = 1;
-
-   while(s <= e){
-    int mid = (s+e)/2;
-    if(isPossible(mid,a,n)){
-        ans = mid;
-        e = mid-1;
-   }
-   else s = mid+1;
-   }
+//     priority_queue<int> q;
+//     for(int i = 0; i< n-1; i++){
+//         q.push(a[i+1]- a[i]);
+//     }
+//     int ans = 1e18,res = 1;
+//    if(q.empty()){
+//     cout << 1 << ln;
+//     return;
+//    }
+//    ans = q.top();
+//    while(!q.empty()){
+//    res = q.top();
+//    q.pop();
+//    if(ans != res) break;
+//    }
+//    cout << res << ln;
    
-   cout  << ans << ln;
+}
+
 }
 
 signed main()
