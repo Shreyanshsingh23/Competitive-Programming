@@ -45,6 +45,14 @@ void solve()
     cout << n-2 << ln;
     return;
   }
+  if(b == 1 and c >= n){
+    cout << n << ln;
+    return;
+  }
+  if(b ==1 and c < n){
+    cout << c << ln;
+    return;
+  }
    
 }
 

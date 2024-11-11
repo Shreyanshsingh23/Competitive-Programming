@@ -23,24 +23,39 @@ int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res+
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
+bool isPossible(int mid, vi& a, int n){
+    bool flag = false;
+    for(int i = 0; i< n-1; i++){
+        if(a[i+1]-a[i] <= mid) i++;
+        else flag = true;
 
+        if(flag and a[i+1]-a[i] >  mid) return false;
+    }
+
+    return true;
+}
 
 void solve()
 {
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-   int mx = 0,mx2 =  0;
-   FOR(i,n-1){
-    if(a[i+1] - a[i] > mx2){
-        mx2 = a[i+1] - a[i];
-        mx = a[i+1] - a[i] ;
-    }
-    if(a[i+1] - a[i] > mx) mx = a[i+1] - a[i] ;
+
+   int e = 0,ans = 0;
+   FOR(i,n-1) e = max(e,a[i+1]-a[i]);
+
+   int s = 1;
+
+   while(s <= e){
+    int mid = (s+e)/2;
+    if(isPossible(mid,a,n)){
+        ans = mid;
+        e = mid-1;
    }
-   cout << "mx = " << mx << " mx2 = " << mx2 << ln;
+   else s = mid+1;
+   }
    
-   cout << (min(mx,mx2) == 0 ? 1 : min(mx,mx2)) << ln;
+   cout  << ans << ln;
 }
 
 signed main()
