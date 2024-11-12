@@ -24,51 +24,7 @@ typedef pair<int, int> pi;
 
 const bool testcase = 1;
 
-void traverseSpiral(const vector<vector<char>>& a, int n, int m, int &ans, const string& target) {
-    vector<pair<int, int>> directions = {
-        {0, 1},  // right
-        {1, 0},  // down
-        {0, -1}, // left
-        {-1, 0}  // up
-    };
 
-    for (int start = 0; start < 4; ++start) {  // Try each corner as a starting point
-        int t = 0, b = n - 1, l = 0, r = m - 1;
-        string s;
-
-        // Adjust starting corner
-        if (start == 1) {  // start from top-right
-            swap(directions[0], directions[2]);  // Reverse right/left
-            l = m - 1, r = 0;
-        }
-        else if (start == 2) {  // start from bottom-left
-            swap(directions[1], directions[3]);  // Reverse down/up
-            t = n - 1, b = 0;
-        }
-        else if (start == 3) {  // start from bottom-right
-            swap(directions[0], directions[2]);
-            swap(directions[1], directions[3]);
-            t = n - 1, b = 0;
-            l = m - 1, r = 0;
-        }
-
-        while (t <= b && l <= r) {
-            s.clear();
-
-            // Top row or left column (depends on start)
-            for (int i = l; i <= r; ++i) s += a[t][i];
-            for (int i = t + 1; i <= b; ++i) s += a[i][r];
-            if (t < b) for (int i = r - 1; i >= l; --i) s += a[b][i];
-            if (l < r) for (int i = b - 1; i > t; --i) s += a[i][l];
-            
-            size_t pos = s.find(target);
-            while (pos != string::npos) {
-                ans++;
-                pos = s.find(target, pos + 1);
-            }
-        }
-    }
-}
 
 void solve()
 {
@@ -81,13 +37,48 @@ void solve()
        }
    }
 
-     string target = "1543";
-    int ans = 0;
+   v<char> arr;
+   int t = 0, b = n-1, l = 0, r = m-1;
+   while(t<=b and l<=r){
+   
+       for(int i = l; i<=r; i++){
+           arr.push_back(a[t][i]);
+       }
+       t++;
+       for(int i = t; i<=b; i++){
+           arr.push_back(a[i][r]);
+       }
+       r--;
 
-    traverseSpiral(a, n, m, ans, target);
+       if( b >t ) {for(int i = r; i>=l; i--){
+           arr.push_back(a[b][i]);
+           
+       }
+       b--;
+       
+       }
+       if(r > l) { for(int i = b; i>=t; i--){
+           arr.push_back(a[i][l]);
+           
+       }
+       l++;
+       }
+   }
+   int s = arr.size();
+   v<bool> vis(s,false);
+   int cnt = 0;
 
-    cout << ans << ln;
+   for(int i = 0; i < s; i++){
+       if(i+3 < s and arr[i] == '1' and  arr[i+1] == '5' and arr[i+2]== '4' and arr[i+3] =='3'){
+           cnt++;
+           vis[i] = vis[i+1] = vis[i+2] = vis[i+3] = true;
+       }
+       
+   }
+
   
+
+   cout << cnt << ln;
    
 }
 

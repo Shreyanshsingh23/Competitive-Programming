@@ -33,7 +33,8 @@ void solve()
    int i = 0;
    string s; cin >> s;
    
-   while(x <= a and y <= b ){
+   while(x <= 13 and y <= 13 and x > -101 and y > -101){
+    // cout << i << ' ';
     if(x == a and y == b){
         cout << "YES" << ln;
         return;
@@ -44,6 +45,12 @@ void solve()
     else if(s[i] == 'S') y--;
     else if(s[i] == 'N') y++;
     
+    i++;
+    if(i == n and x == 0 and y == 0)   {
+        cout << "NO" << ln;
+        return;
+    }
+    if(i == n) i = 0;
 
    }
    
