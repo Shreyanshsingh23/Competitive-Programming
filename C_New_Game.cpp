@@ -21,45 +21,41 @@ using namespace std;
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
+#define F first 
+#define S second
 
 const bool testcase = 1;
 
+bool cmp(pi a, pi b){
+    return a.second <= b.second;
+}
 
 void solve()
 {
-   int1(n)
+   int2(n,k)
    vi a (n);
-   FOR(i,n) cin >> a[i];
+   int mxx = 0;
+   map<int,int> mp;
+   FOR(i,n){            
+    cin >> a[i];
+    mp[a[i]]++;
+   }
+   v<pi> b {all(mp)};
+  
 
-   if(!(n&1)){
-    int ans = 0;
-    for(int i = 0; i< n; i+= 2){
-        ans = max(ans,a[i+1]-a[i]);
-    }
+   sort(all(b),cmp);
 
-    cout << ans << ln;
-    return;
+   while(b[0].first == 0){
+    b.erase(b.begin());
    }
 
-   int ans = MAX;
-
-   for(int i = 0; i< n;i+= 2){
-    int res = 0;
-    for(int j = 0; j < n;j+= 2){
-        if(i == j){
-            j--;
-            continue;
-        }
-
-        res = max(res,a[j+1] - a[j]);
+    for(auto [x,y]: b){
+        cout << x << " : " << y  << ln;
     }
+    cout <<ln;
 
-    ans = min(ans,res);
-   }
-
-   ans = max(ans,1LL);
-   cout << ans << ln;
-   
+    
+  
 }
 
 signed main()

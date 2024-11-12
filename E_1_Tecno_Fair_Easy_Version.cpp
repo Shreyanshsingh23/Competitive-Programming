@@ -28,38 +28,25 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
+   int m; cin >> m;
+   vi a (n); // no of items in ith shop
    FOR(i,n) cin >> a[i];
+   vii b(n,vi(min(a[i]+1,m+1)));
+//    FOR(i,n){
+//     FOR(j,min(a[i]+1,m+1)){
+//         cin >> b[i][j]; // b[i][j] denotes the cost of buying j items from ith shop
+//     }
+//    }
+ vi vis(n);
+ 
 
-   if(!(n&1)){
-    int ans = 0;
-    for(int i = 0; i< n; i+= 2){
-        ans = max(ans,a[i+1]-a[i]);
+   int ans = 0;
+   FOR(i,n){
+    FOR(j,min(a[i]+1,m+1)){
+        ans += b[i][j];
     }
-
-    cout << ans << ln;
-    return;
    }
-
-   int ans = MAX;
-
-   for(int i = 0; i< n;i+= 2){
-    int res = 0;
-    for(int j = 0; j < n;j+= 2){
-        if(i == j){
-            j--;
-            continue;
-        }
-
-        res = max(res,a[j+1] - a[j]);
-    }
-
-    ans = min(ans,res);
-   }
-
-   ans = max(ans,1LL);
    cout << ans << ln;
-   
 }
 
 signed main()

@@ -37,36 +37,57 @@ void solve()
        }
    }
 
+   int cnt = 0;
    v<char> arr;
    int t = 0, b = n-1, l = 0, r = m-1;
    while(t<=b and l<=r){
-   
+   v<char> temp;
        for(int i = l; i<=r; i++){
-           arr.push_back(a[t][i]);
+           arr.pb(a[t][i]);
+           cout << a[t][i] << ' ';
+       }
+       for(int i = 0; i < min(3ll,r-l+1); ++i){
+        temp.pb(a[t][l+i]);
        }
        t++;
        for(int i = t; i<=b; i++){
-           arr.push_back(a[i][r]);
+           arr.pb(a[i][r]);
+           cout << a[i][r] << ' ';
+
        }
        r--;
 
        if( b >t ) {for(int i = r; i>=l; i--){
-           arr.push_back(a[b][i]);
+           arr.pb(a[b][i]);
+           cout << a[b][i] << ' ';
+
            
        }
        b--;
        
        }
-       if(r > l) { for(int i = b; i>=t; i--){
-           arr.push_back(a[i][l]);
-           
+       if(r > l) { 
+        for(int i = b; i>=t; i--){
+           arr.pb(a[i][l]);  
+           cout << a[i][l] << ' ';
+
+       }
+       for(int i= 0; i < min(3ll,b-t+1); ++i){
+        temp.insert(temp.begin()+i,a[b-i][l]);
        }
        l++;
+
+       for(int i = 0;i< temp.size(); i++){
+        if(temp[i] == '1' and  temp[i+1] == '5' and temp[i+2]== '4' and temp[i+3] =='3'){
+           cnt++;
+       }
+    }
+       cout << ln;
+       cout << "l = " << l << " r = " << r << " t = " << t << " b = " <<  b << ln;
        }
    }
    int s = arr.size();
    v<bool> vis(s,false);
-   int cnt = 0;
 
    for(int i = 0; i < s; i++){
        if(i+3 < s and arr[i] == '1' and  arr[i+1] == '5' and arr[i+2]== '4' and arr[i+3] =='3'){
@@ -75,6 +96,7 @@ void solve()
        }
        
    }
+   
 
   
 

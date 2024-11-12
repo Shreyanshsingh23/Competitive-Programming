@@ -28,37 +28,28 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-
-   if(!(n&1)){
-    int ans = 0;
-    for(int i = 0; i< n; i+= 2){
-        ans = max(ans,a[i+1]-a[i]);
-    }
-
-    cout << ans << ln;
-    return;
+   int t,k; cin >> t >> k;
+   int a,b;
+   if(t&1){
+    a = t/2;
+    b = t/2 + 1;
+   }
+   else{
+    a = t/2 - 1;
+    b = t/2 + 1;
    }
 
-   int ans = MAX;
-
-   for(int i = 0; i< n;i+= 2){
-    int res = 0;
-    for(int j = 0; j < n;j+= 2){
-        if(i == j){
-            j--;
-            continue;
-        }
-
-        res = max(res,a[j+1] - a[j]);
-    }
-
-    ans = min(ans,res);
+   if(min(a,b) > 0 and max(a,b) <= n and max(a,b) < k){
+    cout << "YES" << ln;
    }
-
-   ans = max(ans,1LL);
-   cout << ans << ln;
+   else if( min(a+k,b+k) > 0 and max(a+k,b+k) <= n and ((a+k)%k + (b+k)%k) == t){
+    // cout << a+k << " " << b+k <<" "<< k <<ln;
+    cout << "YES" << ln;
+   }
+   else{
+    cout << "NO" << ln;
+   }
+   
    
 }
 
