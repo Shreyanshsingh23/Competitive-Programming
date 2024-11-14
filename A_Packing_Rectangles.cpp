@@ -1,5 +1,3 @@
-//maximum element less than or equal to X by binary search
-//maximum element to the left of X
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -29,55 +27,25 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-   int q, res = -1; cin >> q;
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+    int w,h,ans = 0; cin >> w >> h;
+    int1(n)
+//   cout << "w: " << w << ' ' << "h: " << h <<" n: " << n << ln;
+    int l = 1, r = 1e18;
+    while(l <= r){
+        int mid = l + (r - l) / 2;
+        // cout << "mid: " << mid << ln;
+        if((mid / w) >= (n + (mid / h) - 1) / (mid / h)){
+            ans = mid;
 
-    // cout << n << ' ' << q << ' ' << ln;
-   while(q--){
-    int x; cin >> x;
-   int l = 0, r = n-1,res = -1;
- 
-   while(l <= r){
-    int mid = l + (r-l)/2;
-    
-    if(a[mid] > x) r = mid-1;
-    else{
-        res = mid;
-        l = mid+1;
+            r = mid-1;
+        }
+        else {
+         
+            l = mid+1;
+        }
     }
-   }
 
-   cout << res+ 1 << ln;
-   }
-
-//    cout << res+1 << ln;
-//    }
-
-    //  while (q--) {
-    //     int x;
-    //     cin >> x;
-    //     // cout << "x: " << x << ln;
-    //     int l = 0, r = n - 1 , result = -1;
-
-    //     while (l <= r) {
-    //         int mid = l + (r - l) / 2;
-
-    //         if (a[mid] <= x) {
-    //             result = mid;
-    //             l = mid + 1;
-    //         } else {
-    //             r = mid - 1;
-    //         }
-    //         // cout << "mid: " << mid << ln;
-    //     }
-
-    //     cout << (result == -1 ? 0 : result + 1) << ln;
-    // }
-
-
-   
+    cout << ans << ln;
 }
 
 signed main()

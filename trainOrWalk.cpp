@@ -1,5 +1,3 @@
-//maximum element less than or equal to X by binary search
-//maximum element to the left of X
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -24,59 +22,32 @@ using namespace std;
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 
 void solve()
 {
    int1(n)
-   int q, res = -1; cin >> q;
+   int a1,b,c,d,p,q,y;
+   cin >> a1 >> b >> c >> d >> p >> q >> y;
    vi a (n);
    FOR(i,n) cin >> a[i];
+   a1--;b--;c--;d--;
+   int ans1 = abs(a[b]-a[a1])*p,  ans2 = 1e18;
 
-    // cout << n << ' ' << q << ' ' << ln;
-   while(q--){
-    int x; cin >> x;
-   int l = 0, r = n-1,res = -1;
- 
-   while(l <= r){
-    int mid = l + (r-l)/2;
-    
-    if(a[mid] > x) r = mid-1;
-    else{
-        res = mid;
-        l = mid+1;
-    }
+  
+   if(abs(a[a1]-a[c])*p <= y){
+     ans2 = abs(a[c]-a[a1])*p;
+  if(y- ans2 > 0){
+     ans2+= y - ans2;
+  }
+   ans2 += abs(a[d]-a[c])*q;
+   ans2 += abs(a[d]-a[b])*p;
    }
+// cout << ans2 << ln;
+   cout << min(ans1,ans2)  << ln;
 
-   cout << res+ 1 << ln;
-   }
-
-//    cout << res+1 << ln;
-//    }
-
-    //  while (q--) {
-    //     int x;
-    //     cin >> x;
-    //     // cout << "x: " << x << ln;
-    //     int l = 0, r = n - 1 , result = -1;
-
-    //     while (l <= r) {
-    //         int mid = l + (r - l) / 2;
-
-    //         if (a[mid] <= x) {
-    //             result = mid;
-    //             l = mid + 1;
-    //         } else {
-    //             r = mid - 1;
-    //         }
-    //         // cout << "mid: " << mid << ln;
-    //     }
-
-    //     cout << (result == -1 ? 0 : result + 1) << ln;
-    // }
-
-
+   
    
 }
 

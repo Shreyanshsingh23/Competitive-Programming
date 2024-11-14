@@ -1,5 +1,3 @@
-//maximum element less than or equal to X by binary search
-//maximum element to the left of X
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -26,58 +24,49 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-
+bool cmp(pi a, pi b){
+    return a.first <= a.second;
+}
 void solve()
 {
-   int1(n)
-   int q, res = -1; cin >> q;
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-
-    // cout << n << ' ' << q << ' ' << ln;
-   while(q--){
-    int x; cin >> x;
-   int l = 0, r = n-1,res = -1;
- 
-   while(l <= r){
-    int mid = l + (r-l)/2;
+   int2(n,m)
+  v<pi> a(n), b(m);
+   FOR(i,n){
+    cin >> a[i].first >> a[i].second;
     
-    if(a[mid] > x) r = mid-1;
-    else{
-        res = mid;
-        l = mid+1;
-    }
-   }
-
-   cout << res+ 1 << ln;
-   }
-
-//    cout << res+1 << ln;
-//    }
-
-    //  while (q--) {
-    //     int x;
-    //     cin >> x;
-    //     // cout << "x: " << x << ln;
-    //     int l = 0, r = n - 1 , result = -1;
-
-    //     while (l <= r) {
-    //         int mid = l + (r - l) / 2;
-
-    //         if (a[mid] <= x) {
-    //             result = mid;
-    //             l = mid + 1;
-    //         } else {
-    //             r = mid - 1;
-    //         }
-    //         // cout << "mid: " << mid << ln;
-    //     }
-
-    //     cout << (result == -1 ? 0 : result + 1) << ln;
-    // }
-
-
+    
+ }
    
+   FOR(i,m){
+    cin >> b[i].first >> b[i].second;
+   
+   }
+ 
+   
+   map<int,int> x;
+   map<int,int> y;
+
+   for(auto [i,j] : a){
+    int z = i*j;
+    x[z]++;
+   }
+
+    for(auto [i,j] : b){
+    int z = i*j;
+    y[z]++;
+   }
+  
+    int ans = 0,prev = -1;
+ 
+     for ( auto& [c,d]: x) {
+        int timeProduct = c;
+        if (y.count(timeProduct)) {
+           ans +=  min(d,y[timeProduct]);
+        }
+    }
+  
+  cout << ans << ln;
+
 }
 
 signed main()
@@ -92,3 +81,5 @@ signed main()
     }
     return 0;
 }
+
+
