@@ -31,5 +31,6 @@
         "bitset": "cpp",
         "memory_resource": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "cph.general.useShortCodeForcesName": false
 }

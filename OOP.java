@@ -1,14 +1,30 @@
 public class OOP {
+    int op;
+    int cd;
+    String n;
     public static void main(String[] args) {
-        student s1 = new student();
-        s1.name = "Shreyansh";
-        s1.email = "shreyansh@.com";
-        s1.pNum = "+91_1234567890";
-        s1.cgr = 10.0;
-        s1.icpMarks = 100;
-        s1.wDevMarks = 100;
+        student s1 = new student("Shreyansh", "shreyansh@.com", "+91_1234567890", 10.0, 100, 100);
 
         s1.display();
+
+
+
+        // Object creation for OOP Class
+        System.out.println("For OOP Class --> ");
+        OOP oop = new OOP("ICP", 45, 78);
+        oop.printt();
+    }
+
+    OOP(String n, int op, int cd){
+        this.n = n;
+        this.op = op;
+        this.cd = cd;
+    }
+
+    void printt(){
+        System.out.println("Name : " +this.n);
+        System.out.println("Operation : " +this.op);
+        System.out.println("Code : " +this.cd);
     }
 }
     class student{
