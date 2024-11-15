@@ -19,41 +19,33 @@ using namespace std;
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
+#define F first
+#define S second
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
-
-bool check(int w, int h, int n, int ans){
-    return ans/h * (ans/w) >= n;
+const bool testcase = 1;
+bool cmp(pi a, pi b){
+    if(a.S == b.S) return a.F < b.F;
+    return a.S < b.S;
 }
 
 void solve()
 {
-    int w,h,ans = 0; cin >> w >> h;
-    int1(n)
-//   cout << "w: " << w << ' ' << "h: " << h <<" n: " << n << ln;
-    int l = 0, r = 1;
+   int1(n)
+   v<pi> a (n);
+   FOR(i,n){
+    a[i].F = i;
+     cin >> a[i].S;
+   }
 
-  while(!check(w, h, n, r)){
-    l = r;
-    r *= 2;
-  }
-  
+   sort(all(a),cmp);
+   for(auto e : a){
+       cout << e.F  << ' ' << e.S << ln;
+   }
+   cout <<ln;
+   cout << ln;
    
-  while(l <= r){
-    int mid = l + (r-l)/2;
-    if(check(w, h, n, mid)){
-        ans = mid;
-       r = mid-1;
-    }
-    else{
-        l = mid+1;
-    }
-  }
-    
-    
-    cout << ans << ln;
 }
 
 signed main()

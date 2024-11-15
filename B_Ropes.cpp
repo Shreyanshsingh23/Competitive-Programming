@@ -24,36 +24,34 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-bool check(int w, int h, int n, int ans){
-    return ans/h * (ans/w) >= n;
+bool prd(vi a, int k, double x){
+    int cnt = 0;
+    for(auto i : a){
+        cnt += i/x;
+    }
+        if(cnt >= k) return true;
+        return false;
 }
-
 void solve()
 {
-    int w,h,ans = 0; cin >> w >> h;
-    int1(n)
-//   cout << "w: " << w << ' ' << "h: " << h <<" n: " << n << ln;
-    int l = 0, r = 1;
-
-  while(!check(w, h, n, r)){
-    l = r;
-    r *= 2;
-  }
-  
+   int1(n)
+   int k; cin >> k;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
-  while(l <= r){
-    int mid = l + (r-l)/2;
-    if(check(w, h, n, mid)){
-        ans = mid;
-       r = mid-1;
+   double l = 0, r = 1e8, mid, ans = 0;
+   int t = 100;
+   while(t--){
+    mid = l + (r-l)/2;
+
+    if(prd(a, k, mid)){
+        
+        l = mid;
     }
-    else{
-        l = mid+1;
-    }
-  }
-    
-    
-    cout << ans << ln;
+    else r = mid;
+   }
+
+   sett(6) << l << ln;
 }
 
 signed main()
