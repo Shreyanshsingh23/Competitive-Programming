@@ -19,18 +19,31 @@ using namespace std;
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
+#define F first
+#define S second
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 typedef pair<int, int> pi;
 
 const bool testcase = 0;
-
+bool check(int n, int a, int b, int x){
+   return x/a + (x/b) >= n-1;
+}
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   int n,a,b; cin >> n >> a >> b;
+   int l = 0,r = min(a,b)*n, mid,ans =0;
+
+    while(l <= r){
+        mid = l + (r-l)/2;
+        if(check(n,a,b,mid)){
+            ans = mid;
+            r = mid-1;
+        }
+        else l = mid+1;
+    }
    
+   cout << ans + min(a,b) << ln;
 }
 
 signed main()

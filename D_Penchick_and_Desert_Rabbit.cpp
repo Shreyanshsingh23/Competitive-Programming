@@ -25,27 +25,37 @@ int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res+
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
-bool cmp(pi a, pi b){
-    if(a.S == b.S) return a.F < b.F;
-    return a.S < b.S;
-}
+
 
 void solve()
 {
    int1(n)
-   v<pi> a (n);
-   FOR(i,n){
-    a[i].F = i;
-     cin >> a[i].S;
-   }
+   vi a (n);
+   FOR(i,n) cin >> a[i];
 
-   sort(all(a),cmp);
-   for(auto e : a){
-       cout << e.F  << ' ' << e.S << ln;
-   }
-   cout <<ln;
-   cout << ln;
-   
+    vi pref(n), suff(n), ans(n);
+
+    pref[0] = a[0];
+    for(int i = 1; i< n; ++i){
+        pref[i] = max(pref[i-1], a[i]);
+    }
+
+    suff[n-1] = a[n-1];
+    for(int i = n-2; i >= 0; --i){
+        suff[i] = min(suff[i+1], a[i]);
+    }
+
+    ans[n-1] = pref[n-1];
+
+    for(int i = n-2; i >= 0; --i){
+       if( suff[i+1] < pref[i]) ans[i] = ans[i+1];
+       else ans[i] = pref[i];
+    }   
+
+    for(int i = 0; i< n; ++i){
+        cout << ans[i] << ' ';
+    }
+    cout << ln;
 }
 
 signed main()
