@@ -1,0 +1,1 @@
+{"name":"Local: pointsAndThreads","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/pointsAndThreads.cpp","tests":[{"id":1731760857876,"input":"1\n3\n1 3 4\n1 11 111","output":"5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/pointsAndThreads.cpp","group":"local","local":true}

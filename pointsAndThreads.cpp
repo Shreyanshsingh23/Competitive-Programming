@@ -16,22 +16,35 @@ using namespace std;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
 #define pb emplace_back
+#define F first
+#define S second
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
-int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans =
-poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
+int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans=poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
 
+bool cmp(pi a, pi b){
+    return a.S <= b.S;
+}
 
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   vi b (n), x(n);
+   FOR(i,n) cin >> x[i];
+   FOR(i,n) cin >> b[i];
+   
+   v<pi> a(n);
+   FOR(i,n){
+    a[i].F = x[i];
+    a[i].S = b[i];
+   }
+
+   sort(all(a),cmp);
    
 }
 

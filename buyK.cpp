@@ -20,8 +20,7 @@ using namespace std;
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
-int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans =
-poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
+int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans=poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 typedef pair<int, int> pi;
 
 const bool testcase = 1;
@@ -30,9 +29,29 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
+   int k; cin >>k;
+   vi a (n), b(n),pref(n),ans(n);
+   FOR(i,n){
+     cin >> a[i];
+     b[i] = a[i];
+   }
+    sort(all(b));
+    pref[0] = b[0];
+    for(int i = 1; i< n; i++){
+        pref[i] = pref[i-1] + b[i];
+    }
+
+    FOR(i,k) ans[i] = pref[i];
+    ans[k] = pref[k]- b[0];
+    for(int i = k+1; i < n; i++){
+        ans[i] =pref[i]-pref[i-k]+ ans[i-k-1];
+    }
+
+
+    FOR(i,n){
+        cout << ans[i] << ' ';
+    }
+   cout << ln;
 }
 
 signed main()
