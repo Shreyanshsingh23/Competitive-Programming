@@ -23,58 +23,56 @@ int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
 int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans=poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
+bool isPrime(int n){
+    if(n <= 3)return true;
 
-struct ass{
-    int t,y,z;
-};
-bool check(ass *a, int m, int n, int x){
-    int cnt = 0;
-    FOR(i,n){
-        int t = a[i].t, y = a[i].y, z = a[i].z;
-        int rounds = x / ((t*y)+ z);
-        cnt += rounds * y;
-        int rem = x%((t*y)+ z);
-        cnt += rem/t;
+    for(int i = 2; i*i <= n; i++){
+        if(n%i == 0)return false;
     }
 
-    return cnt >= m;
+    return true;
 }
 
 void solve()
 {
-   int m; cin >>m;
    int1(n)
-   ass a[n];
-   FOR(i,n){
-    cin >> a[i].t >> a[i].y >> a[i].z;
-   }
-
-   int l = 0, r = 1e9, mid, ans = 0;
    
-   while( l <= r){
-    mid = l + (r-l)/2;
+    int lasteven = 0;
+   vi rem, ans;
+   for(int i = 2; i<= n; i+=2){
+  
+        ans.pb(i);
+        lasteven = i;
+   
+   }
+   bool fir = false;
 
-    if(check(a,m,n,mid)){
-        ans = mid;
-        r = mid -1;
-    }
-    else l = mid + 1;
+   for(int i = 1; i<= n; i+=2){
+    
+        if(!fir and isPrime(lasteven+ i)){
+            rem.pb(i);
+            continue;
+        }
+        if(!fir and !isPrime(lasteven+ i)){
+            ans.pb(i);
+            fir = true;
+            continue;
+        }
+        ans.pb(i);
+   }
+   if(!fir){
+    cout << -1 << ln;
+    return;
+   }
+   for(int i = 0; i< ans.size(); i++){
+    cout << ans[i] << ' ';
    }
 
-    cout << ans << ln;
-
-    FOR(i,n){
-        int cnt = 0;
-        int t = a[i].t, y = a[i].y, z = a[i].z;
-        int rounds = ans / ((t*y)+ z);
-        cnt += rounds * y;
-        int rem = ans%((t*y)+ z);
-        cnt += rem/t;
-        cout << cnt << ' ';
-    }
-    cout << ln;
-
+   for(int i = 0; i< rem.size(); i++){
+    cout << rem[i] << ' ';
+   }
+   cout << ln;
    
 }
 

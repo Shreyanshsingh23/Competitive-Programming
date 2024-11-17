@@ -23,58 +23,26 @@ int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
 int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans=poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 typedef pair<int, int> pi;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-struct ass{
-    int t,y,z;
-};
-bool check(ass *a, int m, int n, int x){
-    int cnt = 0;
-    FOR(i,n){
-        int t = a[i].t, y = a[i].y, z = a[i].z;
-        int rounds = x / ((t*y)+ z);
-        cnt += rounds * y;
-        int rem = x%((t*y)+ z);
-        cnt += rem/t;
-    }
-
-    return cnt >= m;
-}
 
 void solve()
 {
-   int m; cin >>m;
    int1(n)
-   ass a[n];
+   int m, l; cin >> m >> l;
+   v<pi> hur(n), pwr(m);
    FOR(i,n){
-    cin >> a[i].t >> a[i].y >> a[i].z;
+    cin >> hur[i].first >> hur[i].second;
    }
-
-   int l = 0, r = 1e9, mid, ans = 0;
+   FOR(i,m){
+    cin >> pwr[i].first >> pwr[i].second;
+   }
    
-   while( l <= r){
-    mid = l + (r-l)/2;
-
-    if(check(a,m,n,mid)){
-        ans = mid;
-        r = mid -1;
-    }
-    else l = mid + 1;
+   int curPos = 1, collected = 0, jumpPow = 1;
+   priority_queue<pi> powers;
+   FOR(i,m){
+    powers.push({pwr[i].second, pwr[i].first});
    }
-
-    cout << ans << ln;
-
-    FOR(i,n){
-        int cnt = 0;
-        int t = a[i].t, y = a[i].y, z = a[i].z;
-        int rounds = ans / ((t*y)+ z);
-        cnt += rounds * y;
-        int rem = ans%((t*y)+ z);
-        cnt += rem/t;
-        cout << cnt << ' ';
-    }
-    cout << ln;
-
    
 }
 
