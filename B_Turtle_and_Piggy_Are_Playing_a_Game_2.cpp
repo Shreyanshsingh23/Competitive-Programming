@@ -29,78 +29,28 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-struct ass{
-    int t,z,y;
-};
 
-int m,n;
-v<ass> a; vi ans;
-
-bool check(int mid){
-    int cnt = 0;
-    FOR(i,n){
-        int t = a[i].t , z = a[i].z , y = a[i].y;
-        int res = 0;
-        int rounds = mid / ((t*z) + y);
-        res += (rounds*z);
-        int remTime = mid%((t*z)+y);
-        if(remTime/t > z) res += z;
-        else if(remTime >= t) res += remTime/t;
-        ans[i] = res;
-        cnt += res;
-    }
-
-    return cnt >= m;
-}
 void solve()
 {
-   cin >> m >> n;
-   a.resize(n); ans.resize(n);
-   FOR(i,n){
-    cin >> a[i].t >> a[i].z >> a[i].y;
-   }
+   int1(n)
+//    vi a (n);cin >> a;
+//    sort(all(a));
+// //    if(n&1){
+// //     cout << a[n/2] << ln;
+// //    }else{
+// //    }
+//     cout << a[n/2] << ln;
 
-   int l = 0, r = 1e7, mid, res = 0;
+int ans = 1;
+FOR(i,n){
+    int x; cin >> x;
+    ans *= x;
+}
 
-    while(l <= r){
-        mid = l + (r-l)/2;
-
-        if(check(mid)){
-            res = mid;
-            r = mid -1;
-        }
-        else l = mid + 1;
-    }
-
-    cout << res << ln;
-
-    FOR(i,n){
-        int t = a[i].t , z = a[i].z , y = a[i].y;
-        int cnt = 0;
-        int rounds = res / ((t*z) + y);
-        cnt += (rounds*z);
-        int remTime = res%((t*z)+y);
-        if(remTime/t > z) cnt += z;
-        else if(remTime >= t) cnt += remTime/t;
-        ans[i] = cnt;
-        // cout << "ans[" << i << "] " << ans[i] << ln; 
-    }
-
-    int temp = 0;
-    FOR(i,n){
-        if(temp + ans[i] > m){
-            cout << m- temp << ' ';
-            for(int j = i+1; j <n; j++){
-                cout << "0 ";
-            }
-            break;
-        }
-        cout << ans[i] << ' ';
-        temp += ans[i];
-    }
-
+cout << ans << ln;
+   
    
 }
 

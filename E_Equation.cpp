@@ -4,7 +4,7 @@ using namespace std;
 template <typename T> std::ostream &operator<<(std::ostream &stream, const vector<T> &vec) {for(size_t i = 0; i < vec.size(); i++) { stream << vec[i]; if (i != vec.size() - 1) stream << ' '; }; return stream; } template <typename T> std::istream &operator>>(std::istream &stream, vector<T> &vec) {for (T &x : vec) stream >> x; return stream; } template <typename T, typename U> std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr) {stream << pr.first << ' ' << pr.second; return stream; } template <typename T, typename U> std::istream &operator>>(std::istream &stream, pair<T, U> &pr) {stream >> pr.first >> pr.second; return stream; } template <typename A, typename B> string to_string(pair<A, B> p); template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p); template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p); string to_string(const string &s) { return '"' + s + '"'; } string to_string(char c) {string s; s += c; return s; } string to_string(const char *s) { return to_string((string)s); } string to_string(bool b) { return (b ? "1" : "0"); } string to_string(vector<bool> v) {bool first = true; string res = "{"; for (int i = 0; i < static_cast<int>(v.size()); i++) {if (!first) {res += ", "; } first = false; res += to_string(v[i]); } res += "}"; return res; } template <size_t N> string to_string(bitset<N> v) {string res = ""; for (size_t i = 0; i < N; i++) {res += static_cast<char>('0' + v[i]); } return res; } template <typename A> string to_string(A v) {bool first = true; string res = "{"; for (const auto &x : v) {if (!first) {res += ", "; } first = false; res += to_string(x); } res += "}"; return res; } template <typename A, typename B> string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; } template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; } template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; } void debug_out() { cout << endl; } template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) {cout << " " << to_string(H); debug_out(T...); }
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
-#define int long long
+#define int long double
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
@@ -24,83 +24,34 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
-int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
-int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans=poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
+// int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
+// int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans=poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 typedef pair<int, int> pi;
 
 
 const bool testcase = 0;
-
-struct ass{
-    int t,z,y;
-};
-
-int m,n;
-v<ass> a; vi ans;
+ int n;
 
 bool check(int mid){
-    int cnt = 0;
-    FOR(i,n){
-        int t = a[i].t , z = a[i].z , y = a[i].y;
-        int res = 0;
-        int rounds = mid / ((t*z) + y);
-        res += (rounds*z);
-        int remTime = mid%((t*z)+y);
-        if(remTime/t > z) res += z;
-        else if(remTime >= t) res += remTime/t;
-        ans[i] = res;
-        cnt += res;
-    }
-
-    return cnt >= m;
+    return ((mid*mid) + sqrt(mid) <= n);
 }
 void solve()
 {
-   cin >> m >> n;
-   a.resize(n); ans.resize(n);
-   FOR(i,n){
-    cin >> a[i].t >> a[i].z >> a[i].y;
+   cin >> n;
+   int l = 0, r = 1e7, mid, res = 0, t = 100;
+
+   while(t--){
+    mid = l + (r-l)/2;
+    
+    if(check(mid)){
+        res = mid;
+        l = mid+1;
+    }
+    else r = mid-1;
    }
 
-   int l = 0, r = 1e7, mid, res = 0;
-
-    while(l <= r){
-        mid = l + (r-l)/2;
-
-        if(check(mid)){
-            res = mid;
-            r = mid -1;
-        }
-        else l = mid + 1;
-    }
-
-    cout << res << ln;
-
-    FOR(i,n){
-        int t = a[i].t , z = a[i].z , y = a[i].y;
-        int cnt = 0;
-        int rounds = res / ((t*z) + y);
-        cnt += (rounds*z);
-        int remTime = res%((t*z)+y);
-        if(remTime/t > z) cnt += z;
-        else if(remTime >= t) cnt += remTime/t;
-        ans[i] = cnt;
-        // cout << "ans[" << i << "] " << ans[i] << ln; 
-    }
-
-    int temp = 0;
-    FOR(i,n){
-        if(temp + ans[i] > m){
-            cout << m- temp << ' ';
-            for(int j = i+1; j <n; j++){
-                cout << "0 ";
-            }
-            break;
-        }
-        cout << ans[i] << ' ';
-        temp += ans[i];
-    }
-
+   sett(21) << res << ln;
+   
    
 }
 
