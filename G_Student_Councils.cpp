@@ -30,68 +30,40 @@ typedef pair<int, int> pi;
 
 
 const bool testcase = 0;
-string s,p;
-vi a; map<char,int>mp;
+
+int k,n,mxx; 
+vi a;
 
 bool check(int mid){
-    // cout << "mid: " << mid << ln;
-    set<int> st;
-    FOR(i,mid){
-        st.insert(a[i]-1);
-    }
-    string temp = "";
-    for(int i = 0; i< s.size(); i++){
-        if(st.count(i))continue;
-        temp.push_back(s[i]);
-    }
-    // cout << temp << ln;
-    int i = 0, j = 0;
-
-    while(i < temp.size() and j < p.size()){
-        while(i < temp.size() and temp[i] != p[j])i++;
-        if(temp[i] == p[j]){
-            i++; j++;
-        }
-    }
-
-    return j == p.size();
-
+  int cnt = 0;
+  FOR(i,n){
+    cnt += min(mid,a[i]); //agr iss team se mai 5(i.e. mid) bande le sakta hu 5 teams banane ke liye toh lelo else fir jitne bande hain utne hi lelo
+  }
+  return cnt/k >= mid; //  ab yeh batado ki har team me k bande ya usse jyada hain ya nhi
+   
 }
-
 void solve()
 {
- 
-   cin >> s >> p;
-   int prev= 0;
-
-   FOR(i,s.size()){
-    int x;cin >> x;
-    if(!x or x== prev)break;
-    a.pb(x);
-    prev = x;
+    cin >> k >> n;
+    a.resize(n);
+    mxx = 0;
+   FOR(i,n){
+     cin >> a[i];
    }
 
-   for(auto e: p) mp[e]++;
+   int l = 0, r = 1e18, mid, ans= 0;
 
+    while(l <= r){
+        mid = l + (r-l)/2;
 
-   int n = a.size();
-
-   int l = 0, r = n, mid, res = 0;
-
-   while(l +1 < r){
-    mid = l + (r-l)/2;
-
-    if(check(mid)){
-        res = mid;
-        l = mid;
+        if(check(mid)){
+            ans = mid;
+            l = mid+1;
+        }
+        else r = mid-1;
     }
-    else r = mid;
-   }
-//    bool c = check(3);
 
-   cout << l << ln;
-   
-   
+    cout << ans << ln;
 }
 
 signed main()
@@ -106,28 +78,3 @@ signed main()
     }
     return 0;
 }
-
-
-// bool check(long long int x) {
-//     long long int i = 0, j = 0;
-//     string temp = "";
-//     unordered_set<long long int> set;
-//     for(long long int k=1; k<=x; k++) {
-//         set.insert(a[k]-1);
-//     }
-//     long long int lt = t.length();
-//     for(long long int i=0; i<lt; i++) {
-//         if(set.find(i) == set.end()) {
-//             temp += t[i];
-//         }
-//     }
-//     cout << "temp is: " << temp << endl;
-//     long long int ltemp = temp.length(), lp = p.length();
-//     while( i < ltemp && j < lp ) {
-//         while(i < ltemp && temp[i] != p[j]) i++;
-//         if(temp[i] == p[j]) {
-//             i++; j++;
-//         }
-//     }
-//     return j == lp;
-// }

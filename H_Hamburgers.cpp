@@ -17,11 +17,11 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
-#define pb push_back
+// #define pb push_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
-#define F first
-#define S second
+// #define F first
+// #define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
@@ -30,68 +30,47 @@ typedef pair<int, int> pi;
 
 
 const bool testcase = 0;
-string s,p;
-vi a; map<char,int>mp;
 
+map<char,int> mp;
+int b,s,c,pb,ps,pc,n,B,S,C;
+
+// n rubles me mid burgers ke liye required ingredients kharid paunga ya nhi
 bool check(int mid){
-    // cout << "mid: " << mid << ln;
-    set<int> st;
-    FOR(i,mid){
-        st.insert(a[i]-1);
-    }
-    string temp = "";
-    for(int i = 0; i< s.size(); i++){
-        if(st.count(i))continue;
-        temp.push_back(s[i]);
-    }
-    // cout << temp << ln;
-    int i = 0, j = 0;
-
-    while(i < temp.size() and j < p.size()){
-        while(i < temp.size() and temp[i] != p[j])i++;
-        if(temp[i] == p[j]){
-            i++; j++;
-        }
-    }
-
-    return j == p.size();
+    int remb =(B==0)?1e18: mid-(b/B), rems =(S==0)?1e18: mid-(s/S), remc =(C==0)?1e18: mid-(c/C);
+    int posssBurger = min(remb,rems,remc);
+    b %= posssBurger*B;
+    s %= posssBurger*S;
+    c %= posssBurger*C;
 
 }
-
 void solve()
 {
- 
-   cin >> s >> p;
-   int prev= 0;
+   string str; 
+   cin >> str >> b >> s >> c >> pb >> ps >> pc >> n;
 
-   FOR(i,s.size()){
-    int x;cin >> x;
-    if(!x or x== prev)break;
-    a.pb(x);
-    prev = x;
-   }
+   FOR(i,str.size())mp[str[i]]++;
+     B = mp['B'], S = mp['S'], C = mp['C'];
 
-   for(auto e: p) mp[e]++;
+   int l = 0,r = 1e18, mid, ans = 0;
+
+//    int posB = (B==0)?0: b/B;
+//    int posS = (S==0)?0: s/S;
+//    int posC = (C==0)?0: c/C;
 
 
-   int n = a.size();
 
-   int l = 0, r = n, mid, res = 0;
-
-   while(l +1 < r){
-    mid = l + (r-l)/2;
+   while(l <= r){
+    mid = (l+r) >> 1;
 
     if(check(mid)){
-        res = mid;
-        l = mid;
+        ans = mid;
+        l = mid+1;
     }
-    else r = mid;
+    else r = mid-1;
    }
-//    bool c = check(3);
 
-   cout << l << ln;
-   
-   
+   cout << ans << ln;
+
 }
 
 signed main()
@@ -106,28 +85,3 @@ signed main()
     }
     return 0;
 }
-
-
-// bool check(long long int x) {
-//     long long int i = 0, j = 0;
-//     string temp = "";
-//     unordered_set<long long int> set;
-//     for(long long int k=1; k<=x; k++) {
-//         set.insert(a[k]-1);
-//     }
-//     long long int lt = t.length();
-//     for(long long int i=0; i<lt; i++) {
-//         if(set.find(i) == set.end()) {
-//             temp += t[i];
-//         }
-//     }
-//     cout << "temp is: " << temp << endl;
-//     long long int ltemp = temp.length(), lp = p.length();
-//     while( i < ltemp && j < lp ) {
-//         while(i < ltemp && temp[i] != p[j]) i++;
-//         if(temp[i] == p[j]) {
-//             i++; j++;
-//         }
-//     }
-//     return j == lp;
-// }
