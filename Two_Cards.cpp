@@ -17,11 +17,11 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
-// #define pb push_back
+#define pb push_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
-// #define F first
-// #define S second
+#define F first
+#define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
@@ -29,63 +29,74 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-map<char,int> mp;
-int b,s,c,pb,ps,pc,n,B,S,C;
 
-// n rubles me mid burgers ke liye required ingredients kharid paunga ya nhi
-bool check(int mid){
-   int reqb = mid*B -b, reqs = mid*S -s, reqc = mid*C -c;
-    int reqMoney = 0;
-    if(B > 0 and reqb > 0)reqMoney += (pb*reqb);
-    if(S > 0 and reqs > 0)reqMoney += (ps*reqs);
-    if(C > 0 and reqc > 0)reqMoney += (pc*reqc);
-    return reqMoney <= n;
-
-}
 void solve()
 {
-    mp.clear();
-   string str; 
-   cin >> str >> b >> s >> c >> pb >> ps >> pc >> n; 
-   int remb = 1e18,rems = 1e18,remc = 1e18;
-
-   FOR(i,sz(str))mp[str[i]]++;
-     B = mp['B'], S = mp['S'], C = mp['C'];
-    //  cout << B << ' ' << S  << " " << C << ln;
-     if(mp['B'] > 0) remb = (b/B);
-     
-     if(mp['S'] > 0) rems = (s/S);
-     
-     if(mp['C'] > 0) remc =((c/C));
-     
-
-   int l = 0,r = 1e15, mid, ans = 0;
-
-//    cout << "B: " << B<< " S: " << S << " C: " << C <<ln;
-    
-     
-    int posssBurger = min({remb,rems,remc});
- 
-    if(B > 0 and posssBurger > 0) b -= (posssBurger*B);
-    if(S > 0 and posssBurger > 0) s -= (posssBurger*S);
-    if(C > 0 and posssBurger > 0) c -= (posssBurger*C);
-    // cout << "possBurger: " << posssBurger << ln;
-
-    // cout << "b: " << b << " s: " << s << " c: " << c << ln;
-    int t = 100;
-   while(l <= r){
-    mid = l + ((r-l)>>1);
-
-    if(check(mid-posssBurger)){
-        ans = mid;
-        l = mid+1;
+   int1(n)
+   vi a (n), b(n);cin >> a >> b;
+   int mx1 = MIN, mx2 = MIN, idx1 = -1, idx2 = -1;
+   FOR(i,n){
+    if(a[i] > mx1){
+        mx2 = mx1;
+        idx2 = idx1;
+        mx1 = a[i];
+        idx1 = i;
     }
-    else r = mid-1;
+    else if(a[i] > mx2)
+    {
+        mx2 = a[i];
+        idx2 = i;
+    }
    }
 
-   cout << l-1 << ln;
+   
+   
+//    mxx = max(mxxa, mxxb);
+
+//    cout << "mxx: " << mxx << " idx; " << idx << ln;
+   
+int bmx1 = max(a[idx1],b[idx1]);
+int bmx = max(a[idx2],b[idx2]);
+//    a.erase(a.begin()+idx);
+//    b.erase(b.begin()+idx);
+//    for(int e: a) cout << e << ' ';
+//    cout << ln;
+//    for(int e : b)cout << e << ' ';
+//    cout << ln;
+
+
+   int maxA = MIN, idxA;
+
+  FOR(i,n){
+    int alice = max(a[i],b[i]);
+    if((i == idx1 and alice > bmx)or(i != idx1  and alice > bmx1)){
+        cout << "Yes" << ln;
+        return; 
+    }
+  }
+
+  cout << "No" << ln;
+
+   
+
+//    if(max(a[idxA],b[idxA]) >= mxx){
+//             cout << "NO" <<ln;
+//             return;
+//         }
+// //    cout << "maxA: " << maxA << " idxA: " << idxA << ln;
+
+   
+
+// //      if(max(a[idxA],b[idxA]) >= mxx){
+// //     cout << "NO" <<ln;
+// //    }
+// //    else
+
+//    cout << "YES" << ln;
+
+    
 
 }
 
