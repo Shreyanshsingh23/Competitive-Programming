@@ -67,6 +67,7 @@ int bmx = max(a[idx2],b[idx2]);
 //    cout << ln;
 
 
+
    int maxA = MIN, idxA;
 
   FOR(i,n){

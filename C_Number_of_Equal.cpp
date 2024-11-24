@@ -9,7 +9,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x) (int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -31,52 +31,21 @@ typedef pair<int, int> pi;
 
 const bool testcase = 0;
 
-int n,t;
-vi a, pref;
-
-bool check(int mid)
-{
-    if(mid == 0)return true;
-    int minn = pref[mid-1];
-    // cout << "mid: " << mid << ln;
-    // cout << minn <<ln;
-    for(int i = 1; i<= n-mid; ++i)
-    {   
-        // cout << "curr: " << pref[i+mid-1] - pref[i-1] << ln;
-        minn = min(pref[i+mid-1] - pref[i-1],minn);
-        // cout << "minn: " << minn << ln;
-    }
-
-    return minn <= t;
-}
 
 void solve()
-{
-   cin >> n >> t;
-   a.resize(n);pref.resize(n);
-   cin >> a;
-   pref[0] = a[0];
-   for(int i = 1; i< n; ++i)
+{ 
+   int2(n,m)
+   vi a (n), b(m);cin >> a >> b;
+
+   int i = 0,j = 0, ans = 0;
+
+   while(i < n)
    {
-    pref[i] = pref[i-1] + a[i];
+        int temp = 0;
+        while(i < n-1 and a[i] == a[i+1])
    }
 
-   int l = 0, r = n, mid, ans = 0;
-
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
-    }
-    else r = mid-1;
-   }
-
-    // bool abc = check(1);
-
-   cout << ans << ln;
-
-   
+   cout << cnt << ln;
 }
 
 signed main()

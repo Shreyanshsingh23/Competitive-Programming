@@ -52,6 +52,8 @@ void solve()
         cout << ans[i] << ' ';
     }
    cout << ln;
+//    bitset<6> z = {34};
+//    cout << z.to_string() << ln;
 }
 
 signed main()

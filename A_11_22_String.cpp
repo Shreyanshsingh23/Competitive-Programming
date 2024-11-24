@@ -9,7 +9,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x) (int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -27,56 +27,44 @@ int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res+
 int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
 int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans=poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 typedef pair<int, int> pi;
-
+#define no cout << "No" << ln; return;
 
 const bool testcase = 0;
 
-int n,t;
-vi a, pref;
-
-bool check(int mid)
-{
-    if(mid == 0)return true;
-    int minn = pref[mid-1];
-    // cout << "mid: " << mid << ln;
-    // cout << minn <<ln;
-    for(int i = 1; i<= n-mid; ++i)
-    {   
-        // cout << "curr: " << pref[i+mid-1] - pref[i-1] << ln;
-        minn = min(pref[i+mid-1] - pref[i-1],minn);
-        // cout << "minn: " << minn << ln;
-    }
-
-    return minn <= t;
-}
 
 void solve()
 {
-   cin >> n >> t;
-   a.resize(n);pref.resize(n);
-   cin >> a;
-   pref[0] = a[0];
-   for(int i = 1; i< n; ++i)
-   {
-    pref[i] = pref[i-1] + a[i];
-   }
+   int1(n)
+    string s; cin >> s;
+    // cout <<s << ln;
+    if(n&1)
+    { 
+     int k = (n + 1) / 2 - 1; 
+        for (int i = 0; i < k; i++) {
+            if (s[i] != '1') {
+                no;
+            }
+        }
 
-   int l = 0, r = n, mid, ans = 0;
+        if (s[k] != '/') {
+            no; 
+        }
 
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
+        for (int i = k + 1; i < n; i++) {
+            if (s[i] != '2') {
+                no; 
+            }
+        }
+
+        cout << "Yes" << ln; 
+        return;
     }
-    else r = mid-1;
-   }
 
-    // bool abc = check(1);
-
-   cout << ans << ln;
+    no; 
 
    
+
+    
 }
 
 signed main()

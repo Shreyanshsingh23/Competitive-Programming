@@ -29,54 +29,22 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-int n,t;
-vi a, pref;
-
-bool check(int mid)
-{
-    if(mid == 0)return true;
-    int minn = pref[mid-1];
-    // cout << "mid: " << mid << ln;
-    // cout << minn <<ln;
-    for(int i = 1; i<= n-mid; ++i)
-    {   
-        // cout << "curr: " << pref[i+mid-1] - pref[i-1] << ln;
-        minn = min(pref[i+mid-1] - pref[i-1],minn);
-        // cout << "minn: " << minn << ln;
-    }
-
-    return minn <= t;
-}
 
 void solve()
 {
-   cin >> n >> t;
-   a.resize(n);pref.resize(n);
-   cin >> a;
-   pref[0] = a[0];
-   for(int i = 1; i< n; ++i)
-   {
-    pref[i] = pref[i-1] + a[i];
+   int2(p,t)
+   int n = p+t+1;
+   v<pi> a (n);
+   FOR(i,n){
+    cin >> a[i].F;
    }
-
-   int l = 0, r = n, mid, ans = 0;
-
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
-    }
-    else r = mid-1;
+    FOR(i,n){
+    cin >> a[i].S;
    }
-
-    // bool abc = check(1);
-
-   cout << ans << ln;
-
-   
+    
+    
 }
 
 signed main()

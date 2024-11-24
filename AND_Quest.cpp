@@ -9,7 +9,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x) (int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -29,53 +29,64 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-int n,t;
-vi a, pref;
-
-bool check(int mid)
-{
-    if(mid == 0)return true;
-    int minn = pref[mid-1];
-    // cout << "mid: " << mid << ln;
-    // cout << minn <<ln;
-    for(int i = 1; i<= n-mid; ++i)
-    {   
-        // cout << "curr: " << pref[i+mid-1] - pref[i-1] << ln;
-        minn = min(pref[i+mid-1] - pref[i-1],minn);
-        // cout << "minn: " << minn << ln;
-    }
-
-    return minn <= t;
-}
 
 void solve()
 {
-   cin >> n >> t;
-   a.resize(n);pref.resize(n);
-   cin >> a;
-   pref[0] = a[0];
-   for(int i = 1; i< n; ++i)
-   {
-    pref[i] = pref[i-1] + a[i];
-   }
+   int2(n,k)
+   vi a (n);cin >> a;
+   vi ans;
+   
+   bitset<30> k1 {k};
 
-   int l = 0, r = n, mid, ans = 0;
+    string s = k1.to_string();
+    
 
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
+    FOR(i,n)
+    {
+        bitset<30> k2 {a[i]};
+        string temp = k2.to_string();
+        bool ok = true;
+        FOR(j,31)
+        {
+            if(s[j] == '1' and temp[j] == '0')
+            {
+                ok = false;
+                break;
+            }
+        }
+
+        if(ok){
+             ans.pb(i);
+        }
+
     }
-    else r = mid-1;
+
+    
+   if(ans.size() > 0)
+   {
+    int t = a[ans[0]];
+    for(int i = 1; i< ans.size(); i++)
+    {
+        t &= a[ans[i]];
+    }
+    if(t == k)
+    {
+        cout << "YES" << ln;
+        cout << ans.size() << ln;
+        FOR(i,sz(ans))
+    {
+        cout << ans[i]+1 << ' ';
+    }
+    cout << ln;
+    return;
+    }
    }
 
-    // bool abc = check(1);
+   cout << "NO" << ln;
 
-   cout << ans << ln;
-
+    
    
 }
 

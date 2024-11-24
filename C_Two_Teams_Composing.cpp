@@ -9,7 +9,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x) (int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>                //vii a (n,vi(m,0))
@@ -29,53 +29,60 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
 
-int n,t;
-vi a, pref;
+const bool testcase = 1;
 
-bool check(int mid)
-{
-    if(mid == 0)return true;
-    int minn = pref[mid-1];
-    // cout << "mid: " << mid << ln;
-    // cout << minn <<ln;
-    for(int i = 1; i<= n-mid; ++i)
-    {   
-        // cout << "curr: " << pref[i+mid-1] - pref[i-1] << ln;
-        minn = min(pref[i+mid-1] - pref[i-1],minn);
-        // cout << "minn: " << minn << ln;
-    }
+int n, mxx = MIN;
+vi a;
+vi fir, sec;
+map<int,int> mp;
 
-    return minn <= t;
+bool check(int mid){
+    return (min(mxx,sz(mp)) >= mid);
 }
 
 void solve()
 {
-   cin >> n >> t;
-   a.resize(n);pref.resize(n);
-   cin >> a;
-   pref[0] = a[0];
-   for(int i = 1; i< n; ++i)
-   {
-    pref[i] = pref[i-1] + a[i];
-   }
+    cin >> n;
+    a.resize(n);cin >> a;
 
-   int l = 0, r = n, mid, ans = 0;
+    FOR(i,n)mp[a[i]]++;
 
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
+    // for(auto [x,y]: mp){
+    //     cout << x << ": " << y << ln;
+    // }
+
+    for(auto [x,y]: mp)
+    {
+        mxx = max(mxx,y-1);
     }
-    else r = mid-1;
-   }
+    // fir.pb(a[0]);
 
-    // bool abc = check(1);
+    // for(int i = 1; i < n; ++i){
+    //     if(a[i] == a[i-1])sec.pb(a[i]);
+    //     else fir.pb(a[i]);
+    // }
 
-   cout << ans << ln;
+    int l = 0, r = n/2 + 1, mid, ans = 0;
 
+    while(l <= r){
+        mid = (l+r) >> 1;
+
+        if(check(mid)){
+            ans = mid;
+            l = mid + 1;
+        }
+        else r = mid - 1;
+    }
+
+//    bool ok = check(3);
+
+    if(n > 1 and ans == 0)ans = 1;
+
+    cout << ans << ln;
+    mp.clear();
+    a.clear();
+    mxx = MIN;
    
 }
 

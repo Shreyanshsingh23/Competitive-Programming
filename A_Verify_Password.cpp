@@ -29,54 +29,44 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-int n,t;
-vi a, pref;
-
-bool check(int mid)
-{
-    if(mid == 0)return true;
-    int minn = pref[mid-1];
-    // cout << "mid: " << mid << ln;
-    // cout << minn <<ln;
-    for(int i = 1; i<= n-mid; ++i)
-    {   
-        // cout << "curr: " << pref[i+mid-1] - pref[i-1] << ln;
-        minn = min(pref[i+mid-1] - pref[i-1],minn);
-        // cout << "minn: " << minn << ln;
-    }
-
-    return minn <= t;
-}
 
 void solve()
 {
-   cin >> n >> t;
-   a.resize(n);pref.resize(n);
-   cin >> a;
-   pref[0] = a[0];
-   for(int i = 1; i< n; ++i)
-   {
-    pref[i] = pref[i-1] + a[i];
-   }
-
-   int l = 0, r = n, mid, ans = 0;
-
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
+   int1(n)
+   string s; cin >> s;
+   //97-122
+   //48-57
+   int  digit = 0, letter = 0;
+   int y = (int)s[0];
+   if(y >= 97 and y <= 122)letter = y;
+   else digit = y;
+   for(int i = 1; i<n; i++){
+    int x= (int)s[i];
+    int y = (int)s[i-1];
+    if(y >= 97 and y <= 122 and x >= 48 and x <= 57 ){
+        cout << "NO" <<ln;
+        return;
     }
-    else r = mid-1;
+    if(x >= 97 and x <= 122 ){
+        if(x < letter){ 
+        cout << "NO" << ln;
+        return;
+        }
+        letter = x;
+    }
+    else if(x >= 48 and x <= 57 ){
+        if(x < digit){
+            cout << "NO" << ln;
+            return;
+        }
+        digit = x;
+    }
    }
 
-    // bool abc = check(1);
-
-   cout << ans << ln;
-
-   
+   cout << "YES" << ln;
+    
 }
 
 signed main()
