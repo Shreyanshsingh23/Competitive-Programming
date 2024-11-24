@@ -32,38 +32,36 @@ typedef pair<int, int> pi;
 const bool testcase = 1;
 int a,b;
 
-bool check(int mid)
-{   cout << "mid: " << mid << ln;
-    
-    int l = 0, r = mid, ans = 0;
-    while(l <= r)
-    {
-        int m = (l+r) >> 1; 
-        if(ok(m))
-    }
 
+
+bool check(int mid)
+{   
+    int temp = (a+b)/3;
+    return min({a,b,temp}) >= mid;
+    
+    
 }
 
 void solve()
 {
    cin >> a >> b;
 
-   int l = 0, r = 1e9, mid , ans = 0;
+   int l = 0, r = 1e9, mid , ans = (a+b)/3;
 
-   while(l <= r)
-   {
-    mid = (l+r) >> 1;
+//    while(l <= r)
+//    {
+//     mid = (l+r) >> 1;
 
-    if(check(mid))
-    {
-        ans = mid;
-        l = mid + 1;
-    }
+//     if(check(mid))
+//     {
+//         ans = mid;
+//         l = mid + 1;
+//     }
 
-    else r = mid - 1;
-   }
+//     else r = mid - 1;
+//    }
 
-   cout << ans << ln;
+   cout << min({a,b,ans}) << ln;
    
 }
 
