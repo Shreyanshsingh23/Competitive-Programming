@@ -38,7 +38,9 @@ vi fir, sec;
 map<int,int> mp;
 
 bool check(int mid){
-    return (min(mxx,sz(mp)) >= mid);
+    int fir = min(sz(mp),mxx-1);
+    int sec = min(sz(mp)-1,mxx);
+    return (max(fir,sec) >= mid);
 }
 
 void solve()
@@ -48,21 +50,11 @@ void solve()
 
     FOR(i,n)mp[a[i]]++;
 
-    // for(auto [x,y]: mp){
-    //     cout << x << ": " << y << ln;
-    // }
-
     for(auto [x,y]: mp)
     {
-        mxx = max(mxx,y-1);
+        mxx = max(mxx,y);
     }
-    // fir.pb(a[0]);
-
-    // for(int i = 1; i < n; ++i){
-    //     if(a[i] == a[i-1])sec.pb(a[i]);
-    //     else fir.pb(a[i]);
-    // }
-
+  
     int l = 0, r = n/2 + 1, mid, ans = 0;
 
     while(l <= r){

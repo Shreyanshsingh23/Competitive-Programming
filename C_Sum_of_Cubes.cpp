@@ -29,24 +29,48 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
+const bool testcase = 1;
 
+bool check(int x,int n)
+{
+    int prod = (int)x*x*x;
+    return prod <= n;
+}
 
 void solve()
-{ 
-   int2(n,m)
-   vi a (n), b(m);cin >> a >> b;
+{
+   int1(n)
+   
+   int l = 1, r = 1e4, res = 0, mid;
 
-   int i = 0,j = 0, k = 0, ans = 0;
+   while(l <= r)
+   {
+    mid = (l+r) >> 1;
 
-    while(k < n)
+    if(check(mid,n))
     {
-        while(i < m and b[i] < a[k])i++;
-        while(j < m and b[j] <= a[k])j++;
-        ans += j-i;
-        k++;
+        res = mid;
+        l = mid + 1;
     }
-   cout << ans << ln;
+    else r = mid - 1;
+   }
+//    cout << "L: " << l << " R: " << r <<ln;
+
+   for(int i = 1; i <= r; i++)
+   {    int x = (int)i*i*i;
+        int rt = cbrt(n-x);
+
+        if(rt > 0 and (int)rt*rt*rt + x == n)
+        {   
+            // cout << "i: " << i << " j: " << rt <<ln;
+            cout << "YES" << ln;
+            return;
+        }
+   }
+
+   cout << "NO" << ln;
+
+   
 }
 
 signed main()

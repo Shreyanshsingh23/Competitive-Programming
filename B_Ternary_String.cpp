@@ -29,25 +29,60 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 0;
+const bool testcase = 1;
 
+string s;
+
+bool check(int mid)
+{
+    int n = sz(s);
+    // cout << n << ln;
+
+    for(int i = 0; i<= n - mid; i++)
+    {
+        string ss = s.substr(i,mid);
+        // cout << "SS: " << ss << ln;
+        set<char> st(all(ss));
+        if(st.count('1') > 0 and st.count('2') > 0 and st.count('3') > 0 )
+        {
+            return true;
+        }
+       
+    }
+
+    return false;
+}
 
 void solve()
-{ 
-   int2(n,m)
-   vi a (n), b(m);cin >> a >> b;
-
-   int i = 0,j = 0, k = 0, ans = 0;
-
-    while(k < n)
+{
+   cin >> s;
+   set<char> st(all(s));
+    if(st.count('1') > 0 and st.count('2') > 0 and st.count('3') > 0 )
     {
-        while(i < m and b[i] < a[k])i++;
-        while(j < m and b[j] <= a[k])j++;
-        ans += j-i;
-        k++;
+    
+        int l = 3, r = sz(s), mid, ans = 0;
+        while(l <= r)
+        {
+            mid = (l+r) >> 1;
+
+            if(check(mid))
+            {
+                ans = mid;
+                r = mid-1;
+            }
+            else l = mid + 1;
+        }
+            
+            // bool ok = check(3);
+
+        cout << ans << ln;
     }
-   cout << ans << ln;
+
+    else cout << 0 << ln;
+   
 }
+
+
 
 signed main()
 {
