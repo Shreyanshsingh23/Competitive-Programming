@@ -29,62 +29,40 @@ int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);retur
 typedef pair<int, int> pi;
 
 
-const bool testcase = 1;
+const bool testcase = 0;
 
-
-// bool check(int mid)
-// {
-//     int n = sz(s);
-//     // cout << n << ln;
-
-//     for(int i = 0; i<= n - mid; i++)
-//     {
-//         string ss = s.substr(i,mid);
-//         // cout << "SS: " << ss << ln;
-//         set<char> st(all(ss));
-//         if(st.count('1') > 0 and st.count('2') > 0 and st.count('3') > 0 )
-//         {
-//             return true;
-//         }
-       
-//     }
-
-//     return false;
-// }
 
 void solve()
 {
-    string s;
-   cin >> s;
-   int n = sz(s);
-   int cnt[3] = {0};
-   int i = 0,j = 0, ans = 1e18;
+   int2(n,m)
 
- 
-      while(i < n)
-      {
-         while(j <= n and (!cnt[0] or !cnt[1] or !cnt[2]))
-       {
-           if(j < n)
-           {
-               cnt[s[j]-'1']++;
-           }
-           ++j;
-       }
-        if(j > n) break;
-        ans = min(ans,j-i);
-        cnt[s[i]-'1']--;
-        ++i;
-      }
-     
-   
+   vi a (n);cin >> a;
 
-//    cout << ans  << ln;
+   v<pi> b(m); 
+   FOR(i,m)
+   {
+    cin >> b[i].F;
+    b[i].S = i;
+   }
 
-   cout << (ans <= n ? ans : 0) << ln;
+   sort(all(a));
+   sort(all(b));
+
+   vi ans(m);
+
+   int i = 0;
+   for(int j = 0; j < m; j++)
+   {
+    while(i < n and a[i] <= b[j].F)i++;
+    ans[b[j].S] = i;
+   }
+
+   for(auto e : ans)
+   {
+    cout << e << ' ';
+   }
+   cout << ln;
 }
-
-
 
 signed main()
 {

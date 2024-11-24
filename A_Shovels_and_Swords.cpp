@@ -30,61 +30,42 @@ typedef pair<int, int> pi;
 
 
 const bool testcase = 1;
+int a,b;
 
+bool check(int mid)
+{   cout << "mid: " << mid << ln;
+    
+    int l = 0, r = mid, ans = 0;
+    while(l <= r)
+    {
+        int m = (l+r) >> 1; 
+        if(ok(m))
+    }
 
-// bool check(int mid)
-// {
-//     int n = sz(s);
-//     // cout << n << ln;
-
-//     for(int i = 0; i<= n - mid; i++)
-//     {
-//         string ss = s.substr(i,mid);
-//         // cout << "SS: " << ss << ln;
-//         set<char> st(all(ss));
-//         if(st.count('1') > 0 and st.count('2') > 0 and st.count('3') > 0 )
-//         {
-//             return true;
-//         }
-       
-//     }
-
-//     return false;
-// }
+}
 
 void solve()
 {
-    string s;
-   cin >> s;
-   int n = sz(s);
-   int cnt[3] = {0};
-   int i = 0,j = 0, ans = 1e18;
+   cin >> a >> b;
 
- 
-      while(i < n)
-      {
-         while(j <= n and (!cnt[0] or !cnt[1] or !cnt[2]))
-       {
-           if(j < n)
-           {
-               cnt[s[j]-'1']++;
-           }
-           ++j;
-       }
-        if(j > n) break;
-        ans = min(ans,j-i);
-        cnt[s[i]-'1']--;
-        ++i;
-      }
-     
+   int l = 0, r = 1e9, mid , ans = 0;
+
+   while(l <= r)
+   {
+    mid = (l+r) >> 1;
+
+    if(check(mid))
+    {
+        ans = mid;
+        l = mid + 1;
+    }
+
+    else r = mid - 1;
+   }
+
+   cout << ans << ln;
    
-
-//    cout << ans  << ln;
-
-   cout << (ans <= n ? ans : 0) << ln;
 }
-
-
 
 signed main()
 {
