@@ -42,22 +42,60 @@ const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
 const bool testcase = 1;
-int n,x;
-vi a;
+
+
+bool check(int mid,int x, vi pref)
+{
+    
+    return (pref[mid-1] >= x);
+}
+
+bool cmp(int a, int b)
+{
+    return a > b;
+}
 
 void solve()
 {
-   cin >> n >> x;
-   FOR(i,n) cin >> a[i];
+    int n,q;
+    cin >> n >> q;
+    vi a(n); cin >> a;
+    vi pref(n);
    
-   int l = 0,r = 1e18, mid, ans = 0;
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
+   
+   int sum = 0;
+   
+    FOR(i,n)sum += a[i];
+    
+    sort(all(a),greater<int>());
+     pref[0] = a[0];
+    for(int i = 1; i< n; ++i)
+    {
+        pref[i] = pref[i-1] + a[i];
     }
-    else r = mid-1;
+   while(q--)
+   {
+    int x; cin >> x;
+    if(x > sum)
+    {
+        cout << -1 << ln;
+        continue;
+    }
+    int l = 1, r = n, mid, ans = 1;
+
+    while(l <= r)
+    {
+        mid = (l+r) >> 1;
+
+        if(pref[mid-1] >= x)
+        {
+            ans = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
+    }
+   
+    cout << ans << ln;
    }
 }
 

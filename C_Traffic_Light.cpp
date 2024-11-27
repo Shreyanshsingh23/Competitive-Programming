@@ -42,23 +42,45 @@ const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
 const bool testcase = 1;
-int n,x;
-vi a;
+
 
 void solve()
 {
-   cin >> n >> x;
-   FOR(i,n) cin >> a[i];
-   
-   int l = 0,r = 1e18, mid, ans = 0;
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
+   int1(n)
+    char c;string s;
+    cin >> c >> s;
+    // s += s;
+
+    if(c == 'g')
+    {
+        cout << 0 << ln;
+        return;
     }
-    else r = mid-1;
-   }
+    int mxx = MIN;
+
+//MY CODE
+
+//    int lst = 0;
+//    for(int i = 2*n-1; i >= 0; i--)
+//    {
+//        if(s[i] == 'g')lst = i;
+//        if(s[i] == c)
+//        {
+//            mxx = max(mxx, lst - i);
+//        }
+//    }
+
+//SPECIALIST'S CODE
+  int last  = 0;
+     for(int f=0;f<n;f++){
+            if(s[f]=='g'){last=n+f;break;}
+        }
+        for(int f=s.size()-1;f>=0;f--){
+            if(s[f]=='g')last=f;
+            else if(s[f]==c)mxx = max(mxx,last-f);
+        }
+
+    cout << mxx <<ln;
 }
 
 signed main()

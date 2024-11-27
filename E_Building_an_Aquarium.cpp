@@ -42,23 +42,46 @@ const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
 const bool testcase = 1;
-int n,x;
-vi a;
 
+int n,x;
+vi a ;
+bool cmp(pi a, pi b)
+{
+    if(a.F == b.F)
+    return a.S < b.S;
+    return a.F < b.F;
+}
+
+bool check(int h)
+{
+    int cnt = 0;
+    FOR(i,n)
+    {
+        if(a[i] <= h)cnt += h-a[i];
+        if(cnt > x)break;
+    }
+
+    return cnt <= x;
+}
 void solve()
 {
    cin >> n >> x;
+   a.resize(n);
    FOR(i,n) cin >> a[i];
-   
-   int l = 0,r = 1e18, mid, ans = 0;
-   while(l <= r){
+
+    sort(all(a));
+  int l = 0, r = 1e18, mid, ans = 0;
+  while(l <= r)
+  {
     mid = (l+r) >> 1;
-    if(check(mid)){
+    if(check(mid))
+    {
         ans = mid;
-        l = mid+1;
+        l = mid + 1;  //height incr
     }
-    else r = mid-1;
-   }
+    else r = mid - 1;
+  }
+   cout << ans << ln;
 }
 
 signed main()

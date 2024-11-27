@@ -42,22 +42,27 @@ const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
 const bool testcase = 1;
-int n,x;
-vi a;
+
 
 void solve()
 {
-   cin >> n >> x;
+   int1(n)
+   vi a (n);
    FOR(i,n) cin >> a[i];
-   
-   int l = 0,r = 1e18, mid, ans = 0;
-   while(l <= r){
-    mid = (l+r) >> 1;
-    if(check(mid)){
-        ans = mid;
-        l = mid+1;
-    }
-    else r = mid-1;
+   set<pi> st;
+   int i = 0, j = n-1, mxx = MIN,isum = 0, jsum = 0;
+   while(i < j)
+   {
+        if(a[i] > a[j])
+        {
+            jsum += a[j];
+            st.insert(jsum,j);
+            j--;
+        }
+        while(isum < jsum)
+        {
+            
+        }
    }
 }
 
