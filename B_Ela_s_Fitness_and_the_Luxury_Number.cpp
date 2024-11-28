@@ -38,83 +38,40 @@ bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n %
 
 typedef pair<int, int> pi;
 
-const int MOD = 1e9 + 7;
+const int MOD = 1e9 + 7; 
 const int mod = 998244353;
 
 const bool testcase = 1;
 
-
+int l,r;
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   int i = 0, j = n-1, mxx = 0,isum = 0, jsum = 0;
-   vi pref(n), suff(n);
-   map<int,int> mp;
-  
-   for(int i = 0; i< n; ++i)
+   cin >> l >> r;
+   vi a;
+   while(l <= r)
    {
-        if(i == 0)pref[i] = a[i];
-        else pref[i] = pref[i-1] + a[i];
-        mp[pref[i]] = i;
-   }
-    // Binary Search
-   for(int i = n-1; i >= 0; --i)
-   {
-        jsum += a[i];
-        int l = 0,r = i, ans = 0, mid;
-        while(l <= r)
+        int div = sqrt(l);
+        while(l%div != 0)l++;
+        deb(l);
+        int l1 = l,r1 = r, mid,ans = 0;
+        while(l1 <= r1)
         {
-            mid = (l+r) >> 1;
-            if(pref[mid] >= jsum)
+            mid = (l1+r1) >> 1;
+            if(sqrt(mid) <= div)
             {
                 ans = mid;
-                r = mid - 1;
+                l1 = mid + 1;
             }
-            else l = mid + 1;
+            else r1 = mid - 1;
         }
-        if(ans < i and pref[ans] == jsum)mxx = max(mxx,(ans+1)+(n-i));
+
+        while(l < ans)
+        {
+            a.pb(l);
+            l += div;
+        }
    }
-
-   
-  
-    cout << mxx << ln;
-
 }
-// ACCEPTD CODE
-//  for(int i = n-1; i >= 0; --i)
-//    {
-//         if(i == n-1)suff[i] = a[i];
-//         else suff[i] = suff[i+1] + a[i];
-        
-//         if(mp.count(suff[i]))
-//         {
-//            if(mp[suff[i]] < i) mxx = max(mxx,(n-i)+(mp[suff[i]]+1));
-//            else if(mp[suff[i]] >= i)break;
-//         }
-
-//    }
-
-
-// ACCEPTED CODE    
-// int i = 0, j = n-1, mxx = 0,isum = a[0], jsum = a[n-1];
-
-//    while(i < j)
-//    {
-//         if(isum == jsum)
-//             mxx = max(mxx,(n-j)+(i+1));
-        
-//         if(isum <= jsum){
-//             i++;
-//             isum += a[i];
-//         }
-//         else if(isum > jsum ){
-//             j--;
-//             jsum += a[j];
-//         }
-//    } 
 
 signed main()
 {
@@ -128,3 +85,4 @@ signed main()
     }
     return 0;
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

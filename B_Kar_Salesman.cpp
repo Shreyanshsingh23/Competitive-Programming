@@ -42,23 +42,31 @@ const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
 const bool testcase = 1;
-int n,x;
+int n,x,sum;
 vi a;
+bool check(int mid){
+    return (sum+x-1)/x <= mid;   // saari cars ko milake x cars ke kitne group banenge unka ceil liye fir yrh check kar liye ki vo no.of groups hamare customers ke numbers se kam ya equal hi hain na... bss ho gaya
+}
 
 void solve()
 {
    cin >> n >> x;
+   a.resize(n);
    FOR(i,n) cin >> a[i];
-   
-   int l = 0,r = 1e18, mid, ans = 0;
+    sum = 0;
+   FOR(i,n) sum += a[i];
+   int mxx = *max_element(all(a));
+   int l = mxx,r = 1e18, mid, ans = 0;
    while(l <= r){
     mid = (l+r) >> 1;
-    if(check(mid)){
+    if((sum+x-1)/x <= mid){
         ans = mid;
-        l = mid+1;
+        r = mid-1;
     }
-    else r = mid-1;
+    else l = mid+1;
    }
+
+   cout << ans << ln;
 }
 
 signed main()

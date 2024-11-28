@@ -47,74 +47,25 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   int i = 0, j = n-1, mxx = 0,isum = 0, jsum = 0;
-   vi pref(n), suff(n);
-   map<int,int> mp;
-  
-   for(int i = 0; i< n; ++i)
-   {
-        if(i == 0)pref[i] = a[i];
-        else pref[i] = pref[i-1] + a[i];
-        mp[pref[i]] = i;
-   }
-    // Binary Search
-   for(int i = n-1; i >= 0; --i)
-   {
-        jsum += a[i];
-        int l = 0,r = i, ans = 0, mid;
-        while(l <= r)
-        {
-            mid = (l+r) >> 1;
-            if(pref[mid] >= jsum)
-            {
-                ans = mid;
-                r = mid - 1;
-            }
-            else l = mid + 1;
-        }
-        if(ans < i and pref[ans] == jsum)mxx = max(mxx,(ans+1)+(n-i));
-   }
+  string s;cin >> s;
 
-   
-  
-    cout << mxx << ln;
+  int a = 0, b = 0;
+  for(auto e : s)
+  {
+    if(e == 'A')
+    {
+        a++;
+        if(b > 0)b--;
+    }
+    else {
+        b++;
+        if(a > 0 )a--;
+    }
+  }
 
+  cout << a + b << ln;
+   
 }
-// ACCEPTD CODE
-//  for(int i = n-1; i >= 0; --i)
-//    {
-//         if(i == n-1)suff[i] = a[i];
-//         else suff[i] = suff[i+1] + a[i];
-        
-//         if(mp.count(suff[i]))
-//         {
-//            if(mp[suff[i]] < i) mxx = max(mxx,(n-i)+(mp[suff[i]]+1));
-//            else if(mp[suff[i]] >= i)break;
-//         }
-
-//    }
-
-
-// ACCEPTED CODE    
-// int i = 0, j = n-1, mxx = 0,isum = a[0], jsum = a[n-1];
-
-//    while(i < j)
-//    {
-//         if(isum == jsum)
-//             mxx = max(mxx,(n-j)+(i+1));
-        
-//         if(isum <= jsum){
-//             i++;
-//             isum += a[i];
-//         }
-//         else if(isum > jsum ){
-//             j--;
-//             jsum += a[j];
-//         }
-//    } 
 
 signed main()
 {
