@@ -38,57 +38,36 @@ bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n %
 
 typedef pair<int, int> pi;
 
-const int MOD = 1e9 + 7; 
+const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
 const bool testcase = 1;
 
+
 void solve()
 {
-   int e,s;
-   cin >> s >> e;
-   int cnt = 0;
+   int1(n)
    
-   // sqrt of s
-   int l = 1, r = 1e9, mid, sqrtl = 0, sqrtr = 0;
-   while(l <= r)
+   int cnt = 0;
+   while(n > 1)
    {
-    mid = (l+r) >> 1;
-    if(mid*mid <= s)
-    {
-        sqrtl = mid;
-        l = mid + 1;
-    }
-    else r = mid - 1;
-   }
-
-   l = 1; r = 1e9;
+    int l = 0, r = 1e9, mid, ans = 0;
     while(l <= r)
-   {
-    mid = (l+r) >> 1;
-    if(mid*mid <= e)
     {
-        sqrtr = mid;
-        l = mid + 1;
+        mid = (l + r) >> 1;
+        int cards = (mid*(mid+1)) + (mid*(mid-1))/2;
+        if(cards <= n)
+        {
+            ans = mid;
+            l = mid + 1;
+        }
+        else r = mid - 1;
     }
-    else r = mid - 1;
+
+    if(ans>0)cnt++;
+    n -= ans*(ans+1) + (ans*(ans-1))/2;
    }
-//    deb(sqrtl);deb(sqrtr);
-//    if(s <= (sqrtl*sqrtl))cnt+=3;
-//    else if(s <= (sqrtl*(sqrtl+1)) and s > (sqrtl*sqrtl)) cnt+=2;
-//    else if(s <= (sqrtl*(sqrtl+2)) and s > (sqrtl*(sqrtl+1)))cnt++;
-
-//    if(e >= (sqrtr*(sqrtr+2)))cnt+=3;
-//    else if(e >= (sqrtr*(sqrtr+1)))cnt+=2;
-//    else if(e >= (sqrtr*sqrtr))cnt++;
-    cnt += (((sqrtl + 1) * (sqrtl + 1) - 1 - s) / sqrtl + 1) + ((e - sqrtr * sqrtr) / sqrtr + 1);
-     
-
-   int num = sqrtr-sqrtl-1;
-   cnt += num*3;
-
    cout << cnt << ln;
-//    cout << ln;
    
 }
 
@@ -104,4 +83,3 @@ signed main()
     }
     return 0;
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

@@ -38,58 +38,55 @@ bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n %
 
 typedef pair<int, int> pi;
 
-const int MOD = 1e9 + 7; 
+const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
 const bool testcase = 1;
 
-void solve()
+int a,b,c;
+
+// bool check(int mid)programming language (like long long for C++)
+// {
+//     int req = 9*mid;
+//     int sum = a+b+c;
+//     if(sum >= req and a >= mid and b >= mid and c >= mid)
+//     {
+//         return true;
+//     }
+//     return false;
+// }
+bool solve()
 {
-   int e,s;
-   cin >> s >> e;
-   int cnt = 0;
+   cin >> a >> b >> c;
+   int n = a+b+c;
+   if(n%9 != 0)return false;
+
+   if(min({a,b,c}) >= n/9)return true;
+   return false;
+  
    
-   // sqrt of s
-   int l = 1, r = 1e9, mid, sqrtl = 0, sqrtr = 0;
-   while(l <= r)
-   {
-    mid = (l+r) >> 1;
-    if(mid*mid <= s)
-    {
-        sqrtl = mid;
-        l = mid + 1;
-    }
-    else r = mid - 1;
-   }
+//    int l = 1, r = 1e9, mid, ans = 0;
+//    while(l <= r)
+//    {
+//         mid = (l+r) >> 1;
+//         if(check(mid))
+//         {
+//             ans = mid;
+//             l = mid + 1;
+//         }
+//         else r = mid - 1;
+//    }
+//    mid = ans;
+//    int req = 9*mid;
+//    int sum = a+b+c;
+//     if(sum == req and a >= mid and b >= mid and c >= mid)
+//     {
+//         cout << "YES" << ln;
+//         return;
+//     }
 
-   l = 1; r = 1e9;
-    while(l <= r)
-   {
-    mid = (l+r) >> 1;
-    if(mid*mid <= e)
-    {
-        sqrtr = mid;
-        l = mid + 1;
-    }
-    else r = mid - 1;
-   }
-//    deb(sqrtl);deb(sqrtr);
-//    if(s <= (sqrtl*sqrtl))cnt+=3;
-//    else if(s <= (sqrtl*(sqrtl+1)) and s > (sqrtl*sqrtl)) cnt+=2;
-//    else if(s <= (sqrtl*(sqrtl+2)) and s > (sqrtl*(sqrtl+1)))cnt++;
+//     cout << "NO" << ln;
 
-//    if(e >= (sqrtr*(sqrtr+2)))cnt+=3;
-//    else if(e >= (sqrtr*(sqrtr+1)))cnt+=2;
-//    else if(e >= (sqrtr*sqrtr))cnt++;
-    cnt += (((sqrtl + 1) * (sqrtl + 1) - 1 - s) / sqrtl + 1) + ((e - sqrtr * sqrtr) / sqrtr + 1);
-     
-
-   int num = sqrtr-sqrtl-1;
-   cnt += num*3;
-
-   cout << cnt << ln;
-//    cout << ln;
-   
 }
 
 signed main()
@@ -100,8 +97,7 @@ signed main()
     testcase and cin >> t;
     while (t--)
     {
-        solve();
+        cout <<( solve()?"YES":"NO") << ln;
     }
     return 0;
 }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

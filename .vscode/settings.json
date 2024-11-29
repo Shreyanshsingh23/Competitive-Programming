@@ -30,7 +30,9 @@
         "charconv": "cpp",
         "bitset": "cpp",
         "memory_resource": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "any": "cpp",
+        "system_error": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "cph.general.useShortCodeForcesName": false
