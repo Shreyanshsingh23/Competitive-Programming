@@ -41,31 +41,30 @@ typedef pair<int, int> pi;
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-int n;vi a;
 
 void solve()
 {
-   cin >> n;
-   a.resize(n);
-   FOR(i,n) cin >> a[i];
-   sort(all(a));
-
-   int ans = (n-1)/2;
-   cout << ans << ln;
-
-   int i = 0, j = n-2;
-   cout << a[n-1] << ' ';
-   while(i <= j)
-   {
-    cout << a[i] << ' ' ;
-    i++;
-   
-    if(j >= i)cout << a[j] << ' ';
-    j--;
+   int1(n)
+   int req;cin >> req;
+   vi a (n),pref(n),suff(n);
+   int sum = 0;
+   FOR(i,n) {
+    cin >> a[i];
+    sum += a[i];
    }
-   
+
+   pref[0] = a[0];
+   for(int i = 1; i< n; i++){
+    pref[i] = pref[i-1] + a[i];
+   }
+    for(auto e : pref){
+        cout << e << ' ';
+    }
+    cout << ln;
+    int ans = MAX;
+  
 }
 
 signed main()

@@ -43,29 +43,33 @@ const int mod = 998244353;
 
 const bool testcase = 0;
 
-int n;vi a;
 
 void solve()
 {
-   cin >> n;
-   a.resize(n);
+   int1(n)
+   vi a (n);
    FOR(i,n) cin >> a[i];
-   sort(all(a));
-
-   int ans = (n-1)/2;
-   cout << ans << ln;
-
-   int i = 0, j = n-2;
-   cout << a[n-1] << ' ';
-   while(i <= j)
+   vi pref(n),suff(n);
+   pref[0] = a[0];
+   for(int i = 1; i < n; ++i)
    {
-    cout << a[i] << ' ' ;
-    i++;
-   
-    if(j >= i)cout << a[j] << ' ';
-    j--;
+    pref[i] = pref[i-1]+a[i];
+   }
+   suff[n-1] = a[n-1];
+   for(int i = n-2; i >= 0; --i)
+   {
+    suff[i] = suff[i+1]+a[i];
    }
    
+   int i = 0, j = n-1;
+   int ans = 0;
+    while(i < j)
+    {   
+        if(pref[i] == suff[j])ans = max(ans,pref[i]);
+        if(pref[i] <= suff[j])i++;
+        else j--;
+    }
+    cout << ans << ln;
 }
 
 signed main()

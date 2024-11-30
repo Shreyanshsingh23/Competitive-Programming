@@ -41,31 +41,58 @@ typedef pair<int, int> pi;
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-int n;vi a;
 
-void solve()
+bool solve()
 {
-   cin >> n;
-   a.resize(n);
-   FOR(i,n) cin >> a[i];
-   sort(all(a));
+   int1(n)
+   vector<int> a(n + 1);
+        for (int i = 1; i <= n; ++i) {
+            cin >> a[i];
+        }
+   if (a[1] != n) {
+            return false;
+        }
+        vector<int> b;
+        for (int i = n; i >= 1; --i) {
+            while (b.size() < a[i]) {
+                b.pb(i);
+            }
+        }
 
-   int ans = (n-1)/2;
-   cout << ans << ln;
-
-   int i = 0, j = n-2;
-   cout << a[n-1] << ' ';
-   while(i <= j)
+   debug(b);
+   for(int i = 1; i <= n; ++i)
    {
-    cout << a[i] << ' ' ;
-    i++;
-   
-    if(j >= i)cout << a[j] << ' ';
-    j--;
+        if(a[i] != b[i-1])
+        {
+            return false;
+        }
    }
-   
+
+    return true;
+
+    /*
+
+    JIANGLY'S CODE
+    
+    std::vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+        std::cin >> a[i];
+    }
+    
+    for (int i = 0, j = n; i < n; i++) {
+        while (j > 0 && a[j - 1] <= i) {
+            j--;
+        }
+        if (a[i] != j) {
+            std::cout << "NO\n";
+            return;
+        }
+    }
+    std::cout << "YES\n";
+    
+    */
 }
 
 signed main()
@@ -76,7 +103,7 @@ signed main()
     testcase and cin >> t;
     while (t--)
     {
-        solve();
+        cout << (solve()?"YES" : "NO") << ln;;
     }
     return 0;
 }
