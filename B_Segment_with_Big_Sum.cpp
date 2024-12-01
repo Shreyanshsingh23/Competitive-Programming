@@ -11,7 +11,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ln '\n';
+#define ln '\n'
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
@@ -48,24 +48,32 @@ void solve()
 {
    int1(n)
    int s;cin >> s;
-   vi a (n),pref(n);
+   vi a (n);
    FOR(i,n) cin >> a[i];
-   int i = 0;
-   int sum = 0, mxx = 0;
-   for(int j = 0;j < n; ++j)
-   {
-    sum += a[j];
-    while(i <= j and sum > s)
+   
+   int j = 0, sum = 0, minn = MAX;
+
+    for(int i = 0; i< n; ++i)
     {
+        // deb(i);
+
+        while(j < n and sum < s)
+        {
+            sum += a[j];
+            ++j;
+        }
+        // deb(j);
+
+        if(sum >= s)minn = min(minn,j-i);
+        // deb(minn);
         sum -= a[i];
-        i++;
     }
-    mxx= max(mxx,j-i+1);
-   }
 
-   cout << mxx << ln;
+    if(minn == MAX)
+        cout << -1 << ln;
+   else cout << minn << ln;
 }
-
+ 
 signed main()
 {
     ShreyanshSinghGautam

@@ -43,27 +43,21 @@ const int mod = 998244353;
 
 const bool testcase = 0;
 
+void func(int n,int x)
+{   if(n == 0)return;
+   
+    func(n-1,x);
+    int y = 2*(n-1) + 1;
+    FOR(i,x-n)cout << ' ';
+    FOR(i,y) cout << '*';
+    cout << ln;
+}
 
 void solve()
 {
    int1(n)
-   int s;cin >> s;
-   vi a (n),pref(n);
-   FOR(i,n) cin >> a[i];
-   int i = 0;
-   int sum = 0, mxx = 0;
-   for(int j = 0;j < n; ++j)
-   {
-    sum += a[j];
-    while(i <= j and sum > s)
-    {
-        sum -= a[i];
-        i++;
-    }
-    mxx= max(mxx,j-i+1);
-   }
-
-   cout << mxx << ln;
+   func(n,n);
+   
 }
 
 signed main()
