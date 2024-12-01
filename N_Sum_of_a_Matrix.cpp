@@ -43,27 +43,45 @@ const int mod = 998244353;
 
 const bool testcase = 0;
 
-string s;
-set<char> st {'a','e','i','o','u'};
+int r,c;
 
-int func(int ans,int i)
+void func(vii a, vii b, vii& ans,int i, int j)
 {
-    if(i == s.size())return ans;
+    if(i >= r)return;
 
-    char ch = tolower(s[i]);
-    if(st.count(ch)){
-       return func(ans+1,i+1);
-    }else 
-      return func(ans,i+1);
-
+    if(j < c)
+    {
+        ans[i][j] = a[i][j]+b[i][j];
+        func(a,b,ans,i,j+1);
+    }
+    else func(a,b,ans,i+1,0);
 }
-
 void solve()
 {
-   getline(cin,s);
-   
-   int ans = func(0,0);
-   cout << ans << ln;
+   cin >> r >> c;
+    vii a(r, vi (c)), b(r, vi (c)), ans(r, vi (c));
+
+    FOR(i,r)
+        {
+            FOR(j,c)
+            {
+                cin >> a[i][j] ;
+            }
+        }
+     FOR(i,r)
+        {
+            FOR(j,c)
+            {
+                cin >> b[i][j] ;
+            }
+        }
+    func(a,b,ans,0,0);
+
+    FOR(i,r)
+        {
+            FOR(j,c)cout << ans[i][j] << ' ';
+            cout << ln;
+        }
    
 }
 

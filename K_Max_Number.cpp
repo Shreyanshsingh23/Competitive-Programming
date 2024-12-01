@@ -43,28 +43,24 @@ const int mod = 998244353;
 
 const bool testcase = 0;
 
-string s;
-set<char> st {'a','e','i','o','u'};
-
-int func(int ans,int i)
+int func(vi a, int n, int i, int mxx)
 {
-    if(i == s.size())return ans;
+    if(i == n)return mxx;
 
-    char ch = tolower(s[i]);
-    if(st.count(ch)){
-       return func(ans+1,i+1);
-    }else 
-      return func(ans,i+1);
-
+    if(a[i] > mxx)
+        return func(a,n,i+1,a[i]);
+    else
+        return func(a,n,i+1,mxx);
 }
-
 void solve()
 {
-   getline(cin,s);
-   
-   int ans = func(0,0);
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+    int mxx = MIN;
+    int i = 0;
+   int ans = func(a,n,i,mxx);
    cout << ans << ln;
-   
 }
 
 signed main()

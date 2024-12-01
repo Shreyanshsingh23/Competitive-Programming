@@ -43,27 +43,17 @@ const int mod = 998244353;
 
 const bool testcase = 0;
 
-string s;
-set<char> st {'a','e','i','o','u'};
-
-int func(int ans,int i)
+int func(int n)
 {
-    if(i == s.size())return ans;
+    if(n == 0)return 1;
 
-    char ch = tolower(s[i]);
-    if(st.count(ch)){
-       return func(ans+1,i+1);
-    }else 
-      return func(ans,i+1);
-
+    return n*func(n-1);
 }
 
 void solve()
 {
-   getline(cin,s);
-   
-   int ans = func(0,0);
-   cout << ans << ln;
+   int1(n)
+   cout << func(n) << ln;
    
 }
 
