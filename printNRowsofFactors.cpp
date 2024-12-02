@@ -43,40 +43,28 @@ const int mod = 998244353;
 
 const bool testcase = 0;
 
-int r,c;
 
-void func(vii a, vii b, vii& ans,int i)
-{
-    if(i >= r)return;
-
-  FOR(j,c)
-  {
-      cout << a[i][j] + b[i][j] << " ";
-  }
-  cout << ln;
-  func(a,b,ans,i+1);
-}
 void solve()
 {
-   cin >> r >> c;
-    vii a(r, vi (c)), b(r, vi (c)), ans(r, vi (c));
+   int1(n)
+   vii a(n+1);
 
-    FOR(i,r)
+   for(int i = 1; i <= n; ++i)
+   {
+        for(int j = i; j <= n; j += i)
         {
-            FOR(j,c)
-            {
-                cin >> a[i][j] ;
-            }
+            a[j].pb(i);
         }
-     FOR(i,r)
-        {
-            FOR(j,c)
-            {
-                cin >> b[i][j] ;
-            }
-        }
-    func(a,b,ans,0);
+   }
 
+   for(auto p : a)
+   {
+    for(auto e : p)
+    { 
+        cout << e << ' ';
+    }
+        cout << ln;
+   }
    
 }
 
