@@ -18,9 +18,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define sz(x) x.size()
 #define vi vector<int>
 #define v vector
-#define vii vector<vector<int>>
-#define mpci map<char, int>
-#define mpii map<int, int>                //vii a (n,vi(m,0))
+#define vii vector<vector<int>>                //vii a (n,vi(m,0))
 #define pii pair<int,int>#define all(v) v.begin(), v.end()
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
@@ -31,42 +29,30 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define F first
 #define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
-int log(int num , int base){int ans = 0; while(num){num /= base;ans++;} return ans;}//an extra
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
 int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans =
 poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n % 2 == 0 || n % 3 == 0) return false; for (int i = 5; i * i <= n; i = i + 6) if (n % i == 0 || n % (i + 2) == 0) return false; return true; }
-int modPow(int a, int b, int m) { int ans = 1; while (b) { if (b & 1) ans = (ans * a) % m; b /= 2; a = (a * a) % m; } return ans; }
-int modInv(int n, int m){return modPow(n, m - 2, m); }
+int modInv(int n, int m){return poww(n, m - 2)%m;}
 int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
 int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
 int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
-int nCr(int n, int r,int m) { return (r > n) ? 0 : modMul(fact[n], modMul(modInverse(fact[r], m), modInverse(fact[n - r], m), m), m); }
-int nPr(int n, int r) { int ans = 1; for (int i = 0; i < r; i++) ans *= (n - i); return ans; }
-int nPrModP(int n, int r, int p) { int ans = 1; for (int i = 0; i < r; i++) ans = (ans * (n - i)) % p; return ans; }
-#define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
-vi sieve(int n) { vi isPrime(n + 1, 1); isPrime[0] = isPrime[1] = 0; for (int i = 2; i * i <= n; i++) if (isPrime[i]) for (int j = i * i; j <= n; j += i) isPrime[j] = 0; return isPrime; }
-
-
 
 typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
-int fact [N] ;
-int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
-void solve()
+
+bool solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   if(n&(n-1))return false;
+   return true;
    
 }
 
@@ -76,10 +62,9 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
     while (t--)
     {
-        solve();
+        cout << (solve()?"YES" :"NO") << ln;
     }
     return 0;
 }

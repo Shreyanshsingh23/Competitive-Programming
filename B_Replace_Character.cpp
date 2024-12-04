@@ -18,9 +18,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define sz(x) x.size()
 #define vi vector<int>
 #define v vector
-#define vii vector<vector<int>>
-#define mpci map<char, int>
-#define mpii map<int, int>                //vii a (n,vi(m,0))
+#define vii vector<vector<int>>                //vii a (n,vi(m,0))
 #define pii pair<int,int>#define all(v) v.begin(), v.end()
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
@@ -43,11 +41,10 @@ int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
 int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
 int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
-int nCr(int n, int r,int m) { return (r > n) ? 0 : modMul(fact[n], modMul(modInverse(fact[r], m), modInverse(fact[n - r], m), m), m); }
+int nCr(int n, int r) { if (r > n - r) r = n - r; int ans = 1; for (int i = 0; i < r; i++) { ans *= (n - i); ans /= (i + 1); } return ans; }
+int nCrModP(int n, int r, int p) { if (r > n - r) r = n - r; int C[r + 1]; memset(C, 0, sizeof(C)); C[0] = 1; for (int i = 1; i <= n; i++) { for (int j = min(i, r); j > 0; j--) C[j] = (C[j] + C[j - 1]) % p; } return C[r]; }
 int nPr(int n, int r) { int ans = 1; for (int i = 0; i < r; i++) ans *= (n - i); return ans; }
 int nPrModP(int n, int r, int p) { int ans = 1; for (int i = 0; i < r; i++) ans = (ans * (n - i)) % p; return ans; }
-#define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
-vi sieve(int n) { vi isPrime(n + 1, 1); isPrime[0] = isPrime[1] = 0; for (int i = 2; i * i <= n; i++) if (isPrime[i]) for (int j = i * i; j <= n; j += i) isPrime[j] = 0; return isPrime; }
 
 
 

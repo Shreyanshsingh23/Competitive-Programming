@@ -43,7 +43,7 @@ int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
 int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
 int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
-int nCr(int n, int r,int m) { return (r > n) ? 0 : modMul(fact[n], modMul(modInverse(fact[r], m), modInverse(fact[n - r], m), m), m); }
+// int nCr(int n, int r,int m) { return (r > n) ? 0 : modMul(fact[n], modMul(modInverse(fact[r], m), modInverse(fact[n - r], m), m), m); }
 int nPr(int n, int r) { int ans = 1; for (int i = 0; i < r; i++) ans *= (n - i); return ans; }
 int nPrModP(int n, int r, int p) { int ans = 1; for (int i = 0; i < r; i++) ans = (ans * (n - i)) % p; return ans; }
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
@@ -56,17 +56,60 @@ typedef pair<int, int> pi;
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
 const int N = 1000010;
-int fact [N] ;
-int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
+// int fact [N] ;
+// int invFact[N] ;
+// void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 1;
 
+int toDec(string s,int b) 
+{ 
+    int  ans = 0;
+    int n = sz(s);
+    int p = 0;
+    for(int i = n-1; i>= 0; --i)
+    {
+        int d = (s[i] - '0');
+        ans += d * pow(b, p);
+        p++;
+    }
+    
+    return ans;
+} 
+
+string decToBase(int n,int b)
+{
+    string ans = "";
+    while(n)
+    {
+        int d = n % b;
+        char ch = d + '0';
+        ans += ch;
+        n /= b;
+    }
+
+    reverse(all(ans));
+    return ans;
+}
+
+
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   string n1,n2;
+   int b1,b2,b3;
+   cin >> n1 >> b1 >> n2 >> b2 >> b3;
+   char ch; cin >> ch;
+
+    int d1 = toDec(n1,b1);
+    int d2 = toDec(n2,b2);
+    int d3 = 0;
+    if(ch == '+')d3 = d1 + d2;
+    else if(ch == '-')d3 = d1 - d2;
+    else if(ch == '*')d3 = d1 * d2;
+    else if(ch == '/')d3 = d1 / d2;
+  
+
+   cout << (decToBase(d3,b3) == "" ? "0" : decToBase(d3,b3) )<< endl;
    
 }
 

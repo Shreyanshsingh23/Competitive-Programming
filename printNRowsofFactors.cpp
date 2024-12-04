@@ -65,8 +65,11 @@ void solve()
     }
         cout << ln;
    }
-   
 }
+
+// For answering only number of factors, we can create 1-D array and just increase the count of factors in it.
+
+//If count of factors of any number is 2, then it's prime
 
 signed main()
 {

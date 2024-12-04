@@ -39,13 +39,13 @@ poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
 bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n % 2 == 0 || n % 3 == 0) return false; for (int i = 5; i * i <= n; i = i + 6) if (n % i == 0 || n % (i + 2) == 0) return false; return true; }
 int modPow(int a, int b, int m) { int ans = 1; while (b) { if (b & 1) ans = (ans * a) % m; b /= 2; a = (a * a) % m; } return ans; }
 int modInv(int n, int m){return modPow(n, m - 2, m); }
-int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
+int modMul(int a, int b, int m){return (((a % m) * (b % m)) % m);}
 int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
 int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
-int nCr(int n, int r,int m) { return (r > n) ? 0 : modMul(fact[n], modMul(modInverse(fact[r], m), modInverse(fact[n - r], m), m), m); }
-int nPr(int n, int r) { int ans = 1; for (int i = 0; i < r; i++) ans *= (n - i); return ans; }
-int nPrModP(int n, int r, int p) { int ans = 1; for (int i = 0; i < r; i++) ans = (ans * (n - i)) % p; return ans; }
+// int nCr(int n, int r,int m) { return (r > n) ? 0 : modMul(fact[n], modMul(modInverse(fact[r], m), modInverse(fact[n - r], m), m), m); }
+// int nPr(int n, int r) { int ans = 1; for (int i = 0; i < r; i++) ans *= (n - i); return ans; }
+// int nPrModP(int n, int r, int p) { int ans = 1; for (int i = 0; i < r; i++) ans = (ans * (n - i)) % p; return ans; }
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
 vi sieve(int n) { vi isPrime(n + 1, 1); isPrime[0] = isPrime[1] = 0; for (int i = 2; i * i <= n; i++) if (isPrime[i]) for (int j = i * i; j <= n; j += i) isPrime[j] = 0; return isPrime; }
 
@@ -56,7 +56,7 @@ typedef pair<int, int> pi;
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
 const int N = 1000010;
-int fact [N] ;
+int fact [N] = {0};
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
@@ -65,9 +65,47 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   int temp = n;
+   mpii mp;
+  
+    int cnt = 0;
+    while(temp%2 == 0)
+    {
+        cnt++;
+        temp /= 2;
+    }
+   if(!(n&1)) mp[cnt] ++;
    
+   for(int i = 3; i*i <= n; i++)
+   {
+    if((temp%i) == 0)
+    {
+        int cnt = 0;
+        while(temp%i == 0)
+        {
+            cnt++;
+            temp /= i;
+            // debug(cnt);
+        }
+        mp[cnt]++; 
+    }
+   }
+
+//    for(auto [x,y] : mp)cout << x << ' ' << y << ln;
+
+   int sum = 0;
+   for(auto [x,y] : mp)
+   {
+        sum += y;
+   }
+   int num = fact[sum];
+   int den = 1;
+
+  for(auto [x,y] : mp)
+  {
+    den = modMul(den,invFact[y],MOD);
+  }
+   cout << modMul(num,den,MOD) << ln;
 }
 
 signed main()
@@ -76,7 +114,12 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
+//      fact[0] = 1;
+//    for(int i = 1; i < N; ++i)
+//    {
+//         fact[i] = modMul(fact[i-1],i,MOD);
+//    }
     while (t--)
     {
         solve();
