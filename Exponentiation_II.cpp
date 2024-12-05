@@ -61,9 +61,11 @@ const bool testcase = 1;
 
 void solve()
 {
-   int a,b;
-   cin >> a >> b;
-   cout << modPow(a,b,MOD) << ln;
+   int a,b,c;
+   cin>>a>>b>>c;
+   int expo = modPow(b,c,MOD-1); // Eulers's Theorem
+   int ans = modPow(a,expo,MOD);
+   cout<<ans<<ln;
    
 }
 

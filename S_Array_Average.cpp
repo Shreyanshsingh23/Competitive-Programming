@@ -11,6 +11,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
+#define double long double
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
@@ -44,10 +45,6 @@ int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
 int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
-vi sieve(int n) { vi isPrime(n + 1, 1); isPrime[0] = isPrime[1] = 0; for (int i = 2; i * i <= n; i++) if (isPrime[i]) for (int j = i * i; j <= n; j += i) isPrime[j] = 0; return isPrime; }
-
-
-
 typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
@@ -57,14 +54,21 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
+double func(vi a,int i, double sum)
+{
+    if(i == sz(a))return sum/sz(a); 
+
+    return func(a,i+1,sum+a[i]);
+}
 void solve()
 {
-   int a,b;
-   cin >> a >> b;
-   cout << modPow(a,b,MOD) << ln;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
+   sett(6) << func(a,0,0) << ln;
 }
 
 signed main()

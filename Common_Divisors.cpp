@@ -43,6 +43,7 @@ int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
 int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
 int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
+
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
 vi sieve(int n) { vi isPrime(n + 1, 1); isPrime[0] = isPrime[1] = 0; for (int i = 2; i * i <= n; i++) if (isPrime[i]) for (int j = i * i; j <= n; j += i) isPrime[j] = 0; return isPrime; }
 
@@ -57,13 +58,35 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int a,b;
-   cin >> a >> b;
-   cout << modPow(a,b,MOD) << ln;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   int mxx = *max_element(all(a));
+   vii fact (mxx + 1);
+   for(int i = 1; i <= mxx; ++i)
+   {
+        for(int j = i; j <= mxx; j += i)
+        {
+            fact[j].pb(i);
+        }
+   }
+    mpii mp;
+    debug(fact);
+    for(auto e : a){
+        mp[fact[e].back()]++;
+    }
+    int ans = 0;
+    for(auto e : mp){
+        if(e.second > 1){
+            ans = max(ans,e.first);
+    }
+    }
+    cout << ans << ln;
+  
    
 }
 

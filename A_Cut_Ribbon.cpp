@@ -44,10 +44,6 @@ int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
 int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
-vi sieve(int n) { vi isPrime(n + 1, 1); isPrime[0] = isPrime[1] = 0; for (int i = 2; i * i <= n; i++) if (isPrime[i]) for (int j = i * i; j <= n; j += i) isPrime[j] = 0; return isPrime; }
-
-
-
 typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
@@ -57,14 +53,29 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int a,b;
-   cin >> a >> b;
-   cout << modPow(a,b,MOD) << ln;
-   
+   int1(n)
+   vi a (3);
+   FOR(i,3) cin >> a[i];
+   sort(all(a));
+   int cnt = 0;
+    int temp = n;
+   cnt = temp/a[0];
+   temp %= a[0];
+   bool ok = false;
+   if(temp){ 
+    ok = true;
+   while(temp != a[1] and temp != a[2])
+   {
+        --cnt;
+        temp += a[0];
+   }
+   }
+   if(ok)cnt ++;
+   cout << cnt << ln;
 }
 
 signed main()
