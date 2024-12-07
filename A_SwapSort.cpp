@@ -58,20 +58,39 @@ const bool testcase = 0;
 void solve()
 {
    int1(n)
-   int a,b,c;
-   cin >> a >> b >> c;
-   int mxx = MIN;
-   for(int i = 0; i <= n/a+1; ++i)
+   v<pi> a (n), b (n);
+   FOR(i,n)
    {
-        for(int j = 0; j <= n/b+1; ++j)
+        cin >> a[i].F;
+        b[i].F = a[i].F;
+        a[i].S = b[i].S = i;
+   }
+    debug(a)
+   sort(all(b));
+    debug(b)
+
+   v<bool> vis (n,false);
+
+   int cnt = 0;
+   FOR(i,n)
+   {
+        if(!vis[a[i].S] and !vis[b[i].S] and a[i].S != b[i].S)
         {
-            if(i*a + j*b > n)break;
-            int k = n - i*a - j*b;
-            if(k % c == 0)mxx = max(mxx,i+j+k/c);
+            cnt++;
+            vis[a[i].S] = vis[b[i].S] = true;
         }
    }
 
-   cout << mxx << ln;
+   cout << cnt << ln;
+   FOR(i,n)vis[i] = false;
+   FOR(i,n)
+   {
+        if(!vis[a[i].S] and !vis[b[i].S] and a[i].S != b[i].S)
+        {
+            cout << a[i].S << ' ' << b[i].S << ln;
+            vis[a[i].S] = vis[b[i].S] = true;
+        }
+   }
    
 }
 

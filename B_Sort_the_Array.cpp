@@ -58,21 +58,26 @@ const bool testcase = 0;
 void solve()
 {
    int1(n)
-   int a,b,c;
-   cin >> a >> b >> c;
-   int mxx = MIN;
-   for(int i = 0; i <= n/a+1; ++i)
-   {
-        for(int j = 0; j <= n/b+1; ++j)
-        {
-            if(i*a + j*b > n)break;
-            int k = n - i*a - j*b;
-            if(k % c == 0)mxx = max(mxx,i+j+k/c);
-        }
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   
+   int i = 0; 
+   while(i < n-1 and a[i+1] >= a[i]) i++;
+   if(i == n-1){
+    cout << "yes" << ln;
+    cout << 1 << ' ' << 1 << ln;
+    return;
    }
 
-   cout << mxx << ln;
-   
+   int j = i+1;
+   while(j < n and a[j-1] >= a[j]) j++;
+    
+    reverse(a.begin()+i,a.begin()+j);
+
+    cout << (is_sorted(all(a))? "yes" : "no") << ln;
+    if(is_sorted(all(a))){
+        cout << i+1 << ' ' << j << ln;
+    }
 }
 
 signed main()

@@ -53,25 +53,41 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void solve()
+
+bool check23(string n)
 {
-   int1(n)
-   int a,b,c;
-   cin >> a >> b >> c;
-   int mxx = MIN;
-   for(int i = 0; i <= n/a+1; ++i)
-   {
-        for(int j = 0; j <= n/b+1; ++j)
-        {
-            if(i*a + j*b > n)break;
-            int k = n - i*a - j*b;
-            if(k % c == 0)mxx = max(mxx,i+j+k/c);
-        }
-   }
+    int sum = 0, count2 = 0, count3 = 0;
+    for(auto c : n) {
+        if(c == '2') count2++;
+        else if(c == '3') count3++;
+        else sum += c - '0';
+    }
 
-   cout << mxx << ln;
+    
+    for(int i = 0; i <= count2; i++) {
+        for(int j = 0; j <= count3; j++) {
+            int currentSum = sum + 2 * (count2 - i) + 4 * i + 
+                           3 * (count3 - j) + 9 * j;
+            if(currentSum % 9 == 0) return true;
+        }
+    }
+    return false;
+}
+
+bool solve()
+{
+   string n;
+   cin>>n;
+   if( check23(n))
+   {
+    return true;
+   }
+   else
+   {
+    return false;
+   }
    
 }
 
@@ -84,7 +100,7 @@ signed main()
     // compFact();
     while (t--)
     {
-        solve();
+        cout << (solve()? "YES" : "NO") << ln;
     }
     return 0;
 }

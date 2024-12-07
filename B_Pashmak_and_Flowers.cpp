@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 200010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,21 +58,31 @@ const bool testcase = 0;
 void solve()
 {
    int1(n)
-   int a,b,c;
-   cin >> a >> b >> c;
-   int mxx = MIN;
-   for(int i = 0; i <= n/a+1; ++i)
-   {
-        for(int j = 0; j <= n/b+1; ++j)
-        {
-            if(i*a + j*b > n)break;
-            int k = n - i*a - j*b;
-            if(k % c == 0)mxx = max(mxx,i+j+k/c);
-        }
-   }
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   sort(all(a));
+   cout << a[n-1] - a[0] << ' ';
+    if(a[0] == a[n-1])
+    {
+        cout << (n * (n-1) )/2<< ln;
+        return;
+    }
+    int cnt1 = 1;
+    int cnt2 = 1;
+    for(int i = 1; i < n; i++)
+    {
+        if(a[i] != a[0])break;
+        cnt1++;
+    }
+    for(int i = n-2; i >= 0; i--)
+    {
+        if(a[i] != a[n-1])break;
+        cnt2++;
+    }
 
-   cout << mxx << ln;
-   
+    // debug(cnt);
+    
+    cout << cnt1 * cnt2 << ln;
 }
 
 signed main()

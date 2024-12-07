@@ -53,26 +53,31 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void solve()
+bool solve()
 {
    int1(n)
-   int a,b,c;
-   cin >> a >> b >> c;
-   int mxx = MIN;
-   for(int i = 0; i <= n/a+1; ++i)
-   {
-        for(int j = 0; j <= n/b+1; ++j)
-        {
-            if(i*a + j*b > n)break;
-            int k = n - i*a - j*b;
-            if(k % c == 0)mxx = max(mxx,i+j+k/c);
-        }
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   int odd = 0, even = 0;
+   FOR(i,n){
+       if(i & 1){
+           odd+=a[i];
+       }else{
+           even+=a[i];
+       }
    }
 
-   cout << mxx << ln;
+    int evenCnt = (n + 1) / 2;
+    int oddCnt = n / 2;
    
+     if(even % evenCnt == 0 and odd % oddCnt == 0) {
+        if(even / evenCnt == odd / oddCnt) {
+            return true;
+        }
+    }
+    return false;
 }
 
 signed main()
@@ -84,7 +89,7 @@ signed main()
     // compFact();
     while (t--)
     {
-        solve();
+        cout << (solve()? "YES" : "NO") << ln;
     }
     return 0;
 }

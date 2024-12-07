@@ -58,20 +58,47 @@ const bool testcase = 0;
 void solve()
 {
    int1(n)
-   int a,b,c;
-   cin >> a >> b >> c;
-   int mxx = MIN;
-   for(int i = 0; i <= n/a+1; ++i)
-   {
-        for(int j = 0; j <= n/b+1; ++j)
-        {
-            if(i*a + j*b > n)break;
-            int k = n - i*a - j*b;
-            if(k % c == 0)mxx = max(mxx,i+j+k/c);
-        }
-   }
+   vi boys (n); cin >> boys;
+    int m;cin >> m;
+    vi girls(m); cin >> girls;
+    int result = 0;
+    sort(boys.begin(), boys.end());
+sort(girls.begin(), girls.end());
 
-   cout << mxx << ln;
+for (int i = 0; i < n; i++)
+    for (int j = 0; j < m; j++)
+        if (abs(boys[i] - girls[j]) <= 1)
+        {
+            girls[j] = 1000;
+            result++;
+            break;
+        }
+//     mpii boys,girls;
+//     for(auto e: a)boys[e]++;
+//     for(auto e: b)girls[e]++;
+//     int ans = 0;
+//     for(auto [x,y] : boys)
+//     {
+//         ans += min(y,girls[x-1]);
+//         // debug(x,y,x-1,girls[x-1]);
+//         int temp = y;
+//         if(y > 0)y -= min(temp,girls[x-1]);
+//         if(girls.count(x-1))girls[x-1] -= min(temp,girls[x-1]);
+
+//         ans += min(y,girls[x]);
+//         // debug(x,y,x,girls[x]);
+//         temp = y;
+//         if(y > 0)y -= min(y,girls[x]);
+//         if(girls.count(x))girls[x] -= min(temp,girls[x]);
+
+//         ans += min(y,girls[x+1]);
+//         // debug(x,y,x+1,girls[x+1]);
+//         temp = y;
+//         if(y > 0)y -= min(y,girls[x+1]);
+//         if(girls.count(x+1))girls[x+1] -= min(temp,girls[x+1]);
+//     }
+   
+   cout << result << ln;
    
 }
 

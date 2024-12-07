@@ -58,21 +58,15 @@ const bool testcase = 0;
 void solve()
 {
    int1(n)
-   int a,b,c;
-   cin >> a >> b >> c;
-   int mxx = MIN;
-   for(int i = 0; i <= n/a+1; ++i)
+   v<pi> a (n);
+   FOR(i,n) cin >> a[i].F >> a[i].S;
+   int total = 0;
+   FOR(i,n)
    {
-        for(int j = 0; j <= n/b+1; ++j)
-        {
-            if(i*a + j*b > n)break;
-            int k = n - i*a - j*b;
-            if(k % c == 0)mxx = max(mxx,i+j+k/c);
-        }
+    if(i != 0)total -= min(total,a[i].F - a[i-1].F);
+    total += a[i].S;
    }
-
-   cout << mxx << ln;
-   
+    cout << total << ln;
 }
 
 signed main()
