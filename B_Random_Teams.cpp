@@ -57,32 +57,24 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   cin >> a;
+   int2(n,m);
 
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
-        }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
-   }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
+   int minn = 0;
+    int eqlMem = n/m;  //number of members in each team for now
+    int extraMemTeams = 0, equalMembersTeams = 0;
+    if(n%m != 0){
+        extraMemTeams = n%m;  // number of teams who have one member extra than normal teams
+        minn += (extraMemTeams*((eqlMem+1)*eqlMem))/2;
     }
-   
+        equalMembersTeams = m - extraMemTeams;
+
+    // debug(eqlMem, equalMembersTeams, extraMemTeams);
+   minn +=( equalMembersTeams*(eqlMem*(eqlMem-1)))/2;
+
+   int mxx = 0;
+   int memsInSingleTeam = n - m + 1;
+   mxx = (memsInSingleTeam*(memsInSingleTeam-1))/2;
+   cout << minn <<  ' ' << mxx << ln;
 }
 
 signed main()

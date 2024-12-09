@@ -1,0 +1,1 @@
+{"name":"Local: sumOfSubArrays","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/sumOfSubArrays.cpp","tests":[{"id":1733737926217,"input":"17 \n10 9 8 16 18 13 8 13 4 3 15 14 18 11 4 19 13","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/sumOfSubArrays.cpp","group":"local","local":true}

@@ -53,36 +53,41 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
    int1(n)
    vi a (n);
-   cin >> a;
-
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
-        }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
-   }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
-    }
+   FOR(i,n) cin >> a[i];
    
+   bool pos = false, neg = false;
+   
+    int sum = 0;
+    int i = 0;
+    
+    while(i < n){
+        int temp = MIN;
+        if(a[i] < 0 and !neg){
+            while(i < n and a[i] < 0 ){
+                temp = max(temp,a[i]);
+                ++i;
+            }
+            sum += temp;
+            pos = false;
+            neg = true;
+        }
+        else if(a[i] > 0 and !pos){
+            while(i < n and a[i] > 0){
+                temp = max(temp,a[i]);
+                ++i;
+            }
+            sum += temp;
+            pos = true;
+            neg = false;
+        }
+    }
+   cout << sum << ln;
 }
 
 signed main()

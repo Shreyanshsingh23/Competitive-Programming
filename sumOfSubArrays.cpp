@@ -59,29 +59,56 @@ void solve()
 {
    int1(n)
    vi a (n);
-   cin >> a;
+   FOR(i,n) cin >> a[i];
+   
+//    vi pref(n);
+//    pref[0] = a[0];
+//    for(int i = 1; i< n; i++){
+//         pref[i] = pref[i-1] + a[i];
+//    }
+   
+//    FOR(i,n){
+//        for(int j = i; j < n; ++j){
+//         int sum = 0;
+//         if(i == 0)sum =  pref[j];
+//         else  sum = pref[j] - pref[i-1];
+//         cout << sum << ln;
+//        }
+//    }
 
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
-        }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
-   }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
+
+    //   int n = a.size();  
+    vector<int> pref(n);
+    pref[0] = a[0];
+    for(int i = 1; i < n; ++i){
+        pref[i] = pref[i-1] + a[i];
     }
+
+    vector<int> sums;
+    for(int i = 0; i < n; ++i){
+       for(int j = i; j < n; ++j){
+        int sum = 0;
+        if(i == 0)sum =  pref[j];
+        else  sum = pref[j] - pref[i-1];
+        sums.push_back(sum);
+       }
+   }
+
+   
+    int cnt = 0;
+   for(auto e : sums){
+       bool ok = true;
+       for(int i = 2; i*i <= e; ++i){
+           if((e%i) == 0){
+               ok = false;
+               break;
+           }
+       }
+
+       if(ok)++cnt;
+   }
+
+   cout << cnt << endl;
    
 }
 

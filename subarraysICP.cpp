@@ -61,27 +61,22 @@ void solve()
    vi a (n);
    cin >> a;
 
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
-        }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
-   }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
+   vii ans;
+   FOR(i,n){
+    for(int j = i; j< n; ++j){
+        vi temp  = {a.begin()+ i, a.begin()+j+1};
+        // debug(temp);
+        ans.pb(temp);
     }
+   }
+
+   for(auto e: ans){
+    for(auto p : e){
+        cout << p << ' ';
+    }
+    cout << ln;
+   }
+
    
 }
 

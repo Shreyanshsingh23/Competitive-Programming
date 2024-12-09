@@ -53,36 +53,56 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   cin >> a;
+   int2(n,k)
+//    debug(poww(2,n-1));
 
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
-        }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
-   }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
+//     if(n > 60 and k > 1){
+//         cout << -1 << ln;
+//         return;
+//     }
+//    if(k > (1LL << (n-1))){
+//     cout << -1 << ln;
+//     return;
+//    }
+
+    if (n <= 63 && k > (1ll << (n - 1))) {
+            cout << -1 << endl;
+            return;
     }
+
+   vi ans(n,-1);
+    int temp = k-1;
+    vi bin;
+    while(temp){
+        bin.pb(temp%2);
+        temp /= 2;
+    }
+
+  while (bin.size() < n - 1) bin.pb(0);
+    reverse(all(bin));
+
    
+   int num = 1;
+   int l = 0, r = n-1;
+
+   FOR(i,n-1){
+    if(bin[i] == 0){
+        ans[l++] = num++;
+    }
+    else ans[r--] = num++;
+   }
+
+   ans[l] = num;
+  
+
+   for(auto e : ans){
+    cout << e << ' ';
+   }
+   cout << ln;
 }
 
 signed main()

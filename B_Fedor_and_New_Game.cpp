@@ -57,32 +57,25 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   cin >> a;
+   int3(n,m,k)
+   vi a (m);
+   FOR(i,m) cin >> a[i];
+    int fedor; cin >> fedor;
+    string fed = bitset<20> {fedor}.to_string();
 
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
+    int ans = 0;
+    
+    FOR(i,m){
+        string s = bitset<20> {a[i]}.to_string();
+        int cnt = 0;
+        FOR(j,20){
+            if(fed[j] != s[j])++cnt;
         }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
-   }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
+
+        if(cnt <= k)++ans;
     }
-   
+
+    cout << ans << ln;
 }
 
 signed main()

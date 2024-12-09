@@ -53,36 +53,35 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
+   int2(n,k)
    vi a (n);
-   cin >> a;
-
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
+   FOR(i,n) cin >> a[i];
+   int index = -1;
+   FOR(i,n){
+    int elem = a[i];
+    bool ok = true;
+    FOR(j,n){
+        if(i == j) continue;
+        if((abs(a[j]-elem) % k )== 0){
+            ok = false;
+            break;
         }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
-   }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
     }
-   
+    if(ok){
+        index = i;
+        break;
+    }
+   }
+    if(index == -1){
+        cout << "NO" << ln;
+        return;
+    }
+    cout << "YES" << ln;
+   cout << index+1 << ln;
 }
 
 signed main()

@@ -57,32 +57,16 @@ const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   cin >> a;
-
-   v<pi> ans;
-   int cnt = 0;
-   for(int i = 0; i< n; ++i)
-   {
-        int t = i;
-        for(int j = i; j < n; ++j)
-        {
-            if(a[j] < a[t])t = j;
-        }
-        if(t != i)
-        {
-            cnt++;
-            swap(a[i],a[t]);
-            ans.pb({i,t});
-        }
+   int2(n,m)
+   vi a (n), b(m);
+   cin >> a >> b;
+   int j = 0, mxx = MIN;
+   FOR(i,n){
+        while(j < m-1 and abs(a[i] - b[j+1]) <= abs(a[i] - b[j]))++j;
+        mxx = max(mxx, abs(a[i] - b[j]));
    }
-    cout << cnt << ln;
-    for(auto [x,y] : ans)
-    {
-        cout << x << ' ' << y << ln;
-    }
-   
+
+   cout << mxx << ln;
 }
 
 signed main()
