@@ -55,57 +55,63 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 
-// due to not using & operator it was making a copy of the array evertime due to which it was giving TLE and after using it the same code got accepted
-int binarySearch(vi &b, int& curr)
+void solve()
 {
-    int l = 0, r = sz(b), mid, ans = sz(b);
-    // int cnt = 100;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   vi ans(n), pref(n);
+   FOR(i,n){
+    int curr = a[i];
+    if(i < 2){
+        ans[i] = 20;
+        if(i == 0)pref[i] = 20;
+        else pref[i] = pref[i-1] +20;
+        continue;
+    }
+
+    // firstly check for 50 i.e. 90 minutes
+    int prev = 0, l = 0, r = n-1, mid;
     while(l <= r){
-        // ++cnt;
-        // debug(cnt);
         mid = (l+r) >> 1;
-        if(b[mid] >= curr){
-            ans = mid;
+        if(a[i] < a[mid] + 90 ){
+            prev = mid;
             r = mid - 1;
         }
         else l = mid + 1;
     }
-    // debug(ans);
-    return ans;
-}
-
-
-void solve()
-{
-   int2(n,m)
-   vi a (n), b(m);
-   cin >> a >> b;
-   //Two Pointer Approach Accepted
-//    int j = 0, mxx = MIN;
-//    FOR(i,n){
-//         while(j < m-1 and abs(a[i] - b[j+1]) <= abs(a[i] - b[j]))++j;
-//         mxx = max(mxx, abs(a[i] - b[j]));
-//    }
-
-    //Binary Search Approach
-    int mxx = MIN;
-    FOR(i,n){
-        int rightTower = binarySearch(b, a[i]);
-        int leftTower = rightTower - 1;
-
-        int minDisForThisTower = MAX;
-        if(rightTower < m and rightTower >= 0){
-            minDisForThisTower = min(minDisForThisTower, (b[rightTower] - a[i]));
-        }
-
-        if(leftTower >= 0 and leftTower < m){
-            minDisForThisTower = min(minDisForThisTower, (a[i] - b[leftTower]));
-        }
-        // debug(minDisForThisTower, b[rightTower], b[leftTower]);
-        mxx = max(mxx,minDisForThisTower);
+    int s1 = 20, s2 = 0, s3 = 0;
+    if(a[i] < a[prev] + 90){
+        int total = 0;
+        if(prev == 0)total = pref[i-1];
+        else total =pref[i-1]- pref[prev-1];
+        s2 = 50 - total;
+        
     }
 
-   cout << mxx << ln;
+    // then check for 120 i.e. 1440 minutes
+    prev = 0, l = 0, r = n-1, mid;
+    while(l <= r){
+        mid = (l+r) >> 1;
+        if(a[i] < a[mid] + 1440 ){
+            prev = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
+    }
+    if(a[i] < a[prev] + 1440){
+        int total = 0;
+        if(prev == 0)total = pref[i-1];
+        else total = pref[i-1]- pref[prev-1] ;
+        s3 = 120 - total;
+        // debug(prev,s3);
+    }
+    int answer = min({s1,s2,s3});
+    answer = max(0ll,answer);
+    pref[i] = pref[i-1] + answer;
+    ans[i] = answer;
+   }
+   for(auto e : ans)cout << e << ln;
 }
 
 signed main()

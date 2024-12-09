@@ -11,7 +11,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ln '\n';
+#define ln '\n'
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
@@ -46,7 +46,7 @@ int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
 typedef pair<int, int> pi;
 
-const int MOD = 1e9 + 7;
+const int MOD = 1000000000 + 7;
 const int mod = 998244353;
 const int N = 1000010;
 int fact [N] ;
@@ -55,57 +55,67 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 
-// due to not using & operator it was making a copy of the array evertime due to which it was giving TLE and after using it the same code got accepted
-int binarySearch(vi &b, int& curr)
+int n,t;
+vi a, b, res;
+
+bool check(int k)
 {
-    int l = 0, r = sz(b), mid, ans = sz(b);
-    // int cnt = 100;
-    while(l <= r){
-        // ++cnt;
-        // debug(cnt);
-        mid = (l+r) >> 1;
-        if(b[mid] >= curr){
-            ans = mid;
-            r = mid - 1;
-        }
-        else l = mid + 1;
+    v<pi> temp;
+    FOR(i,n)
+    {
+        if(a[i] >= k)temp.pb({b[i], i+1});
     }
-    // debug(ans);
-    return ans;
+
+    sort(all(temp));
+    bool ok = false;
+    
+// If size of temp is less than k, it means it is not poddible to solve k problems whose a[i]>= k 
+//Till now we have only checked for a[i] >= k, now will check for sum of times of k problems
+    if(sz(temp) >= k) 
+    {   
+        int sum = 0;
+        for(int i = 0; i < k; ++i){  // firstly we have sort so that we solve those k problems whose times are minimum and a[i] >= k
+            sum += temp[i].F;
+        }
+
+        if(sum <= t){
+            ok = true;
+            res.resize(k);
+            for(int i = 0; i < k; ++i){
+                res[i] = temp[i].S;
+            }
+        }
+
+    }
+
+    return ok;
 }
-
-
 void solve()
 {
-   int2(n,m)
-   vi a (n), b(m);
-   cin >> a >> b;
-   //Two Pointer Approach Accepted
-//    int j = 0, mxx = MIN;
-//    FOR(i,n){
-//         while(j < m-1 and abs(a[i] - b[j+1]) <= abs(a[i] - b[j]))++j;
-//         mxx = max(mxx, abs(a[i] - b[j]));
-//    }
+   cin >> n >> t;
+   a.resize(n); b.resize(n);
+   FOR(i,n)cin >> a[i] >> b[i];
+   int l = 0, r = n, mid , ans = 0;
 
-    //Binary Search Approach
-    int mxx = MIN;
-    FOR(i,n){
-        int rightTower = binarySearch(b, a[i]);
-        int leftTower = rightTower - 1;
+    //Here ans i.e.(k) is the number of points that we can achieve by solving k problems whose a[i] >= k and sum of all times of all solved problems is <= t.
 
-        int minDisForThisTower = MAX;
-        if(rightTower < m and rightTower >= 0){
-            minDisForThisTower = min(minDisForThisTower, (b[rightTower] - a[i]));
+    //We are only solving those k problems whose a[i] >= k such that they contribute to the total score as well
+
+   while(l <= r)
+   {
+        mid = (l+r) >> 1;
+        if(check(mid))
+        {
+            ans = mid;
+            l = mid + 1;
         }
+        else r = mid - 1;
+   }
 
-        if(leftTower >= 0 and leftTower < m){
-            minDisForThisTower = min(minDisForThisTower, (a[i] - b[leftTower]));
-        }
-        // debug(minDisForThisTower, b[rightTower], b[leftTower]);
-        mxx = max(mxx,minDisForThisTower);
-    }
-
-   cout << mxx << ln;
+   cout << ans << ln << ans  << ln;
+   for(auto x : res){
+    cout << x << ' ';
+   }
 }
 
 signed main()
