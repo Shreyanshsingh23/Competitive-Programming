@@ -53,29 +53,33 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
+int n, W;
+vi wt, val;
 
-bool solve()
+int knapsack(int w, int n){
+    if(n == 0 or w == 0){
+        return 0;
+    }
+     if(wt[n-1] <= W){
+       int a1 = val[n-1] + knapsack(w - wt[n-1], n-1 ); // choose this particular element
+       int a2 = knapsack(w,n-1); // does not choose this particular element
+
+       return max(a1,a2);
+     }
+
+     else{
+        return knapsack(w,n-1);
+     }
+}
+void solve()
 {
-   int2(n,k)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   int even = 0, odd = 0;
-   for(auto e : a){
-    if(e&1)odd++;
-    else even++;
-   }
-   
-   if(!(odd & 1))odd--;
- 
-   
-   if((k - odd <= 0 or even >= k - odd)and odd > 0){
-    if(k & 1) return true;
-    if(!(k & 1) and even > 0)return true;
-   }
-   return false;
+   cin >> n >> W;
+   wt.resize(n); val.resize(n);
+   cin >> wt >> val;
 
-
+   int ans = knapsack(W,n);
+   cout << ans << ln;
 }
 
 signed main()
@@ -87,8 +91,7 @@ signed main()
     // compFact();
     while (t--)
     {
-        cout << (solve() ? "Yes": "No") << ln;
-        // solve();
+        solve();
     }
     return 0;
 }

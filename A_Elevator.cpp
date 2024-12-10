@@ -53,42 +53,39 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
-bool solve()
+char a[2];
+void solve()
 {
-   int2(n,k)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   int even = 0, odd = 0;
-   for(auto e : a){
-    if(e&1)odd++;
-    else even++;
+   string s;
+   int x;
+   cin >> s >> x;
+   if(s == "front"){
+    a[0] = 'L';
+    a[1] = 'R';
    }
-   
-   if(!(odd & 1))odd--;
- 
-   
-   if((k - odd <= 0 or even >= k - odd)and odd > 0){
-    if(k & 1) return true;
-    if(!(k & 1) and even > 0)return true;
+   else{
+    a[0] = 'R';
+    a[1] = 'L';
    }
-   return false;
 
-
+   cout << a[x-1] << ln;
+   
 }
 
 signed main()
 {
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     ShreyanshSinghGautam
-
     int t = 1;
     testcase and cin >> t;
     // compFact();
     while (t--)
     {
-        cout << (solve() ? "Yes": "No") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

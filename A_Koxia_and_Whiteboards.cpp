@@ -55,27 +55,28 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   int2(n,k)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   int even = 0, odd = 0;
-   for(auto e : a){
-    if(e&1)odd++;
-    else even++;
+   int2(n,m)
+   vi a (n), b(m);
+   cin >> a >> b;
+   vi temp;
+   bool ok = false;
+   FOR(i,n){
+    temp.pb(a[i]);
    }
-   
-   if(!(odd & 1))odd--;
- 
-   
-   if((k - odd <= 0 or even >= k - odd)and odd > 0){
-    if(k & 1) return true;
-    if(!(k & 1) and even > 0)return true;
+
+   FOR(i,m)temp.pb(b[i]);
+   int sum = 0;
+
+   sort(all(temp), greater<int>());
+   FOR(i,n)sum += temp[i];
+   if(temp[n-1] > b[m-1]){
+    sum -= temp[n-1];
+    sum += b[m-1];
    }
-   return false;
 
-
+   cout << sum << ln;
 }
 
 signed main()
@@ -87,8 +88,8 @@ signed main()
     // compFact();
     while (t--)
     {
-        cout << (solve() ? "Yes": "No") << ln;
-        // solve();
+        // cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

@@ -53,29 +53,48 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
-bool solve()
+void solve()
 {
    int2(n,k)
    vi a (n);
    FOR(i,n) cin >> a[i];
-   int even = 0, odd = 0;
-   for(auto e : a){
-    if(e&1)odd++;
-    else even++;
-   }
+//    if(k == 0){
+//     int minn = *min_element(all(a));
+//     if(minn <= 1)cout << - 1 << ln
+//     else cout << 1 << ln;
+//     return;
+//    }
+   sort(all(a));
+   debug(a);
    
-   if(!(odd & 1))odd--;
- 
-   
-   if((k - odd <= 0 or even >= k - odd)and odd > 0){
-    if(k & 1) return true;
-    if(!(k & 1) and even > 0)return true;
-   }
-   return false;
+    int res;
+    if(k == 0)res = a[0]-1;
+    else res = a[k-1];
+
+    int cnt = upper_bound(all(a), res) - a.begin();
+    if(cnt != k or res < 1 or res > 1e9)res = -1;
+    cout << res << ln;
 
 
+//    int l = 1, r = 1e9, mid, ans = 0;
+//    int index = upper_bound(all(a), 3) - a.begin();
+//    debug(index)
+//    while(l <= r)
+//    {
+//         mid = (l+r) >> 1;
+//         int index = upper_bound(all(a), mid) - a.begin();
+//         // debug(mid,index)
+//         if(index >= k){
+//             ans = mid;
+//             r = mid - 1;
+//         }
+//         else l = mid + 1;
+//    }
+//     int idx = upper_bound(all(a), ans) - a.begin() - 1;
+//     if(idx >= k)ans = -1;
+//    cout << ans << ln; 
 }
 
 signed main()
@@ -87,8 +106,8 @@ signed main()
     // compFact();
     while (t--)
     {
-        cout << (solve() ? "Yes": "No") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }
