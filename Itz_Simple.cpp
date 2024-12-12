@@ -57,31 +57,20 @@ const bool testcase = 1;
 
 void solve()
 {
-   int2(n,k)
-   
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
+   int n, ved, varun; 
+   cin >> n >> ved >> varun;
 
-    return;
-   }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
+   vi a (n);
+   FOR(i,n) cin >> a[i];
 
-   if(k >= n){
-    cout << 1 << ln;
-    return;
-   }
+   sort(all(a));
 
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
-        }
-   }
-   cout << ans << ln;
+   ved += a[n-1];
+   FOR(i,n-1)varun += a[i];
+
+   if(varun > ved) cout << "Varun" << ln
+   else if(varun < ved) cout << "Ved" << ln
+   else cout << "Equal" << ln;
    
 }
 

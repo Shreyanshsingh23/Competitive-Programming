@@ -53,36 +53,64 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
+void cal(v<string>& ans, string b, int i, int n){
+    //base case
+    if(i == n){
+        ans.pb(b);
+        return;
+    }
+
+    if(b[i] == '?'){
+        b[i] = '+';
+        cal(ans,b,i+1,n);
+        b[i] = '-';
+        cal(ans,b,i+1,n);
+    }
+    else cal(ans,b,i+1,n);
+}
 void solve()
 {
-   int2(n,k)
+   string a,b; cin >> a >> b;
+   int n = sz(a);
+   int m = sz(b);
    
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
-
-    return;
-   }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
-
-   if(k >= n){
-    cout << 1 << ln;
-    return;
+   int real = 0;
+   FOR(i,n){
+    if(a[i] == '+')real++;
+    else real--;
    }
 
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
+   v<string> ans;
+   cal(ans,b,0,n);
+    // debug(ans);
+    if(sz(ans) == 0){
+        int temp =0;
+        FOR(i,n){
+            if(b[i] == '+')temp++;
+            else temp--;
         }
+
+        if(temp == real)sett(10) << 1 << ln
+        else sett(10) << 0 << ln;
+        return;
+    }
+   int cnt = 0;
+   FOR(i,sz(ans)){
+    int temp = 0;
+    FOR(j,n){
+        if(ans[i][j] == '+')temp++;
+        else temp--;
+    }
+
+    if(temp == real)cnt++;
    }
-   cout << ans << ln;
-   
+
+   double result = 0.0;
+   result = (double)cnt/double(sz(ans));
+
+   sett(12) << result << ln;
 }
 
 signed main()

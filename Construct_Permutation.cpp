@@ -57,32 +57,36 @@ const bool testcase = 1;
 
 void solve()
 {
-   int2(n,k)
-   
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
-
-    return;
-   }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
-
-   if(k >= n){
-    cout << 1 << ln;
+   int1(n)
+   if(!(n&1)){
+    cout << -1 << ln;
     return;
    }
 
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
-        }
+   vi odd, even; 
+   int a = 0, b = 0;
+   for(int i = 1; i <= n; i++){
+       if(i & 1){
+           odd.pb(i);
+       }else{
+           even.pb(i);
+       }
    }
-   cout << ans << ln;
    
+   reverse(all(even));
+
+   
+
+   for(int i = 0; i < n; i++){
+       if(!(i&1)){
+           cout << odd[a++] << ' ';
+       }
+       else cout << even[b++] << ' ';
+   }
+   
+   cout << ln;
+
+
 }
 
 signed main()

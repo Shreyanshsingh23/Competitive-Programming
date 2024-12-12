@@ -55,34 +55,43 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 1;
 
-void solve()
+bool solve()
 {
-   int2(n,k)
+   int1(n)
+   int l, r;
+   cin >> l >> r;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   int ans = 1;
+
+   mpii mp;
+   bool zero = false;
+   FOR(i,n) mp[a[i]]++;
+   for(auto& it : mp){
+       if(it.second > 1){
+           zero = true;
+           break;
+       }
+   }
+   if(zero){
+       if(l <= 0 and r >= 0){
+           return 1;
+       }
+       return 0;
+   }
+
+   for(int i = 0; i < n; i++)
+   {   
+        for(int j = i+1; j < n; j++)
+            {
+                ans *= a[i]^a[j];
+                if(ans > r) break;
+            }
+        if(ans > r) break;
    
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
-
-    return;
    }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
-
-   if(k >= n){
-    cout << 1 << ln;
-    return;
-   }
-
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
-        }
-   }
-   cout << ans << ln;
-   
+    // debug(ans)
+   return ans >= l and ans <= r;  
 }
 
 signed main()
@@ -94,8 +103,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

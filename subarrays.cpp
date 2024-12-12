@@ -53,36 +53,45 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int2(n,k)
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+    //Prefix Sum
+   vi pref(n);
+
+   pref[0] = a[0];
+   for(int i = 1; i< n;++i){
+    pref[i] = pref[i-1]+a[i];
+   }
+//    debug(pref)
+    int cnt = 0;
    
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
+   for(int i = 0; i< n; ++i){
+    for(int j = i; j < n; ++j){
+        int sum = 0;
+       if(i == 0){
+        sum = pref[j];
+       }
+        else sum = pref[j] - pref[i-1];
 
-    return;
-   }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
-
-   if(k >= n){
-    cout << 1 << ln;
-    return;
-   }
-
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
+     bool isPrime = true;
+        if(sum == 1)isPrime = false;
+        for(int k = 2; k*k <= sum; k++){
+            if(sum % k == 0){
+                isPrime = false;
+                break;
+            }
         }
+
+        if(isPrime)cnt++;
+    }
    }
-   cout << ans << ln;
-   
+
+   cout << cnt << ln;
 }
 
 signed main()

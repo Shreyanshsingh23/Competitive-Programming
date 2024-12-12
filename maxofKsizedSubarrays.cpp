@@ -53,36 +53,35 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int2(n,k)
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
-
-    return;
-   }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
-
-   if(k >= n){
-    cout << 1 << ln;
-    return;
-   }
-
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
+   vi ans;
+    int mxx = a[0], mxx2 = MIN;
+    ans.pb(mxx);
+   for(int i = 0; i < k; ++i){
+        if(a[i] > mxx){
+            mxx2 = mxx;
+            mxx = a[i];
         }
+        else if(mxx2 < a[i])mxx2 = a[i];
    }
-   cout << ans << ln;
-   
+
+    for(int i = k; i < n-k; ++i){
+        int temp = 0;
+        if(a[i-k] == mxx){
+           if(a[i] > mxx2){
+                mxx = a[i];
+            }
+        }
+    }
+
+
 }
 
 signed main()

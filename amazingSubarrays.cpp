@@ -53,34 +53,20 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int2(n,k)
-   
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
+   int1(n)
+   string s;
+   cin >> s;
 
-    return;
-   }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
-
-   if(k >= n){
-    cout << 1 << ln;
-    return;
+   int ans = 0;
+   set<char> st {'a','e','i','o','u'};
+   for(int i = 0; i< n; ++i){
+        if(st.count(s[i]))ans+= n-i;
    }
 
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
-        }
-   }
    cout << ans << ln;
    
 }

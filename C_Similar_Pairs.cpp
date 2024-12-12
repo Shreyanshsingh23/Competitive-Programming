@@ -55,34 +55,37 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 1;
 
-void solve()
+bool solve()
 {
-   int2(n,k)
-   
-   if(isPrime(n)){
-    if(k < n)cout << n << ln
-    else cout << 1 << ln;
-
-    return;
-   }
-//    debug(sqrt(999999733))
-//    debug(999999733 - sqrt(999999733))
-
-   if(k >= n){
-    cout << 1 << ln;
-    return;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   int odd = 0, even = 0;
+   FOR(i,n){
+       if(a[i] & 1){
+           odd++;
+       }else{
+           even++;
+       }
    }
 
-   int ans = n;
-   for(int i = 1; i * i <= n; i++){
-        if(n % i == 0){
-            int j = n / i;
-            if(k >= i)ans = min(ans,j);
-            if(k >= j)ans = min(ans,i);
+  if(odd % 2 == 0 and even % 2 == 0) return true; // means they are in pairs ya fr hain hi nhi
+  if(odd %2 == even % 2){  // agr even 1 hai aur odd 3 hai toh theek hai, check karenge ki ek pair aisa ban jaye jiska difference hai uske baad toh odd 2(mtlb even numbers me hi bachenge) toh unki pairing ho jayegi
+    bool ok = false;
+    FOR(i,n){
+        if(a[i] & 1){
+            FOR(j,n){
+                if(abs(a[i]-a[j]) == 1){
+                    ok = true;
+                    break;
+                }
+            }
         }
-   }
-   cout << ans << ln;
-   
+    }
+    return ok;
+  }
+
+  return false;
 }
 
 signed main()
@@ -94,8 +97,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }
