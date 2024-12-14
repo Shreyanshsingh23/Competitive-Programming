@@ -55,6 +55,7 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 
+// PRIORITY QUEUE is one option to solve this problem
 void solve()
 {
    int1(n)
