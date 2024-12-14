@@ -55,33 +55,44 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 1;
 
-bool cmp(int a, int b){
-    return abs(a) > abs(b);
-}
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-  int neg = 0, sum = 0;
-   FOR(i,n)if(a[i] < 0)neg++;
+   string s;
+   cin >> s;
 
-    bool evenNeg = false;
-   if(!(neg&1)){
-    evenNeg = true;
-   }
-
-   if(evenNeg){
-        FOR(i,n)sum +=abs( a[i]);
-   }
-   else{
-       sort(all(a),cmp);
-       FOR(i,n-1)sum += abs(a[i]);
-       sum += -abs(a[n-1]);
-   }
+   vi zer, one, ans(n);
    
-   cout << sum << ln;
+   FOR(i, n)
+   {
+        int newPos = sz(one) + sz(zer) + 1;
+      if(s[i] == '0'){
+        if(one.empty()){
+            zer.pb(newPos);
+        }
+        else{
+            newPos = one.back();
+            one.pop_back();
+            zer.pb(newPos);
+        }
+      }
+      else{
+        if(zer.empty()){
+            one.pb(newPos);
+        }
+        else{
+            newPos = zer.back();
+            zer.pop_back();
+            one.pb(newPos);
+        }
+      }
+      ans[i] = newPos;
+   }
+   cout << sz(one) + sz(zer) << ln;
+   FOR(i, n)cout << ans[i]  << " ";
+   cout << ln;
+   
+   
 }
 
 signed main()

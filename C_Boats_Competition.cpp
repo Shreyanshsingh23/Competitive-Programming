@@ -55,33 +55,53 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 1;
 
-bool cmp(int a, int b){
-    return abs(a) > abs(b);
-}
 void solve()
 {
    int1(n)
    vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-  int neg = 0, sum = 0;
-   FOR(i,n)if(a[i] < 0)neg++;
-
-    bool evenNeg = false;
-   if(!(neg&1)){
-    evenNeg = true;
+   int sum = 0;
+   FOR(i,n){
+     cin >> a[i];
    }
 
-   if(evenNeg){
-        FOR(i,n)sum +=abs( a[i]);
+   sum = 2*n;
+   int mxx = *max_element(all(a));
+  
+   int mxxAns = MIN;
+   mpii mp;
+   while(sum >= 2){
+    FOR(i,n)mp[a[i]]++;
+    int cnt= 0;
+    // debug(sum)
+    FOR(i,n){
+        if(mp[sum-a[i]] > 0 and mp[a[i]] > 0){
+            // debug(a[i], sum - a[i], mp[sum - a[i]])
+            if(sum-a[i] == a[i]){
+                if(mp[sum - a[i]] > 1){
+                    cnt++;
+                    mp[sum - a[i]]--;
+                    mp[a[i]]--;
+                }
+            }
+            else{
+                cnt++;
+            mp[sum - a[i]]--;
+            mp[a[i]]--;
+            }
+        }
+        // debug(cnt)
+    }
+    // debug(sum)
+    // debug(cnt)
+    mxxAns = max(mxxAns,cnt);
+    sum--;
+    mp.clear();
    }
-   else{
-       sort(all(a),cmp);
-       FOR(i,n-1)sum += abs(a[i]);
-       sum += -abs(a[n-1]);
-   }
+    if(n > 1)mxxAns = max(mxxAns,1ll);
+   cout << mxxAns << ln;
+
+ 
    
-   cout << sum << ln;
 }
 
 signed main()

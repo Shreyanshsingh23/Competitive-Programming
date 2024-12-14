@@ -29,7 +29,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
 #define F first
-#define S second
+// #define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
 int log(int num , int base){int ans = 0; while(num){num /= base;ans++;} return ans;}//an extra
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
@@ -53,35 +53,33 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
-
-bool cmp(int a, int b){
-    return abs(a) > abs(b);
-}
+const bool testcase = ;
+int n,r;
+int b,s,c;
+int pB,pS,pC;
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
    
-  int neg = 0, sum = 0;
-   FOR(i,n)if(a[i] < 0)neg++;
+   string s;
+   cin >> s;
+   n = sz(s);
+   cin >> b >> s >> c;
+   cin >> pB >> pS >> pC;
+   cin >> r;
 
-    bool evenNeg = false;
-   if(!(neg&1)){
-    evenNeg = true;
-   }
+    int B,S,C;
 
-   if(evenNeg){
-        FOR(i,n)sum +=abs( a[i]);
-   }
-   else{
-       sort(all(a),cmp);
-       FOR(i,n-1)sum += abs(a[i]);
-       sum += -abs(a[n-1]);
-   }
+    mpii mp;
+    for(int i = 0; i < n; i++)
+    {
+        mp[s[i]]++;
+    }
+    B = mp['B'];
+    S = mp['S'];
+    C = mp['C'];
    
-   cout << sum << ln;
+    
+
 }
 
 signed main()
