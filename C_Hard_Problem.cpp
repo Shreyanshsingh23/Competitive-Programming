@@ -29,7 +29,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
 #define F first
-// #define S second
+#define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
 int log(int num , int base){int ans = 0; while(num){num /= base;ans++;} return ans;}//an extra
 int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
@@ -53,66 +53,27 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
-int n,r;
-int b,s,c;
-int pB,pS,pC;
-int B,SS,C;
+const bool testcase = 1;
 
-bool check(int mid){
-    int reqB, reqS, reqC;
-    reqB = mid*B, reqS = mid*SS, reqC = mid*C;
-    reqB -= b, reqS -= s, reqC -= c;
-    int sum = 0;
-    if(reqB > 0)sum += reqB*pB;
-    if(reqS > 0)sum += reqS*pS;
-    if(reqC > 0)sum += reqC*pC;
-    return sum <= r;
-}
 void solve()
 {
+   int m,a,b,c;
+   cin >> m >> a >> b >> c;
    
-   string str;
-   cin >> str;
-   n = sz(str);
-   cin >> b >> s >> c;
-   cin >> pB >> pS >> pC;
-   cin >> r;
-
-
-    mpci mp;
-    for(int i = 0; i < n; i++)
-    {
-        mp[str[i]]++;
-    }
-    B = mp['B'];
-    SS = mp['S'];
-    C = mp['C'];
+   int ans = 0;
+   ans += min(m,a);
+   ans += min(m,b);
+   if(a < m){
+    ans += min(m-a,c);
+    c -= min(m-a,c);
+   }
+   if(b < m){
+    ans += min(m-b,c);
+    c -= min(m-b,c);
+   }
    
-   int possS = 1e18,possC = 1e18,possB = 1e18;
- 
-    
-    if(B > 0)possB = b/B;
-    if(SS > 0)possS = s/SS;
-    if(C > 0)possC = c/C;
-    int possBurger = min({possB,possS,possC});
-    possBurger = max(0ll,possBurger);
-    b -= possBurger*B;
-    s -= possBurger*SS;
-    c -= possBurger*C;
-    int l = 0, r = 1e15, mid, ans = 0; // was overflowing due to 1e18
-
-    while(l <= r){
-        mid = l +( (r-l) >> 1);
-
-        if(check(mid)){
-            ans = mid;
-            l = mid + 1;
-        }
-        else r = mid - 1;
-    }
-    cout << ans+ possBurger << ln;
-
+   cout << ans << ln;
+   
 }
 
 signed main()
