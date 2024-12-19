@@ -1,0 +1,1 @@
+{"name":"Local: minimumSwapsScaler","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/minimumSwapsScaler.cpp","tests":[{"id":1734601015413,"input":"7\n1 12 10 3 14 10 5\n8","output":"2"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/minimumSwapsScaler.cpp","group":"local","local":true}
