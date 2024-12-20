@@ -1,5 +1,3 @@
-//CSES - Repetitions
-
 #include <bits/stdc++.h>
 using namespace std;
 #ifndef ONLINE_JUDGE
@@ -55,28 +53,14 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-void solve()
+bool solve()
 {
-   string s;
-   cin >> s;
-//    debug(s)
-   int n = sz(s);
-// debug(n)
-   int cnt = 1, mxx = 1;
-    for(int i = 1; i< n; i++){
-        if(s[i] == s[i-1]){
-            ++cnt;
-            // debug(cnt)
-            mxx = max(mxx,cnt);
-        }
-        else{
-            cnt = 1;
-        }
-    }
-
-    cout << mxx << ln;
+   int1(n)
+   if(n%33 == 0)return true;
+   return false;
+   
 }
 
 signed main()
@@ -88,8 +72,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }
