@@ -60,16 +60,12 @@ void solve()
    int2(n,m)
    vi a (n), b(m);
    cin >> a >> b;
-   int kevin = a[0];
-   sort(all(a), greater<int>());
-   sort(all(b));
-
-   vi ans(m);
-  for(int i = 0; i < m; ++i){
-    if(kevin >= b[i]){
-
-  }
-  }
+    sort(all(a));
+    int i = 0;
+   FOR(j,m){
+    while(i < n and a[i] <= b[j])++i;
+    if(a[i-1] <= b[j])
+   
 }
 
 signed main()

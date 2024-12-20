@@ -53,23 +53,31 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
+
+void func(int n){
+    if(n == 0)return;
+    cout << "pre " << n << ln;
+    func(n-1);
+    cout << "in " << n << ln;
+    func(n-1);
+    cout << "post " << n << ln;
+}
 
 void solve()
 {
-   int2(n,m)
-   vi a (n), b(m);
-   cin >> a >> b;
-   int kevin = a[0];
-   sort(all(a), greater<int>());
-   sort(all(b));
-
-   vi ans(m);
-  for(int i = 0; i < m; ++i){
-    if(kevin >= b[i]){
-
-  }
-  }
+   int1(n)
+   func(n);
+    // vi a(n);
+    // cin >> a;
+    // debug(a)
+    // int mxxTillHere = a[0], mxxSoFar = a[0];
+    // for(int i = 1; i < n; ++i){
+    //     mxxTillHere = max(mxxTillHere + a[i], a[i]);
+    //     mxxSoFar = max(mxxSoFar, mxxTillHere);
+    // }
+    // cout << mxxSoFar << ln;
+   
 }
 
 signed main()
