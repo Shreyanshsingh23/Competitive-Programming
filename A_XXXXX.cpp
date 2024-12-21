@@ -53,39 +53,83 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            st.erase(it);
-        }
-        // debug(st)
-        
+   int1(n)
+   int x; cin >> x;
+   int sum = 0;
+   vi a (n);
+   bool allDiv = true;
+   FOR(i,n){
+        cin >> a[i];
+        sum += a[i];
+        if(a[i]%x  != 0)allDiv = false;
    }
 
-//    debug(ans)
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+    if(allDiv){
+        cout << -1 << ln;
+        return;
+    }
+
+    if(sum % x != 0){
+        cout << n << ln;
+        return;
+    }
+
+    int pref = 0, suff = 0, j = n-1;
+
+    for(int i = 0; i < n; ++i){
+        if(a[i]%x != 0){
+            pref = i+1;
+            break;
+        }
+
+    }
+    for(int i = n-1; i >= 0; --i){
+        if(a[i]%x != 0){
+            suff = n-i;
+            break;
+        }
+    }
+    // debug(pref,suff)
+    cout << n - min(pref,suff) << ln;
+
+    
+
+    // find any first number that is not divisible by x from both the sides 
+    // because we have to delete any 1 such number which is not divisible by x
+    // and we can only remove continous elements
+    // so which will be the minimum of pref and suff
+    // constraints are given to confuse
+   
+   /*
+   
+   This same approach can also be written as follows:
+   for (int i=0;i<n;i++)
+        {
+            int a;
+            scanf("%d",&a);
+            if (a%x)
+            {
+                if (l==-1)
+                l=i;
+                r=i;
+            }
+            sum+=a;
+        }
+        if (sum%x)
+        printf("%d\n",n);
+        else if (l==-1)
+        printf("-1\n");
+        else
+        printf("%d\n",n-min(l+1,n-r));
+
+        only first element as preifx other all as suffix
+
+   */
+   
 }
 
 signed main()

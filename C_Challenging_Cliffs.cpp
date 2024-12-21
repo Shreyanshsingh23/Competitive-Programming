@@ -53,39 +53,17 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   
+   int minn = MAX;
    sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            st.erase(it);
-        }
-        // debug(st)
-        
-   }
-
-//    debug(ans)
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+    
 }
 
 signed main()

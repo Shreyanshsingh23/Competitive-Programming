@@ -11,6 +11,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
+#define double long double
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
@@ -54,38 +55,48 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
+int n,h;
+vi a;
 
+int calculateTotalTime( vi& distances, int speed) {
+    int totalTime = 0;
+    for (int dist : distances) {
+        totalTime += (dist + speed - 1) / speed;
+    }
+    return totalTime;
+}
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            st.erase(it);
-        }
-        // debug(st)
-        
+   cin >> n >> h;
+   a.resize(n);
+   int sum = 0;
+   FOR(i,n){
+    cin >> a[i];
+    sum += a[i];
    }
 
-//    debug(ans)
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+   int left = 1; 
+    int right = *max_element(all(a)); 
+    int result = -1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;  
+        int totalTime = calculateTotalTime(a, mid);
+        
+        if (totalTime <= h) {
+            result = mid;
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
+    
+   if(h < n){
+    cout << -1 << ln;
+   }
+   else{
+    cout << result << ln;
+   }
 }
 
 signed main()

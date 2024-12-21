@@ -55,37 +55,27 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 
+bool cmp(pi a,pi b){
+    return a.S < b.S;
+}
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
-    int i = 0, j = 0;
+   int1(n)
+   v<pi> a (n);
+   FOR(i,n) cin >> a[i];
+   sort(all(a),cmp);
 //    debug(a)
 
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            st.erase(it);
-        }
-        // debug(st)
-        
-   }
+    int cnt = 1;
+    int temp = a[0].S;
+    for(int i = 1; i< n; ++i){
+       if(a[i].F >= temp){
+        ++cnt;
+        temp = a[i].S;
+       }
+    }
 
-//    debug(ans)
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+    cout << cnt << ln;
 }
 
 signed main()

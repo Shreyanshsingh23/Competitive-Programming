@@ -55,37 +55,31 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 
-void solve()
-{
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
-    int i = 0, j = 0;
-//    debug(a)
 
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            st.erase(it);
-        }
-        // debug(st)
+   int findLIS( vi& arr) {
+   int n = arr.size();
+    if (n == 0) return 0;
+    
+    vi b;
+    
+    for (int num : arr) {
+        auto it = lower_bound(all(b), num);
         
-   }
-
-//    debug(ans)
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+        if (it == b.end()) {
+            b.pb(num);
+        }
+        else {
+            *it = num;
+        }
+    }
+    
+    return b.size();
+}
+void solve() {
+    int1(n);
+    vi a(n);
+    FOR(i,n) cin >> a[i];
+    cout << findLIS(a) << ln;
 }
 
 signed main()

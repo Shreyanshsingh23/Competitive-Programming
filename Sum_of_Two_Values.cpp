@@ -57,35 +57,30 @@ const bool testcase = 0;
 
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            st.erase(it);
-        }
-        // debug(st)
-        
+   int2(n,sum)
+   map<int,vi> mp;
+   FOR(i,n){
+    int x;cin >> x;
+    mp[x].pb(i+1);
    }
+    // debug(mp)
+    for(auto [x,y]: mp){
+        // debug(y)
+        int rem = sum - x;
+        if(mp[rem].size() > 0){
+            int ans = -1;
+            for(int j = 0;j < y.size(); ++j){
+                int i = 0, m = mp[rem].size();
+                while(i < m and mp[rem][i] == y[j])++i;
+                if(i != m){
+                    cout << mp[rem][i] << ' ' << y[j];
+                    return;
+                }
+            }
+        }
+    }
 
-//    debug(ans)
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+    cout << "IMPOSSIBLE" << ln;
 }
 
 signed main()

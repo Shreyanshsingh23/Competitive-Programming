@@ -55,37 +55,73 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 
+const int INF = INT_MAX / 2;
+class ShortestPathSolver {
+private:
+    int n;
+    vector<vector<int>> dist;
+
+    void floydWarshall() {
+        for (int k = 0; k < n; k++) {
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (dist[i][k] != INF && dist[k][j] != INF && 
+                        dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+                }
+            }
+        }
+    }
+
+public:
+    ShortestPathSolver(int vertices) : n(vertices) {
+        dist = vector<vector<int>>(n, vector<int>(n, INF));
+        
+        for (int i = 0; i < n; i++) {
+            dist[i][i] = 0;
+        }
+    }
+
+    void addEdge(int u, int v, int w) {
+        u--; v--;
+        dist[u][v] = min(dist[u][v], w);
+        dist[v][u] = min(dist[v][u], w);
+    }
+
+    void preprocessGraph() {
+        floydWarshall();
+    }
+
+    int query(int a, int b) {
+        a--; b--;
+        return dist[a][b] == INF ? -1 : dist[a][b];
+    }
+};
+
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            st.erase(it);
-        }
-        // debug(st)
-        
-   }
-
-//    debug(ans)
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+   int n, m;
+    cin >> n >> m;
+    
+    ShortestPathSolver solver(n);
+    
+    for (int i = 0; i < m; i++) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        solver.addEdge(u, v, w);
+    }
+    
+    solver.preprocessGraph();
+    
+    int q;
+    cin >> q;
+    for (int i = 0; i < q; i++) {
+        int a, b;
+        cin >> a >> b;
+        cout << solver.query(a, b) << ln;
+    }
+   
 }
 
 signed main()
