@@ -53,42 +53,50 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int1(n)s
-    vi a(n);
-    FOR(i, n)
-    cin >> a[i];
-    sort(all(a));
-    if (n == 2)
-    {
-        cout << a[0] << " " << a[1] << ln;
-        return;
-    }
-    int idx;
-    int minn = MAX;
-    for (int i = 1; i < n; ++i)
-    {
-        if (abs(a[i] - a[i - 1]) < minn)
-        {
-            minn = abs(a[i] - a[i - 1]);
-            idx = i;
+   int n, m;
+    cin >> n >> m; 
+    int x, y;
+    cin >> x >> y; 
+    x--, y--;      
+
+    v<v<char>> a(n, v<char>(m)); 
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            cin >> a[i][j];
         }
     }
-    // debug(a)
-    // debug(idx)
-    for (int i = idx; i < n; i++)
-    {
-        cout << a[i] << " ";
+
+    v<v<bool>> vis(n, v<bool>(m, false));
+    string s;
+    cin >> s; 
+
+    int cnt = 0;
+
+    for (char dir : s) {
+        int nx = x, ny = y;
+        if (dir == 'U') nx--;
+        else if (dir == 'D') nx++;
+        else if (dir == 'L') ny--;
+        else if (dir == 'R') ny++;
+
+        if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+
+        if (a[nx][ny] == '@' && !vis[nx][ny]) {
+            vis[nx][ny] = true;
+            cnt++;
+        }
+
+        if (a[nx][ny] == '.' || a[nx][ny] == '@') {
+            x = nx;
+            y = ny;
+        }
     }
-    for (int i = 0; i < idx; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << ln;
-   
+
+    cout << x + 1 << ' ' << y + 1 << ' ' << cnt << ln; 
 }
 
 signed main()

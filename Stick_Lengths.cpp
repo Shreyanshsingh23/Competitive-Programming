@@ -53,42 +53,29 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int1(n)s
-    vi a(n);
-    FOR(i, n)
-    cin >> a[i];
-    sort(all(a));
-    if (n == 2)
-    {
-        cout << a[0] << " " << a[1] << ln;
-        return;
-    }
-    int idx;
-    int minn = MAX;
-    for (int i = 1; i < n; ++i)
-    {
-        if (abs(a[i] - a[i - 1]) < minn)
-        {
-            minn = abs(a[i] - a[i - 1]);
-            idx = i;
-        }
-    }
-    // debug(a)
-    // debug(idx)
-    for (int i = idx; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = 0; i < idx; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << ln;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
+   sort(all(a));
+   int mid = n/2;
+//    if(n&1){
+//      mid = n/2;
+//    }
+//    else {
+//     mid = n/2 - 1;
+//    }
+
+   int sum = 0;
+   FOR(i,n){
+     sum += abs(a[mid]-a[i]);
+   }
+
+   cout << sum << ln;
 }
 
 signed main()

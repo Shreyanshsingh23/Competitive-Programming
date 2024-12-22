@@ -53,41 +53,15 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
-void solve()
+bool solve()
 {
-   int1(n)s
-    vi a(n);
-    FOR(i, n)
-    cin >> a[i];
-    sort(all(a));
-    if (n == 2)
-    {
-        cout << a[0] << " " << a[1] << ln;
-        return;
-    }
-    int idx;
-    int minn = MAX;
-    for (int i = 1; i < n; ++i)
-    {
-        if (abs(a[i] - a[i - 1]) < minn)
-        {
-            minn = abs(a[i] - a[i - 1]);
-            idx = i;
-        }
-    }
-    // debug(a)
-    // debug(idx)
-    for (int i = idx; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = 0; i < idx; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << ln;
+   int1(a)
+   int b,c;cin >> b >> c;
+   if(a == b and b == c)return 1;
+   if(a+b == c or a+c == b or b+c == a)return 1;
+   return 0;
    
 }
 
@@ -100,8 +74,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "Yes": "No") << ln;
+        // solve();
     }
     return 0;
 }

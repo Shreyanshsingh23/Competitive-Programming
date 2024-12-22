@@ -11,6 +11,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
+#define double long double
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
@@ -53,42 +54,45 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
+bool check(double mid, vi& a, vi& h){
+    int n = sz(a);
+    set<double> st;
+    FOR(i,n){
+        double m = abs(h[i]-mid)/a[i];
+        st.insert(m);
+    }
+    debug(mid,st);
+    return ((st.size() == n));
+}
 void solve()
 {
-   int1(n)s
-    vi a(n);
-    FOR(i, n)
-    cin >> a[i];
-    sort(all(a));
-    if (n == 2)
-    {
-        cout << a[0] << " " << a[1] << ln;
-        return;
-    }
-    int idx;
-    int minn = MAX;
-    for (int i = 1; i < n; ++i)
-    {
-        if (abs(a[i] - a[i - 1]) < minn)
-        {
-            minn = abs(a[i] - a[i - 1]);
-            idx = i;
-        }
-    }
-    // debug(a)
-    // debug(idx)
-    for (int i = idx; i < n; i++)
-    {
-        cout << a[i] << " ";
-    }
-    for (int i = 0; i < idx; i++)
-    {
-        cout << a[i] << " ";
-    }
-    cout << ln;
-   
+   int1(n)
+   vi a (n), h(n);
+   FOR(i,n) cin >> a[i] >> h[i];
+//    map<double,int> st;
+//    double middd = 1.50;
+//    FOR(i,n){
+//     double m = (h[i]-middd)/a[i];
+//     // cout << m << ln;
+//     st[m]++;
+//    }
+//    debug(st)
+
+    double l = 0, r = 1e9, mid, ans = 0, t = 100;
+
+    // while(t--){
+    //     mid = (l+r)/2;
+    //     if(check(mid,a,h)){
+    //         ans = mid;
+    //         r = mid - 1;
+    //     }
+    //     else l = mid + 1;
+    // }
+    bool ok = check(1.0,a,h);
+    cout << ans << ln;
+
 }
 
 signed main()
