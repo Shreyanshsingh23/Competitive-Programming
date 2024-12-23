@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -53,7 +53,7 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
@@ -61,7 +61,34 @@ void solve()
    vi a (n);
    FOR(i,n) cin >> a[i];
    
+   set<int> st;
    
+   int mxx = 0;
+   int i = 0, j = 0;
+   while(i < n and !st.count(a[i])){
+        st.insert(a[i]);
+        ++i;
+   }
+   mxx = max(mxx,sz(st));
+    // debug(i)
+   while(i < n){
+        if(st.count(a[i])){
+            while(st.count(a[i])){
+                st.erase(a[j]);
+                ++j;
+            }
+           
+        }
+        mxx = max(mxx,sz(st));
+        while(i < n and !st.count(a[i])){
+        st.insert(a[i]);
+        ++i;
+        }
+        mxx = max(mxx,sz(st));
+        // debug(st,i,j)
+   }
+        // debug(st,i,j)
+        cout << mxx << ln;
 }
 
 signed main()

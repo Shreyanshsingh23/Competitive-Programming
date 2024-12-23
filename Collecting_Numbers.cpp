@@ -11,12 +11,11 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ll long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -54,34 +53,31 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int3(n,x,y)
+   int1(n)
    vi a (n);
-   int total = 0;
+   FOR(i,n) cin >> a[i];
+   
+   vi index(n);
    FOR(i,n){
-         cin >> a[i];
-         total += a[i];
+    int val = a[i];
+    val--;
+    index[val] = i;
    }
 
-    sort(all(a));
+   int cnt = 1;
+//    debug(index)
+   for(int i = 1; i< n; ++i){
+    if(index[i] < index[i-1])++cnt;
+   }
 
-   int l = total - y, r = total - x;
-   int cnt = 0;
-   for (int i = 0; i < n; ++i) {
-            int lo = lower_bound(a.begin() + i + 1, a.end(), l - a[i]) - a.begin();
-            int hi = upper_bound(a.begin() + i + 1, a.end(), r - a[i]) - a.begin();
-            cnt += (hi - lo);
-        }
-
-        cout << cnt << ln;
-        
-
-   
+   cout << cnt << ln;
 }
 
+//3 2 5 1 4
 
 signed main()
 {

@@ -11,12 +11,11 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ll long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -58,30 +57,26 @@ const bool testcase = 1;
 
 void solve()
 {
-   int3(n,x,y)
-   vi a (n);
-   int total = 0;
-   FOR(i,n){
-         cin >> a[i];
-         total += a[i];
+   int1(n)
+   
+   if(n == 1){
+    cout << 1 << ln;
+    cout << "1 " << 2 << ln;
+    return;
    }
 
-    sort(all(a));
-
-   int l = total - y, r = total - x;
-   int cnt = 0;
-   for (int i = 0; i < n; ++i) {
-            int lo = lower_bound(a.begin() + i + 1, a.end(), l - a[i]) - a.begin();
-            int hi = upper_bound(a.begin() + i + 1, a.end(), r - a[i]) - a.begin();
-            cnt += (hi - lo);
-        }
-
-        cout << cnt << ln;
-        
-
+   v<pi> ans;
+   int i = 2, j = n*3;
+   while(i < j){
+    ans.pb({i,j});
+    i+= 3;j-=3;
+   }
+   cout << sz(ans) << ln;
+   FOR(i,sz(ans)){
+    cout << ans[i].F << ' ' << ans[i].S << ln;
+   }
    
 }
-
 
 signed main()
 {

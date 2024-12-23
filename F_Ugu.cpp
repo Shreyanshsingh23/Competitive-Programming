@@ -11,12 +11,11 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
-#define ll long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -57,31 +56,26 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 const bool testcase = 1;
 
 void solve()
-{
-   int3(n,x,y)
-   vi a (n);
-   int total = 0;
-   FOR(i,n){
-         cin >> a[i];
-         total += a[i];
-   }
-
-    sort(all(a));
-
-   int l = total - y, r = total - x;
-   int cnt = 0;
-   for (int i = 0; i < n; ++i) {
-            int lo = lower_bound(a.begin() + i + 1, a.end(), l - a[i]) - a.begin();
-            int hi = upper_bound(a.begin() + i + 1, a.end(), r - a[i]) - a.begin();
-            cnt += (hi - lo);
-        }
-
-        cout << cnt << ln;
-        
-
+{   
+    int1(n)
+   string s;
+   cin >> s;
    
-}
+   bool found = false;
 
+   int i = 0, cnt = 0;
+   while(i < n){
+    if(!found and s[i] == '1'){
+        found = true;
+        ++i;
+        continue;
+    }
+        if(found and s[i] != s[i-1])++cnt;
+        ++i;
+   }
+   
+   cout << cnt << ln;
+}
 
 signed main()
 {
