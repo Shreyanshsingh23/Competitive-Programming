@@ -53,48 +53,41 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int3(n,m,k)
-   if (n == 3 and m == 3 and k == 3) {
-             FOR(j, 3) {
-                   cout << 3;
-                   FOR(i, 3){
-                         cout << ' ' << j + 1 << ' ' << i + 1;
-                   } 
-                   cout << ln;  
-             }
-             return;
-        }
-
-    v<pi> a;
-    int x = 0, y = 0;
-    int dir = 1;
-    a.pb({x+1,y+1});
-    
-    while(true){
-        y += dir;
-        if(y == m)dir*= -1, y = m-1, x++;
-        if(y == -1)dir*= -1, y = 0, x++;
-        if(x == n)break;
-        a.pb({x+1,y+1});
-    }
-
-    FOR(i,k-1){
-        cout << 2 << ' ';
-        cout << a[2*i].F << ' ' << a[2*i].S << ' ';
-        cout << a[2*i+1].F << ' ' << a[2*i+1].S << ln;
-    }
-
-    cout << sz(a) - 2*(k-1) << ' ';
-    for(int i = 2 * (k - 1); i < sz(a); i++) {
-        cout << a[i].F << ' ' << a[i].S << ' ';
-	}
-    cout << ln;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
-   
+   vi b = a;
+   sort(all(b));
+   int j = 1;
+   FOR(i,n){
+    int idx = lower_bound(all(b),a[i]) - b.begin();
+    idx += 1;
+    a[i] = n-idx;
+   }
+//    debug(a)
+   bool ok = false;
+   int ans = n;
+   FOR(i,n-1){
+    if(abs(a[i]-a[i+1]) < 2){
+        // if(ok){
+        //     ok = false;
+        // }
+        // else{
+        //     ok = true;
+        //     --ans;
+        // }
+        --ans;
+    }
+    // else ok = false;
+    // debug(ans)
+   }
+
+   cout << ans << ln;
 }
 
 signed main()

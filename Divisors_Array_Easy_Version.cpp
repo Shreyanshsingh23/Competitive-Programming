@@ -48,53 +48,61 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
 
+mpii getPrimeFactors(int num) {
+    mpii factors;
+    for (int i = 2; (int)i * i <= num; i++) {
+        while (num % i == 0) {
+            factors[i]++;
+            num /= i;
+        }
+    }
+    if (num > 1) factors[num]++;
+    return factors;
+}
+
+mpii getFactorialPrimes(int M) {
+    mpii primes;
+    for (int i = 2; i <= M; i++) {
+        mpii factors = getPrimeFactors(i);
+        for (auto& [prime, count] : factors) {
+            primes[prime] += count;
+        }
+    }
+    return primes;
+}
+
+int countDivisors(int num, mpii& factorialPrimes) {
+    int result = 1;
+    mpii totalFactors = getPrimeFactors(num);
+    
+    for (auto& [prime, count] : factorialPrimes) {
+        totalFactors[prime] += count;
+    }
+    
+    for (auto& [prime, count] : totalFactors) {
+        result = (result * (count + 1LL)) % MOD;
+    }
+    return result;
+}
+
 void solve()
 {
-   int3(n,m,k)
-   if (n == 3 and m == 3 and k == 3) {
-             FOR(j, 3) {
-                   cout << 3;
-                   FOR(i, 3){
-                         cout << ' ' << j + 1 << ' ' << i + 1;
-                   } 
-                   cout << ln;  
-             }
-             return;
-        }
-
-    v<pi> a;
-    int x = 0, y = 0;
-    int dir = 1;
-    a.pb({x+1,y+1});
+   int2(n,m)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+    mpii facPrimes = getFactorialPrimes(m);
     
-    while(true){
-        y += dir;
-        if(y == m)dir*= -1, y = m-1, x++;
-        if(y == -1)dir*= -1, y = 0, x++;
-        if(x == n)break;
-        a.pb({x+1,y+1});
+    for (int i = 0; i < n; i++) {
+        cout << countDivisors(a[i], facPrimes) << " ";
     }
 
-    FOR(i,k-1){
-        cout << 2 << ' ';
-        cout << a[2*i].F << ' ' << a[2*i].S << ' ';
-        cout << a[2*i+1].F << ' ' << a[2*i+1].S << ln;
-    }
-
-    cout << sz(a) - 2*(k-1) << ' ';
-    for(int i = 2 * (k - 1); i < sz(a); i++) {
-        cout << a[i].F << ' ' << a[i].S << ' ';
-	}
-    cout << ln;
-   
-   
 }
 
 signed main()
@@ -103,7 +111,8 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
+    // compSieve();
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;

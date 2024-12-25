@@ -48,62 +48,69 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
 
-void solve()
-{
-   int3(n,m,k)
-   if (n == 3 and m == 3 and k == 3) {
-             FOR(j, 3) {
-                   cout << 3;
-                   FOR(i, 3){
-                         cout << ' ' << j + 1 << ' ' << i + 1;
-                   } 
-                   cout << ln;  
-             }
-             return;
+map<int, int> getPrimeExponents(int n) {
+    map<int, int> exps;
+    for (int i = 2; i <= n; i++) {
+        int num = n, p = i;
+        if (p * p > n) break;
+        while (num / p) {
+            exps[i] += num / p;
+            p *= i;
         }
-
-    v<pi> a;
-    int x = 0, y = 0;
-    int dir = 1;
-    a.pb({x+1,y+1});
-    
-    while(true){
-        y += dir;
-        if(y == m)dir*= -1, y = m-1, x++;
-        if(y == -1)dir*= -1, y = 0, x++;
-        if(x == n)break;
-        a.pb({x+1,y+1});
     }
-
-    FOR(i,k-1){
-        cout << 2 << ' ';
-        cout << a[2*i].F << ' ' << a[2*i].S << ' ';
-        cout << a[2*i+1].F << ' ' << a[2*i+1].S << ln;
-    }
-
-    cout << sz(a) - 2*(k-1) << ' ';
-    for(int i = 2 * (k - 1); i < sz(a); i++) {
-        cout << a[i].F << ' ' << a[i].S << ' ';
-	}
-    cout << ln;
-   
-   
+    return exps;
 }
 
+map<int, int> getPrimeFactors(int n) {
+    map<int, int> factors;
+    for (int i = 2; i * i <= n; i++) {
+        while (n % i == 0) {
+            factors[i]++;
+            n /= i;
+        }
+    }
+    if (n > 1) factors[n]++;
+    return factors;
+}
+
+int solve() {
+    int2(n,m)
+    vi a(n);
+    FOR(i,n) cin >> a[i];
+    mpii factorialExps = getPrimeExponents(m);
+    FOR(i,n){
+    mpii numFactors = getPrimeFactors(a[i]);
+    
+    int result = 1;
+    set<int> aintPrimes;
+    
+    for (auto [p, z] : factorialExps) aintPrimes.insert(p);
+    for (auto [p, z] : numFactors) aintPrimes.insert(p);
+    
+    for (int p : aintPrimes) {
+        int totalExp = factorialExps[p] + numFactors[p];
+        result = (result * (totalExp + 1)) % MOD;
+    }
+        cout << result << " ";
+    
+
+    }
+}
 signed main()
 {
     ShreyanshSinghGautam
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
+    // compSieve();
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;

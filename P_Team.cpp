@@ -52,49 +52,46 @@ const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
+int a[3000001];
 
 const bool testcase = 0;
-
 void solve()
 {
-   int3(n,m,k)
-   if (n == 3 and m == 3 and k == 3) {
-             FOR(j, 3) {
-                   cout << 3;
-                   FOR(i, 3){
-                         cout << ' ' << j + 1 << ' ' << i + 1;
-                   } 
-                   cout << ln;  
-             }
-             return;
+   int2(n,m)
+   int t = 0,k = 0;
+   if (n - 1 <= m && m <= 2*(n + 1))
+    {
+        if (m == n - 1) {
+            a[0] = -1;
+            a[m + 1] = -1;
+            t = n - 1;
         }
+        else if (m == n)
+        {
+            a[m + 1] = -1;
+            t = n;
+        }
+        else t = n + 1;
+        k = m % t;
+        if (k == 0 && m != t) k = n + 1;
+        if (a[0] == -1) cout<<"0";
+        for (int i = 1; i <= n; i++)
+        {
+            if (a[i] != -1){
+            if (k > 0) cout<<"110";
+            else cout<<"10";
+            k--;
+            }
+        }
+        if (a[m + 1] != -1) {
+            if (k > 0) cout<< "11" <<ln
+            else cout<< "1" <<ln
+        }
+    }
+    else cout<< "-1" <<ln;
 
-    v<pi> a;
-    int x = 0, y = 0;
-    int dir = 1;
-    a.pb({x+1,y+1});
     
-    while(true){
-        y += dir;
-        if(y == m)dir*= -1, y = m-1, x++;
-        if(y == -1)dir*= -1, y = 0, x++;
-        if(x == n)break;
-        a.pb({x+1,y+1});
-    }
 
-    FOR(i,k-1){
-        cout << 2 << ' ';
-        cout << a[2*i].F << ' ' << a[2*i].S << ' ';
-        cout << a[2*i+1].F << ' ' << a[2*i+1].S << ln;
-    }
-
-    cout << sz(a) - 2*(k-1) << ' ';
-    for(int i = 2 * (k - 1); i < sz(a); i++) {
-        cout << a[i].F << ' ' << a[i].S << ' ';
-	}
-    cout << ln;
-   
-   
 }
 
 signed main()

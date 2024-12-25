@@ -53,48 +53,67 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int3(n,m,k)
-   if (n == 3 and m == 3 and k == 3) {
-             FOR(j, 3) {
-                   cout << 3;
-                   FOR(i, 3){
-                         cout << ' ' << j + 1 << ' ' << i + 1;
-                   } 
-                   cout << ln;  
-             }
-             return;
-        }
-
-    v<pi> a;
-    int x = 0, y = 0;
-    int dir = 1;
-    a.pb({x+1,y+1});
+   int1(n)
+   v<pi> a (n);
+   FOR(i,n){
+        cin >> a[i].F;
+        a[i].S = i;
+    }
+ 
+        sort(all(a));
+        int fans = INT_MAX;
+        v<pi> res;
+        vi dd;
+        for (auto v: a)
+            dd.pb(v.F);
+        int i = 0;
+        {
+            int preAns = 0;
+            vi dem = dd;
+            v<pi> tres;
+            for (int j=0;j<i;j++ ){
+                
+                while(dem[j]<dem[i]){
+                    int rq = dem[i] - dem[j];
+                    tres.push_back({a[j].S+1,min(rq,dem[j])});
+                    dem[j] += dem[j];
+ 
+                    preAns++;
+                }
+                dem[j] = dem[i];
+                
+            }
+            int ans = 0;
+            for (int k=i+1;k<n;k++){
+                int d = (dem[k] + dem[k-1] - 1)/dem[k-1];
+                d*=dem[k-1];
+ 
+                while (dem[k]<d){
+                    int rq = d-dem[k];
+                    tres.push_back({a[k].S+1,min(rq,dem[k])});
+ 
+                    dem[k]+=dem[k];
+                    ans++;
+                }
+                dem[k] = d;
+                
+            }
     
-    while(true){
-        y += dir;
-        if(y == m)dir*= -1, y = m-1, x++;
-        if(y == -1)dir*= -1, y = 0, x++;
-        if(x == n)break;
-        a.pb({x+1,y+1});
-    }
-
-    FOR(i,k-1){
-        cout << 2 << ' ';
-        cout << a[2*i].F << ' ' << a[2*i].S << ' ';
-        cout << a[2*i+1].F << ' ' << a[2*i+1].S << ln;
-    }
-
-    cout << sz(a) - 2*(k-1) << ' ';
-    for(int i = 2 * (k - 1); i < sz(a); i++) {
-        cout << a[i].F << ' ' << a[i].S << ' ';
-	}
-    cout << ln;
+            if (fans>ans + preAns){
+                fans = ans+ preAns;
+                res=  tres;
+            }
+           
+        }
+        cout << fans << endl;
+        for (auto v: res){
+            cout << v.F << " " << v.S << endl;
    
-   
+}
 }
 
 signed main()

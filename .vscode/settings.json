@@ -33,7 +33,8 @@
         "cmath": "cpp",
         "any": "cpp",
         "system_error": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "tuple": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "cph.general.useShortCodeForcesName": false
