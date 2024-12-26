@@ -53,28 +53,21 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
-int dx[4] = {1,1,-1,-1}, dy[4] = {1,-1,1,-1};
+const bool testcase = 0;
+
 void solve()
 {
-   int2(a,b)
-   int2(kx,ky)
-   int2(qx,qy)
-   
-   set<pi> s1,s2;
-   FOR(i,4){
-    s1.insert({kx+(dx[i]*a), ky+(dy[i]*b)});
-    s2.insert({qx+(dx[i]*a), qy+(dy[i]*b)});
-    s1.insert({kx+(dx[i]*b), ky+(dy[i]*a)});
-    s2.insert({qx+(dx[i]*b), qy+(dy[i]*a)});
-   }
-   
+   int1(n)
    int ans = 0;
-   for(auto& x: s1){
-        if(s2.find(x) != s2.end())++ans;
+   if(n >= 7){
+    ans = 3;
    }
-
+   else if(n >= 3){
+    ans = 2;
+   }
+   else ans = 1;
    cout << ans << ln;
+   
 }
 
 signed main()
