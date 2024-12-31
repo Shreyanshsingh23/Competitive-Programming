@@ -57,21 +57,22 @@ const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   vi ans;
+    int n,m,i,j,s;
+   s=0;
+cin>>n>>m;
+// int a[m+1][n+1];
+vii a(m+1,vi(n+1,0));
+for(i=0;i<n;i++)
+for(j=0;j<m;j++) cin>>a[j][i];
 
-    for(int i = 1; i< n-1; ++i){
-        if(a[i] > a[i-1] and a[i] > a[i+1]){
-            cout << "YES" << ln;
-            cout << i << ' ' << i+1 << ' ' << i+2 << ln;
-            return;
-        }
-    }
-
-        cout << "NO" << ln;
-    
+debug(a)
+for(i=0;i<m;i++)
+{
+sort(a[i].begin(),a[i].begin()+n);
+for(j=0;j<n;j++)
+s+=a[i][j]*(1+2*j-n);
+}
+cout<<s<<endl;
 }
 
 signed main()

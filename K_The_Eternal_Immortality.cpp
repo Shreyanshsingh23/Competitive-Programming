@@ -53,25 +53,20 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   vi ans;
-
-    for(int i = 1; i< n-1; ++i){
-        if(a[i] > a[i-1] and a[i] > a[i+1]){
-            cout << "YES" << ln;
-            cout << i << ' ' << i+1 << ' ' << i+2 << ln;
-            return;
-        }
-    }
-
-        cout << "NO" << ln;
-    
+   int2(m,n)
+   
+   if(n - m >= 10)cout << 0 << ln
+   else
+   {
+       int ans = 1;
+       FORa(i,m+1,n+1) ans = modMul(ans,i,10);
+       cout << ans << ln;
+   }
+   
 }
 
 signed main()

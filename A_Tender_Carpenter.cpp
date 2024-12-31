@@ -55,23 +55,18 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 1;
 
-void solve()
+bool solve()
 {
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-   vi ans;
+   
+   FOR(i,n-1){
+       if(a[i] < 2*a[i+1] and a[i+1] < a[i]) return true;
+       if(2*a[i] > a[i+1] and a[i+1] >= a[i]) return true;
+   }
 
-    for(int i = 1; i< n-1; ++i){
-        if(a[i] > a[i-1] and a[i] > a[i+1]){
-            cout << "YES" << ln;
-            cout << i << ' ' << i+1 << ' ' << i+2 << ln;
-            return;
-        }
-    }
-
-        cout << "NO" << ln;
-    
+   return false;
 }
 
 signed main()
@@ -83,8 +78,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

@@ -60,18 +60,31 @@ void solve()
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-   vi ans;
+   
+   sort(all(a));
+   vi b(n);
+   int i = 0, j = n-1, k = 0;
+   while(i <= j){
+    b[k++] = a[i++];
+    if(i <= j) b[k++] = a[j--];
+   }
+  
+  vi pref(n);
+  pref[0] = b[0];
+  for(int i = 1; i < n; ++i)pref[i] = pref[i-1] + b[i];
 
-    for(int i = 1; i< n-1; ++i){
-        if(a[i] > a[i-1] and a[i] > a[i+1]){
-            cout << "YES" << ln;
-            cout << i << ' ' << i+1 << ' ' << i+2 << ln;
-            return;
-        }
-    }
-
+  for(int i = 1; i< n; ++i){
+    if(b[i] == pref[i-1]){
         cout << "NO" << ln;
-    
+        return;
+    }
+  }
+
+  cout << "YES" << ln;
+  FOR(i,n){
+    cout << b[i] << " ";
+  }
+  cout << ln;tp
 }
 
 signed main()

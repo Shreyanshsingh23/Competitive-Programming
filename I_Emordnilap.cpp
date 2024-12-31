@@ -58,20 +58,12 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   vi ans;
-
-    for(int i = 1; i< n-1; ++i){
-        if(a[i] > a[i-1] and a[i] > a[i+1]){
-            cout << "YES" << ln;
-            cout << i << ' ' << i+1 << ' ' << i+2 << ln;
-            return;
-        }
-    }
-
-        cout << "NO" << ln;
-    
+   vi a(2*n);
+   
+   int even = n-1;
+   int sum = (even*(even+1))%MOD;
+   sum = (sum*(fact[n]%MOD))%MOD;
+   cout << sum << ln;
 }
 
 signed main()
@@ -80,7 +72,7 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;

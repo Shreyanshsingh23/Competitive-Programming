@@ -60,18 +60,23 @@ void solve()
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-   vi ans;
+   
+   mpii mp;
+   FOR(i,n)mp[a[i]]++;
 
-    for(int i = 1; i< n-1; ++i){
-        if(a[i] > a[i-1] and a[i] > a[i+1]){
-            cout << "YES" << ln;
-            cout << i << ' ' << i+1 << ' ' << i+2 << ln;
-            return;
-        }
+   int m1 = mp[-1], p1 = mp[1];
+    int ans = 0;
+    if(m1 > p1){
+        ans = (m1-p1+1)/2;
+        p1 += ans;
+        m1 -= ans;
     }
-
-        cout << "NO" << ln;
-    
+   if(m1&1){
+    --m1;
+    ++p1;
+    ++ans;
+   }
+   cout << ans << ln;
 }
 
 signed main()

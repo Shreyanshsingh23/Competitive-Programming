@@ -60,18 +60,12 @@ void solve()
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-   vi ans;
-
-    for(int i = 1; i< n-1; ++i){
-        if(a[i] > a[i-1] and a[i] > a[i+1]){
-            cout << "YES" << ln;
-            cout << i << ' ' << i+1 << ' ' << i+2 << ln;
-            return;
-        }
-    }
-
-        cout << "NO" << ln;
-    
+   sort(all(a));
+   int ans = 0;
+   for(int i = 1; i < n; ++i){
+    ans += a[i] - a[i-1];
+   }
+   cout << ans << ln;
 }
 
 signed main()

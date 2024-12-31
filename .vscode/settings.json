@@ -34,7 +34,8 @@
         "any": "cpp",
         "system_error": "cpp",
         "iosfwd": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "concepts": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "cph.general.useShortCodeForcesName": false
