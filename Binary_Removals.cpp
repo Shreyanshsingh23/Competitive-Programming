@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -53,24 +53,47 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
-
-bool func(vi& a, int i , int j)
-{
-    if(i>= j)return true;
-
-    if(a[i] != a[j])return false;
-    return func(a,i+1,j-1);
+const bool testcase = 1;
+int solve() {
+    int n, x, k;
+    cin >> n >> x >> k;
+    string s;
+    cin >> s;
+    
+   
+    auto countInv = [&](int mask) -> int {
+        int inv = 0;
+        for(int i = 0; i < n; i++) {
+            if(!(mask & (1 << i)) || s[i] != '1') continue;
+            for(int j = i + 1; j < n; j++) {
+                if((mask & (1 << j)) && s[j] == '0') {
+                    inv++;
+                }
+            }
+        }
+        return inv;
+    };
+    
+    vector<int> dp(1 << n, INT_MAX);
+    dp[0] = 0;
+    
+    for(int mask = 0; mask < (1 << n); mask++) {
+        if(dp[mask] == INT_MAX) continue;
+        
+        for(int submask = 1; submask < (1 << n); submask++) {
+            if(mask & submask) continue; 
+            
+            int inv = countInv(submask);
+            if(inv <= x && inv % k == 0) {
+                int newMask = mask | submask;
+                dp[newMask] = min(dp[newMask], dp[mask] + 1);
+            }
+        }
+    }
+    
+    return(dp[(1 << n) - 1] == INT_MAX ? -1 : dp[(1 << n) - 1]) ;
 }
-void solve()
-{
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   bool ok = func(a,0,n-1);
-   cout << (ok? "YES": "NO") << ln;
-  
-}
+
 
 signed main()
 {
@@ -81,7 +104,8 @@ signed main()
     // compFact();
     while (t--)
     {
-        solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+       cout <<  solve() << ln;
     }
     return 0;
 }

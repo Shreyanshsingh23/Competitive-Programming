@@ -53,17 +53,23 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
 int n,c;
 vi a;
 
 bool check(int mid){
-    int cnt = 0, idx = 1;
-    
+    int cnt = 1, idx = a[0];
+    while(cnt < c){
+        int index = lower_bound(all(a),idx+mid) - a.begin();
+        if(index >= n)return false;
+        idx = a[index];
+        ++cnt;
+    }
+    return true;
 }
 void solve()
 {
-   cin >> n;    
+   cin >> n >> c;    
    a.resize(n);
    FOR(i,n) cin >> a[i];
    

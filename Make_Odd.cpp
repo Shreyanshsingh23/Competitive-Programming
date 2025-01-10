@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -53,23 +53,40 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool func(vi& a, int i , int j)
-{
-    if(i>= j)return true;
-
-    if(a[i] != a[j])return false;
-    return func(a,i+1,j-1);
-}
-void solve()
+bool solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   bool ok = func(a,0,n-1);
-   cout << (ok? "YES": "NO") << ln;
-  
+   string a,b;
+   cin >> a >> b;
+//    int cnt = 0, scr = 0;
+//    FOR(i,n){
+//         if(!(scr&1) and (a[i] == '1' or b[i] == '1')){
+//             ++scr;
+//         }
+//         else if(a[i] == '1' and a[i] == b[i])++scr;
+//         else {
+//             if(a[i] == '1' or b[i] == '1')++cnt;
+//         }
+//    }
+
+//    if(scr&1)return true;
+//    if(!(scr&1) and cnt > 0)return true;
+//    return false;
+   int mst = 0;  
+    int chc = 0; 
+    
+    for(int i = 0; i < n; i++) {
+        if(a[i] == '1' and b[i] == '1') {
+            mst++;
+        }
+        else if(a[i] == '1' or b[i] == '1') {
+            chc++;
+        }
+    }
+    
+    return (mst % 2 == 1) or (mst % 2 == 0 and chc > 0);
 }
 
 signed main()
@@ -81,7 +98,8 @@ signed main()
     // compFact();
     while (t--)
     {
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

@@ -60,7 +60,6 @@ void solve()
 {
    int kx = 0, ky = 0;
    v<v<char>> a(8,v<char>(8));
-   v<pi> ans;
    set<pi> st;
    FOR(i,8){
        FOR(j,8){
