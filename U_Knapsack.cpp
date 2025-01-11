@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -53,37 +53,28 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
+const bool testcase = 0;
+int n,w;v<pi> a;
 
+int rec(int mxx, int curr, int i){
+    if(i == n)return mxx;
+    
+    int mxx1 = 0, mxx2 = 0;
+    mxx1 = rec(mxx,curr,i+1);
+    if(curr + a[i].F <= w){
+        mxx2 = rec(mxx+a[i].S, curr + a[i].F, i+1);
+    }
+
+    return max(mxx1,mxx2);
+}
 void solve()
 {
-   int2(n,k)
-   vi a (n);
-   cin >> a;
-   int index = -1;
-   FOR(i,n){
-    int elem = a[i];
-    bool ok = true;
-    FOR(j,n){
-        if(i == j) continue;
-        if((abs(a[j]-elem) % k )== 0){
-            ok = false;
-            break;
-        }
-    }
-    if(ok){
-        index = i;
-        break;
-    }
-   }
-    if(index == -1){
-        cout << "NO" << ln;
-        return;
-    }
-    cout << "YES" << ln;
-   cout << index+1 << ln;
-
-   debug(a,index)
+   cin >> n >> w;
+   a.resize(n);
+   FOR(i,n) cin >> a[i].F >> a[i].S;
+   
+   cout << rec(0,0,0) << ln;
+   
 }
 
 signed main()
@@ -95,6 +86,7 @@ signed main()
     // compFact();
     while (t--)
     {
+     //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;

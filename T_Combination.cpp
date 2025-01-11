@@ -54,23 +54,34 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
+int n,r;
 
-int calculate(int res, int n, int z)
+// int rec(int res,int n, int z){
+//     if(n <= z)return res;
+//     int ans = modMul(res,n,MOD);
+//     return rec(ans,n-1,z);
+// }
+int solve()
 {
-    // debug(res,n,z)
-    if(n <= z)return res;
-    return calculate(res*n, n-1, z);
-}
+  cin >> n >> r;
 
-void solve()
-{
-   int2(n,r)
-   if(r < n-r)r = n-r;
-   int num = calculate(n,n-1, r);
-   int den = calculate(r,r-1,1);
-//    debug(num,den)
-   cout << max(1ll,num/den )<< ln;
+  if(r > n)return 0;
+  // if(r > n-r)r = n-r;
+//   if(n == 0 or r == 0)return 1;
+  // if(n == r)return 1;
 
+    // int num = rec(1,n,n-r);                                                                 
+    // int den = rec(1,r,0);
+    // debug(num,den)
+    // return max(1ll,num/den);
+
+    int num = fact[n];
+    int dena = invFact[r];
+    int denb = invFact[n-r];
+
+    int ans = modMul(num,dena, MOD);
+    return modMul(ans,denb,MOD);
+    
 }
 
 signed main()
@@ -79,10 +90,10 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
     while (t--)
     {
-        solve();
+      cout <<  solve() << ln;
     }
     return 0;
 }
