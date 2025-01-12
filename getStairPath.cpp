@@ -55,44 +55,15 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 int a,b;
-string s = "bcd";
-// v<string> ans;
+
 v<string> rec(int x){
-    if(x == a){
-        v<string> ans;
-        ans.pb("");
-        return ans;
-    }
-    else if(x < a){
-        v<string> ans;
-        return ans;
-    }
-
-    v<string> paths1 = rec(x-1);
-    v<string> paths2 = rec(x-2);
-    v<string> paths3 = rec(x-3);
-
-    v<string> paths;
-
-    for(auto e : paths1){
-        paths.pb('1' + e);
-    }
-    for(auto e : paths2){
-        paths.pb('2' + e);
-    }for(auto e : paths3){
-        paths.pb('3' + e);
-    }
-
-    return paths;
-
+    
+    
 }
 void solve()
 {
    cin >> a >> b;
-//    rec(a,"");
    v<string> ans = rec(b);
-   cout << ans.size() << ln;
-   cout << ans;
 }
 
 signed main()

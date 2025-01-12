@@ -53,46 +53,37 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
-int a,b;
-string s = "bcd";
-// v<string> ans;
-v<string> rec(int x){
-    if(x == a){
-        v<string> ans;
-        ans.pb("");
-        return ans;
-    }
-    else if(x < a){
-        v<string> ans;
-        return ans;
-    }
+const bool testcase = 1;
 
-    v<string> paths1 = rec(x-1);
-    v<string> paths2 = rec(x-2);
-    v<string> paths3 = rec(x-3);
-
-    v<string> paths;
-
-    for(auto e : paths1){
-        paths.pb('1' + e);
-    }
-    for(auto e : paths2){
-        paths.pb('2' + e);
-    }for(auto e : paths3){
-        paths.pb('3' + e);
-    }
-
-    return paths;
-
-}
-void solve()
+bool solve()
 {
+   int1(n)
+   vi a (n), b(n);
    cin >> a >> b;
-//    rec(a,"");
-   v<string> ans = rec(b);
-   cout << ans.size() << ln;
-   cout << ans;
+
+   int cnt = 0, minn = MAX, curr = 0;
+   FOR(i,n){
+    if(a[i] < b[i]){
+        ++cnt;
+        curr = b[i] - a[i];
+    }
+    else{
+        minn = min(minn, a[i]-b[i]);
+    }
+   }
+    // debug(cnt,minn,curr)
+    if(cnt == 0){
+        return true;
+    }
+   if(cnt > 1){
+    return false;
+   }
+   else{
+    if(cnt == 1 and curr <= minn){
+        return true;
+    }
+    return 0;
+   }
 }
 
 signed main()
@@ -104,8 +95,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

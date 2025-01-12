@@ -54,36 +54,33 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
+int n,m;vii a;
 
-int dp [11][11];
-int n,m;
-int rec(int i, int j, vii& a, int curr){
-    if(i+1 == n and j+1 == m){
-        return dp[i][j];
+int rec(int x, int y, int curr, int mxx){
+
+    if(x == n-1 and y == m-1){
+        return a[x][y];
     }
-
-    if(i-1 >= 0) curr = max(curr,dp[i-1][j]);
-    if(j-1 >= 0) curr = max(curr, dp[i][j-1]);
-    curr += a[i][j];
-   dp[i][j] = curr;
-int m1 = 0, m2 = 0;
-if(i+1 < n)  m1 =  rec(i+1,j,a,curr);
-if(j+1 < m)   m2 =  rec(i,j+1,a,curr);
-
-return max(m1,m2);
-
+    else if(x >= n or y >= m){
+        return MIN;
+    }
+    int f = rec(x,y+1,curr,mxx);
+    int s = rec(x+1,y,curr,mxx);
+    return max(f,s)+a[x][y];
 }
-
 void solve()
 {
    cin >> n >> m;
-   vii a (n,vi(m,0));
-   FOR(i,n)
-     FOR(j,m)
-        cin >> a[i][j];
-
-   cout << rec(0,0,a,0) << ln;
+   a.resize(n);
    
+   FOR(i,n){
+    a[i].resize(m);
+    FOR(j,m){
+        cin >> a[i][j];
+    }
+   }
+   
+    cout << rec(0,0,0,0);
 }
 
 signed main()

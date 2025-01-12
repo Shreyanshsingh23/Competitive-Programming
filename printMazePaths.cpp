@@ -54,45 +54,25 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
-int a,b;
-string s = "bcd";
-// v<string> ans;
-v<string> rec(int x){
-    if(x == a){
-        v<string> ans;
-        ans.pb("");
-        return ans;
+int n,m;
+int x1,y,x2,y2;
+
+void rec(int a, int b, string s){
+
+    if(a == x2 and b == y2){
+        cout << s << ln;
+        return;
     }
-    else if(x < a){
-        v<string> ans;
-        return ans;
-    }
+    if(a > x2 or b > y2)return;
 
-    v<string> paths1 = rec(x-1);
-    v<string> paths2 = rec(x-2);
-    v<string> paths3 = rec(x-3);
-
-    v<string> paths;
-
-    for(auto e : paths1){
-        paths.pb('1' + e);
-    }
-    for(auto e : paths2){
-        paths.pb('2' + e);
-    }for(auto e : paths3){
-        paths.pb('3' + e);
-    }
-
-    return paths;
-
+    rec(a+1,b,'v'+s);
+    rec(a,b+1,'h'+s);
 }
 void solve()
 {
-   cin >> a >> b;
-//    rec(a,"");
-   v<string> ans = rec(b);
-   cout << ans.size() << ln;
-   cout << ans;
+   cin >> n >> m >> x1 >> y >> x2 >> y2;
+   rec(x1,y,"");
+   
 }
 
 signed main()

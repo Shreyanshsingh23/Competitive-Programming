@@ -53,46 +53,75 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
-int a,b;
-string s = "bcd";
-// v<string> ans;
-v<string> rec(int x){
-    if(x == a){
-        v<string> ans;
-        ans.pb("");
-        return ans;
-    }
-    else if(x < a){
-        v<string> ans;
-        return ans;
-    }
+const bool testcase = 1;
 
-    v<string> paths1 = rec(x-1);
-    v<string> paths2 = rec(x-2);
-    v<string> paths3 = rec(x-3);
-
-    v<string> paths;
-
-    for(auto e : paths1){
-        paths.pb('1' + e);
-    }
-    for(auto e : paths2){
-        paths.pb('2' + e);
-    }for(auto e : paths3){
-        paths.pb('3' + e);
-    }
-
-    return paths;
-
-}
 void solve()
 {
-   cin >> a >> b;
-//    rec(a,"");
-   v<string> ans = rec(b);
-   cout << ans.size() << ln;
-   cout << ans;
+   int2(n,m)
+   string s;
+   cin >> s;
+   vii a (n, vi (m));
+   cin >> a;
+ 
+    vi rsum(n,0), csum(m,0);
+    
+    FOR(i,n){
+        FOR(j,m){
+            rsum[i] += a[i][j];
+            csum[j] += a[i][j];
+        }
+    }
+   
+   int r = 0, c = 0;
+   int req = -rsum[0];
+   if(s[0] == 'R'){
+       req = -csum[0];
+   }
+   a[0][0] = req;
+   rsum[0] += req;
+   csum[0] += req;
+
+   int size = sz(s);
+
+   FOR(i,size){
+        if(s[i] == 'R'){
+            ++c;
+        }else{
+            ++r;
+        }
+
+        if(i+1 < size){
+            if(s[i+1] == 'R'){
+                req = -csum[c];
+                a[r][c] = req;
+                csum[c] += req;
+                rsum[r] += req;
+            }else{
+                req = -rsum[r];
+                a[r][c] = req;
+                rsum[r] += req;
+                csum[c] += req;
+            }
+        }
+        else{
+            req = -rsum[r];
+            if(req != 0){
+                req = -csum[c];
+            }
+            a[r][c] = req;
+            rsum[r] += req;
+            csum[c] += req;
+        }
+
+
+   }
+
+   FOR(i,n){
+        FOR(j,m){
+            cout << a[i][j] << " ";
+        }
+        cout << ln;
+    }
 }
 
 signed main()

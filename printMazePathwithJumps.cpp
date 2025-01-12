@@ -54,45 +54,39 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
-int a,b;
-string s = "bcd";
-// v<string> ans;
-v<string> rec(int x){
-    if(x == a){
-        v<string> ans;
-        ans.pb("");
-        return ans;
+int n,m;
+
+void rec(int x,int y, string s){
+
+    if(x == n and y == m){
+        cout << s << ln;
+        return;
     }
-    else if(x < a){
-        v<string> ans;
-        return ans;
+    for(int i = 1; i <= n-x; ++i){
+        string t = "v";
+        t += i + '0';
+        t += s;
+        rec(x+i,y,t);
     }
-
-    v<string> paths1 = rec(x-1);
-    v<string> paths2 = rec(x-2);
-    v<string> paths3 = rec(x-3);
-
-    v<string> paths;
-
-    for(auto e : paths1){
-        paths.pb('1' + e);
+    for(int i = 1; i <= m-y; ++i){
+        string t = "h";
+        t += i + '0';
+        t += s;
+        rec(x,y+i,t);
     }
-    for(auto e : paths2){
-        paths.pb('2' + e);
-    }for(auto e : paths3){
-        paths.pb('3' + e);
+    for(int i = 1; i <= m-y and i <= n-x; ++i){
+        string t = "d";
+        t += i + '0';
+        t += s;
+        rec(x+i,y+i,t);
     }
-
-    return paths;
-
 }
+
 void solve()
 {
-   cin >> a >> b;
-//    rec(a,"");
-   v<string> ans = rec(b);
-   cout << ans.size() << ln;
-   cout << ans;
+   cin >> n >> m;
+   rec(1,1,"");
+   
 }
 
 signed main()
