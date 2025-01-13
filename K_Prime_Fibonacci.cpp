@@ -53,50 +53,21 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
-string s;
+const bool testcase = 1;
+int fib(int n){
+    if(n == 1)return 0;
+    if(n == 2)return 1;
 
-// v<string> rec(string str, int idx){
-
-//     if(idx == n-1){
-//         v<string> ans;
-//         ans.pb(str);
-//         return ans;
-//     }   
-//     v<string> ans;
-//     for(int i = idx; i < n; ++i){
-//         swap(str[i],str[idx]);
-//         v<string> t = rec(str,idx+1);
-//         for(auto e : t)ans.pb(e);
-//     }
-
-//     return ans;
-  
-// }
-
-void rec(string str, string ans){
-    if(sz(str) == 0){
-        cout << ans << ln;
-        return;
-    }
-    int n = sz(str);
-    for(int i = 0; i < n; ++i){
-        char ch = str[i];
-        ans += ch;
-        string rem = str.substr(0,i);
-        string right = str.substr(i+1);
-        rem += right;
-        
-        rec(rem,ans);
-        ans.pop_back();
-
-    }
+    int ans = fib(n-1) + fib(n-2);
+    return ans;
 }
-void solve()
+bool solve()
 {
-   cin >> s;
-   rec(s,"");
-//    cout << ans << ln;
+   int1(n)
+   
+   int ans = fib(n);
+   return isPrime(ans);
+   
 }
 
 signed main()
@@ -108,8 +79,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "prime": "not prime") << ln;
+        // solve();
     }
     return 0;
 }
