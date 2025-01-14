@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -54,20 +54,27 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
+int n,m;
+int a[30010];
 
-void solve()
+void rec(int n, int cnt){
+    if(n <= 0 or n >= 2*m)return;
+    if(a[n] <= cnt)return;
+    a[n] = cnt;
+    rec(2*n,cnt+1);
+    rec(n-1,cnt+1);
+}
+int solve()
 {
-   int2(n,k)
-   string a = bitset<15>(n).to_string();
-   string b = bitset<15>(k).to_string();
-   int i = 0;
-   while(a[0] != '1')a.erase(a.begin());
-   while(b[0] != '1')b.erase(b.begin());
-//    cout << a << ln;
-//    cout << b << ln;
-
-    int cnt = 0;
-    while(sz(a) <)
+  cin >> n >> m;
+   if(n > m){
+   return n-m;
+   }
+   else{
+  memset(a,60,sizeof(a));
+     rec(n,0);
+     return a[m];
+   }
    
 }
 
@@ -81,7 +88,7 @@ signed main()
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << solve();
     }
     return 0;
 }
