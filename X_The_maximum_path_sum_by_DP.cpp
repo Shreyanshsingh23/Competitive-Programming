@@ -54,28 +54,32 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
-int n,m;
-int a[30010];
-//allowing n maximum upto 2*m because given in constraints that n and m are positive integers and we have already handled the case where n > m, so max to max it can take upto m operations so that's why terminating when it goes above 2*m
-void rec(int n, int cnt){
-    if(n <= 0 or n >= 2*m)return;
-    if(a[n] <= cnt)return;
-    a[n] = cnt;
-    rec(2*n,cnt+1);
-    rec(n-1,cnt+1);
-}
-int solve()
-{
-  cin >> n >> m;
-   if(n > m){
-   return n-m;
-   }
-   else{
-     memset(a,60,sizeof(a));
-     rec(n,0);
-     return a[m];
-   }
+int n,m;vii a;
+int f [20][20];
+
+void rec(int x, int y, int curr){
+    if(x >=  n or y >= m)return;
+    if(f[x][y] >= curr)return;
+    f[x][y] = curr;
+
+    rec(x+1,y,curr+a[x][y]);
+    rec(x,y+1,curr+a[x][y]);
    
+}
+void solve()
+{
+   cin >> n >> m;
+   a.resize(n);
+   FOR(i,n){
+    a[i].resize(m);
+    FOR(j,m){
+        cin >> a[i][j];
+    }
+   }
+   memset(f,-1,sizeof(f));
+   rec(0,0,0);
+   cout << f[n-1][m-1]+a[n-1][m-1];
+    
 }
 
 signed main()
@@ -88,7 +92,7 @@ signed main()
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;
-       cout << solve();
+        solve();
     }
     return 0;
 }
