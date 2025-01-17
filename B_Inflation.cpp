@@ -53,17 +53,37 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
+int bs(int ele, int pref, int k){
+    int l = 0,r = 1e11, mid, ans = 0;
+    while(l <= r){
+        mid = (l+r) >> 1;
+        if(((double)ele*100)/(pref+mid) <= k){
+            ans = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
+    }
+    return ans;
+}
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
-
-   cout << 3 << ln;
-   cout << a << ln;
+   int2(n,k)
+   vi a (n);
+   int cnt = 0;
+   FOR(i,n) cin >> a[i];
+   int pref = a[0];
+   for(int i = 1; i < n; ++i){
+    // debug(pref)
+        if(((double)a[i]*100)/pref > k){
+            int incr = bs(a[i],pref,k);
+            cnt += incr;
+            pref += incr;
+        }
+        pref += a[i];
+   }
+   cout << cnt << ln;
 }
 
 signed main()

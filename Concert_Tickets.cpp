@@ -61,8 +61,9 @@ void solve()
    vi a(n), b(m);
    cin >> a >> b;
    sort(all(a));
-    multiset<int,greater<int>> st;
-    FOR(i,n)st.insert(a[i]);
+    multiset<int,greater<int>> st (all(a));
+    // FOR(i,n)st.insert(a[i]);
+    debug(st)
     int i = 0, j = 0;
 //    debug(a)
 
@@ -72,18 +73,18 @@ void solve()
         auto it = st.lower_bound(b[i]);
         if(it == st.end()){
             ans[i] =-1;
-            continue;;
+            continue;
         }
         else{
             int val = *it;
             ans[i] = val;
+            debug(val)
             st.erase(it);
         }
         // debug(st)
         
    }
 
-//    debug(ans)
    FOR(i,m)cout << ans[i] << ln;
 //    debug(ans)
 }

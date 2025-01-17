@@ -57,13 +57,39 @@ const bool testcase = 0;
 
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+   int1(n)
+   v<string> a(n);
+   vi b(n);
+   FOR(i,n){
+     cin >> a[i] >> b[i];
+   }
+   map<string,int> mp;
+   FOR(i,n){
+    string s = a[i];
+    int scr = b[i];
+    
+    mp[s] += scr;
+   }
+   string ans = "";
+   int mxx = MIN;
+   for(auto e : mp){
+        mxx = max(e.S,mxx);
+   }
+//    debug(mxx)
 
-   cout << 3 << ln;
-   cout << a << ln;
+   map<string,int> m;
+   FOR(i,n){
+    string s = a[i];
+    int scr = b[i];
+    m[s] += scr;
+    if(m[s] >= mxx and mp[s] == mxx){
+        ans = s;
+        break;
+    }
+   }
+    
+   cout << ans << ln;
+   
 }
 
 signed main()

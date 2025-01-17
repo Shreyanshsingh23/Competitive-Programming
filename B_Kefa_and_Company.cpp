@@ -54,16 +54,48 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
-
+int lb(vi& a, int x){
+    int n = sz(a);
+    int l = 0, r = n-1, mid, ans = 0;
+    while(l <= r){
+        mid = (l+r) >> 1;
+        if(a[mid] > x){
+            ans = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
+    }
+    return ans;
+}
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+    int2(n,d)
+    v<pi> a (n);
+    FOR(i,n) cin >> a[i].F >> a[i].S;
+    vi b(n), pref(n);
+    sort(all(a));
 
-   cout << 3 << ln;
-   cout << a << ln;
+    FOR(i,n)b[i] = a[i].F;
+    pref[0] = a[0].S;
+    for(int i = 1; i < n; ++i){
+        pref[i] = pref[i-1] + a[i].S;
+    }
+    // debug(b)
+    // debug(pref)
+
+    int mxx = MIN, ans = 0;
+    FOR(i,n){
+    int curr = b[i];
+    int a1 = lb(b,curr-d);
+    // int a2 = ub(b,curr+d); // nhi lenge kyuki curr-d wale bande ke liye toh curr+d d se jyada ho jayega na
+    int ans = 0;
+    if(a1 == 0)ans = pref[i];
+    else ans = pref[i] - pref[a1-1];
+    mxx = max(mxx,ans);
+   }
+
+   cout << mxx << ln;
+   
 }
 
 signed main()

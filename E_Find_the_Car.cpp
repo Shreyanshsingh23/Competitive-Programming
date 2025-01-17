@@ -11,6 +11,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
+#define double long double
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
@@ -53,17 +54,35 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+   int3(n,k,q)
+   vi a(k+1), b(k+1);
+    FOR(i,k)cin >> a[i+1];
+    FOR(i,k)cin >> b[i+1];
+   
 
-   cout << 3 << ln;
-   cout << a << ln;
+//    debug(speed)
+   vi ans(q);
+   FOR(j,q){
+    int d;cin >> d;
+    if(d == 0){
+        cout << "0 ";
+        continue;
+    }
+    else{
+        int idx = lower_bound(all(a),d) - a.begin();
+        int ans = b[idx-1];
+        // debug(idx,a[idx],ans)
+        ans += ((d-a[idx-1])*(b[idx]-b[idx-1]))/(a[idx]-a[idx-1]);
+        cout << ans << ' ';
+
+    }
+
+}
+    cout << ln;
 }
 
 signed main()

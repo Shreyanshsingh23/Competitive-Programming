@@ -56,6 +56,8 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 const bool testcase = 0;
 int n,m;vii a;
 
+int dp[15][15];
+
 int rec(int x, int y, int curr, int mxx){
 
     if(x == n-1 and y == m-1){
@@ -64,12 +66,16 @@ int rec(int x, int y, int curr, int mxx){
     else if(x >= n or y >= m){
         return MIN;
     }
+    if(dp[x][y]!=-1){
+        return dp[x][y];
+    }
     int f = rec(x,y+1,curr,mxx);
     int s = rec(x+1,y,curr,mxx);
-    return max(f,s)+a[x][y];
+    return dp[x][y] = max(f,s)+a[x][y];
 }
 void solve()
 {
+    memset(dp, -1, sizeof dp);
    cin >> n >> m;
    a.resize(n);
    
@@ -80,7 +86,12 @@ void solve()
     }
    }
    
-    cout << rec(0,0,0,0);
+    cout << rec(0,0,0,0) << ln;
+
+    FOR(i,n){
+        FOR(j,m)cout << dp[i][j] << ' ';
+        cout << ln;
+    }
 }
 
 signed main()

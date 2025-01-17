@@ -48,22 +48,43 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 200010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
-
+int pref[N], res[N];
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+   int3(n,k,q)
+   v<pi> a (n);
+   FOR(i,n) cin >> a[i].F >> a[i].S;
+   
+   for(auto [x,y]: a){
+    pref[x]++;
+    pref[y+1]--;
+   }
+   for(int i = 1; i < N; ++i){
+    pref[i] += pref[i-1];
+   }
+    FOR(i,N){
+        if(pref[i] >= k)res[i] = 1;
+    }
 
-   cout << 3 << ln;
-   cout << a << ln;
+    for(int i = 1; i < N; ++i){
+    res[i] += res[i-1];
+   }
+    
+//    debug(pref)
+
+   while(q--){
+    int l,r;
+    cin >> l >> r;
+    int ans =  res[r] - res[l-1];
+    cout << max(0ll,ans) << ln;
+   }
+   
 }
 
 signed main()

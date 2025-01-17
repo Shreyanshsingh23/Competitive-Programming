@@ -53,17 +53,29 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+   int1(n)
+   if(!(n&1)){
+    cout << n/2 << " " << n/2 << ln;
+    return;
+   }
 
-   cout << 3 << ln;
-   cout << a << ln;
+   if(isPrime(n)){
+    cout << "1 " << n-1 << ln;
+    return;
+   }
+
+   for(int i = 2; i*i <= n; ++i){
+    if(n%i == 0){
+        cout << n/i << " " << n-(n/i) << ln;
+        return;
+    }
+   }
+
+   
 }
 
 signed main()

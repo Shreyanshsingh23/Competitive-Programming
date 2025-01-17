@@ -53,17 +53,30 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+   int2(oa,ob)
+   int2(ox,oy)
+   int1(on)
+    // debug(a,b,x,y,n)
+    int a = oa, b = ob, x = ox, y = oy, n = on;
+  
+    // debug(min(b-y,n))
+    int z = min(b-y,n);
+   b -= z;
+   n -= z;
+   a -= min(a-x,n);
+   int ans1 = a*b;
+//    debug(a,b,n)
 
-   cout << 3 << ln;
-   cout << a << ln;
+    a = oa, b = ob, x = ox, y = oy, n = on;
+    z = min(a-x,n);
+    a -= z;
+    n -= z;
+    b -= min(b-y,n);
+   cout << min(ans1,a*b) << ln;
 }
 
 signed main()

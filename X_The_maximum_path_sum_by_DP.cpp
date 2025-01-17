@@ -66,6 +66,21 @@ void rec(int x, int y, int curr){
     rec(x,y+1,curr+a[x][y]);
    
 }
+// for(int i=0;i<m;++i){
+    //     dp[0][i]= a[n-1][i];
+    // }
+    // for(int i=0;i<n;++i){
+    //     dp[i][0]= a[i][m-1];
+    // }
+
+    // for(int i=0;i<=n;++i){
+    //     for(int j=0;j<m;++j){
+    //         int f = dp[i][j-1];
+    //         int s = dp[i-1][j];
+    //         dp[i][j] = max({f,s, dp[i-1][j-1]})+a[i][j];
+    //     }
+    // }
+    // return dp[n-1][m-1];
 void solve()
 {
    cin >> n >> m;

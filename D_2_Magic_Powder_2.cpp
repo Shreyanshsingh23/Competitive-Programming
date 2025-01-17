@@ -54,16 +54,50 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
+int n,k;
+vi a,b;
 
+bool check(int mid){
+    int req = 0;
+    FOR(i,n){
+        if(b[i] < mid*a[i]){
+            req += max(0ll,mid*a[i] - b[i]);
+            if(req > k)return false;
+        }
+    }
+
+    // debug(mid,req,req<=k)
+    return req <= k;
+}
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+   cin >> n >> k;
+   a.resize(n);
+   b.resize(n);
+   cin >> a >> b;
+   int minn = MAX;
+   FOR(i,n){
+     minn = min(minn,b[i]/a[i]);
+   }
+   
+   FOR(i,n){
+    b[i] -= minn*a[i];
+   }
 
-   cout << 3 << ln;
-   cout << a << ln;
+   
+   
+   int l = 0, r = 4e9, mid, ans = 0;
+   while(l <= r){
+        mid = l + (r-l)/2;
+        if(check(mid)){
+            ans = mid;
+            l = mid + 1;
+        }
+        else r = mid - 1;
+   }
+    // debug(ans)
+    // debug(b)
+   cout << minn+ans << ln;
 }
 
 signed main()

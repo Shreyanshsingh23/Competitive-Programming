@@ -57,13 +57,38 @@ const bool testcase = 0;
 
 void solve()
 {
-   int2(n,m);
-   vi a(3);
-   a[0] = a[1] = m;
-   a[2] =  3*n - 2*m;
+   int1(n)
+   string s;
+   cin >> s;
 
-   cout << 3 << ln;
-   cout << a << ln;
+   v<char> ans;
+   FOR(i,n){
+    char ch = s[i];
+    int num = fact[ch-'0'];
+    if(isPrime(num)){
+        ans.pb(ch);
+    }
+    else{
+
+            while(num%2 == 0){
+                num /= 2;
+                ans.pb(2 + '0');
+            }
+
+            for(int i = 3; i*i <= num; i += 2){
+                while(num%i == 0){
+                    num /= i;
+                    ans.pb(i + '0');
+                }
+            }
+
+            if(num > 2){
+                ans.pb(num + '0');
+            }
+    }
+   }
+   
+    cout << ans << ln;
 }
 
 signed main()
@@ -72,7 +97,7 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;
