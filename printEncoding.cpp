@@ -54,48 +54,33 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
-
+void rec(string s, string ans){
+    if(s.size() == 0){
+        cout << ans << " ";
+        return;
+    }
+    if(s[0] == '0')return;
+        
+        string curr = "";
+    for(int i = 1; i <= s.size(); ++i){
+        curr =  s.substr(0,i);
+        int num = stoi(curr);
+        if(num <= 26){
+            ans += (num - 1+ 'a');
+        }
+        else  break;
+        string rem = s.substr(i);
+        // debug(curr,rem,ans)
+        rec(rem,ans);
+        ans.pop_back();
+    }
+}
 void solve()
 {
-   int1(n)
-   string s;
-   cin >> s;
-
-   v<char> ans;
-   FOR(i,n){
-    char ch = s[i];
-    int num = ch-'0';
-    // debug(ch,num)
-    if(isPrime(num)){
-        ans.pb(ch);
-    }
-    else{
-            if(num == 4){
-                ans.pb('3');
-                ans.pb('2');
-                ans.pb('2');
-            }
-            else if(num == 6){
-                ans.pb('3');
-                ans.pb('5');
-            }
-            else if(num == 8){
-                ans.pb('7');
-                ans.pb('2');
-                ans.pb('2');
-                ans.pb('2');
-            }
-            else if(num == 9){
-                ans.pb('7');
-                ans.pb('2');
-                ans.pb('3');
-                ans.pb('3');
-            }
-    }
-   }
-    sort(all(ans),greater<char>());
-    FOR(i,sz(ans))cout << ans[i];
-    
+  string s;
+  cin >> s;
+  rec(s,"");
+   
 }
 
 signed main()
@@ -104,7 +89,7 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    compFact();
+    // compFact();
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;
