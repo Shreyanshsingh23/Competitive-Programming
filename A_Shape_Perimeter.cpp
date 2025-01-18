@@ -53,50 +53,42 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
-string s;
-
-// v<string> rec(string str, int idx){
-
-//     if(idx == n-1){
-//         v<string> ans;
-//         ans.pb(str);
-//         return ans;
-//     }   
-//     v<string> ans;
-//     for(int i = idx; i < n; ++i){
-//         swap(str[i],str[idx]);
-//         v<string> t = rec(str,idx+1);
-//         for(auto e : t)ans.pb(e);
-//     }
-
-//     return ans;
-  
-// }
-
-void rec(string str, string ans){
-    if(sz(str) == 0){
-        cout << ans << ln;
-        return;
-    }
-    int n = sz(str);
-    for(int i = 0; i < n; ++i){
-        char ch = str[i];
-        ans += ch;
-        string rem = str.substr(0,i);
-        string right = str.substr(i+1);
-        rem += right;
-        
-        rec(rem,ans);
-        ans.pop_back();
-
-    }
-}
+const bool testcase = 1;
+ int dx[4] = {1, 0, -1, 0};
+ int dy[4] = {0, 1, 0, -1};
 void solve()
 {
-   cin >> s;
-   rec(s,"");
-//    cout << ans << ln;
+   int2(n,m)
+   int ans = 0;
+   v<pi> a(n);
+   int x = 0, y = 0;
+   FOR(i,n){
+       cin >> a[i].F >> a[i].S;
+   }
+
+   v<pi> left(n), right(n);
+   FOR(i,n){
+    x += a[i].F;
+    y += a[i].S;
+    left[i] = {x,y};
+    right[i] = {x+m,y+m};
+   }
+
+//    debug(left)
+//     debug(right)
+ 
+    for(int i = 0; i < n-1; ++i){
+        int sqr = 0;
+        sqr += right[i].F - left[i+1].F;
+        sqr += right[i].S - left[i+1].S;
+        // debug(sqr)
+        int rem = 2*m - sqr;
+        ans += 2*rem;
+        
+    }
+    ans += 4*m;
+    //   debug(ans)
+   cout << ans << ln;
 }
 
 signed main()
@@ -113,3 +105,4 @@ signed main()
     }
     return 0;
 }
+

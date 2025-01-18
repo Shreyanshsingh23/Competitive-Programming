@@ -53,50 +53,42 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
-string s;
+const bool testcase = 1;
 
-// v<string> rec(string str, int idx){
-
-//     if(idx == n-1){
-//         v<string> ans;
-//         ans.pb(str);
-//         return ans;
-//     }   
-//     v<string> ans;
-//     for(int i = idx; i < n; ++i){
-//         swap(str[i],str[idx]);
-//         v<string> t = rec(str,idx+1);
-//         for(auto e : t)ans.pb(e);
-//     }
-
-//     return ans;
-  
-// }
-
-void rec(string str, string ans){
-    if(sz(str) == 0){
-        cout << ans << ln;
-        return;
-    }
-    int n = sz(str);
-    for(int i = 0; i < n; ++i){
-        char ch = str[i];
-        ans += ch;
-        string rem = str.substr(0,i);
-        string right = str.substr(i+1);
-        rem += right;
-        
-        rec(rem,ans);
-        ans.pop_back();
-
-    }
-}
 void solve()
 {
-   cin >> s;
-   rec(s,"");
-//    cout << ans << ln;
+   int1(n)
+   if(n == 6){
+    cout << "1 1 2 3 1 2" << ln;
+    return;
+   }
+   vi a ;
+   if(n&1){
+    int cnt = 1;
+    while(cnt <= n/2 + 1){
+        a.pb(cnt);
+        cnt ++;
+    }
+    cnt = 1;
+    while(cnt <= n/2){
+        a.pb(cnt);
+        cnt ++;
+    }
+   }else{
+    int cnt = 1;
+    while(cnt <= n/2){
+        a.pb(cnt);
+        cnt ++;
+    }
+    cnt = 1;
+    while(cnt <= n/2){
+        a.pb(cnt);
+        cnt ++;
+    }
+   }
+   
+   cout << a << ln;
+   
 }
 
 signed main()

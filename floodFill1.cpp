@@ -54,49 +54,37 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
-string s;
-
-// v<string> rec(string str, int idx){
-
-//     if(idx == n-1){
-//         v<string> ans;
-//         ans.pb(str);
-//         return ans;
-//     }   
-//     v<string> ans;
-//     for(int i = idx; i < n; ++i){
-//         swap(str[i],str[idx]);
-//         v<string> t = rec(str,idx+1);
-//         for(auto e : t)ans.pb(e);
-//     }
-
-//     return ans;
-  
-// }
-
-void rec(string str, string ans){
-    if(sz(str) == 0){
-        cout << ans << ln;
+int n,m;
+vii a;
+void rec(int i, int j, string ans, set<pi>& vis){
+    if(i == n-1 and j == m-1){
+        cout << ans << " ";
         return;
     }
-    int n = sz(str);
-    for(int i = 0; i < n; ++i){
-        char ch = str[i];
-        ans += ch;
-        string rem = str.substr(0,i);
-        string right = str.substr(i+1);
-        rem += right;
-        
-        rec(rem,ans);
-        ans.pop_back();
+    if(i < 0 or i >= n or j < 0 or j >= m or a[i][j] == 1)return;
+    if(vis.count({i,j}))return;
 
-    }
+    vis.insert({i,j});
+
+    rec(i-1,j,ans+'t', vis);
+    rec(i,j-1,ans+'l', vis);
+    rec(i+1,j,ans+'d', vis);
+    rec(i,j+1,ans+'r', vis);
+    vis.erase({i,j});
 }
 void solve()
 {
-   cin >> s;
-   rec(s,"");
-//    cout << ans << ln;
+   cin >> n >> m;
+   a.resize(n);
+   FOR(i,n) {
+    a[i].resize(m);
+    cin >> a[i];
+   }
+//    debug(a)
+    set<pi> vis;
+    rec(0,0,"",vis);
+
+   
 }
 
 signed main()
