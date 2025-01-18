@@ -1,1 +1,0 @@
-{"name":"Local: maxSmallestIndex","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/maxSmallestIndex.cpp","tests":[{"id":1727761241808,"input":"6\n71 40 7 71 50 71","output":"0"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/maxSmallestIndex.cpp","group":"local","local":true}

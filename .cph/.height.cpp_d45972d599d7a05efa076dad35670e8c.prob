@@ -1,1 +1,0 @@
-{"name":"Local: height","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/height.cpp","tests":[{"id":1727535097847,"input":"7\n7 4 5 4 7 2 6 ","output":"28"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/height.cpp","group":"local","local":true}

@@ -1,1 +1,0 @@
-{"name":"Local: printZigZagRecursion","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/printZigZagRecursion.cpp","tests":[{"id":1734679297405,"input":"5\n2 2 0 -5 6","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/printZigZagRecursion.cpp","group":"local","local":true}

@@ -1,1 +1,0 @@
-{"name":"Local: subsequenceByRecursion","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/subsequenceByRecursion.cpp","tests":[{"id":1736612727670,"input":"abc","output":"abc ab ac a bc b c \n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/subsequenceByRecursion.cpp","group":"local","local":true}
