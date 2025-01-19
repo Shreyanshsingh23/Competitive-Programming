@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -53,40 +53,29 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st (all(a));
-    // FOR(i,n)st.insert(a[i]);
-    debug(st)
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            debug(val)
-            st.erase(it);
-        }
-        // debug(st)
-        
+   int1(n)
+   if(!(n&1)){
+    cout << n/2 << " " << n/2 << ln;
+    return;
    }
 
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+   if(isPrime(n)){
+    cout << "1 " << n-1 << ln;
+    return;
+   }
+
+   for(int i = 2; i*i <= n; ++i){
+    if(n%i == 0){
+        cout << n/i << " " << n-(n/i) << ln;
+        return;
+    }
+   }
+
+   
 }
 
 signed main()

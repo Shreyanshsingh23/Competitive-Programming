@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -54,39 +54,47 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 const bool testcase = 0;
+int n,m;vii a;
+int f [20][20];
 
+void rec(int x, int y, int curr){
+    if(x >=  n or y >= m)return;
+    if(f[x][y] >= curr)return;
+    f[x][y] = curr;
+
+    rec(x+1,y,curr+a[x][y]);
+    rec(x,y+1,curr+a[x][y]);
+   
+}
+// for(int i=0;i<m;++i){
+    //     dp[0][i]= a[n-1][i];
+    // }
+    // for(int i=0;i<n;++i){
+    //     dp[i][0]= a[i][m-1];
+    // }
+
+    // for(int i=0;i<=n;++i){
+    //     for(int j=0;j<m;++j){
+    //         int f = dp[i][j-1];
+    //         int s = dp[i-1][j];
+    //         dp[i][j] = max({f,s, dp[i-1][j-1]})+a[i][j];
+    //     }
+    // }
+    // return dp[n-1][m-1];
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st (all(a));
-    // FOR(i,n)st.insert(a[i]);
-    debug(st)
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            debug(val)
-            st.erase(it);
-        }
-        // debug(st)
-        
+   cin >> n >> m;
+   a.resize(n);
+   FOR(i,n){
+    a[i].resize(m);
+    FOR(j,m){
+        cin >> a[i][j];
+    }
    }
-
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+   memset(f,-1,sizeof(f));
+   rec(0,0,0);
+   cout << f[n-1][m-1]+a[n-1][m-1];
+    
 }
 
 signed main()

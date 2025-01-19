@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -57,36 +57,39 @@ const bool testcase = 0;
 
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st (all(a));
-    // FOR(i,n)st.insert(a[i]);
-    debug(st)
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            debug(val)
-            st.erase(it);
-        }
-        // debug(st)
-        
+   int1(n)
+   v<string> a(n);
+   vi b(n);
+   FOR(i,n){
+     cin >> a[i] >> b[i];
    }
+   map<string,int> mp;
+   FOR(i,n){
+    string s = a[i];
+    int scr = b[i];
+    
+    mp[s] += scr;
+   }
+   string ans = "";
+   int mxx = MIN;
+   for(auto e : mp){
+        mxx = max(e.S,mxx);
+   }
+//    debug(mxx)
 
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+   map<string,int> m;
+   FOR(i,n){
+    string s = a[i];
+    int scr = b[i];
+    m[s] += scr;
+    if(m[s] >= mxx and mp[s] == mxx){
+        ans = s;
+        break;
+    }
+   }
+    
+   cout << ans << ln;
+   
 }
 
 signed main()

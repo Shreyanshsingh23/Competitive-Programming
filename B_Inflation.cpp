@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -53,40 +53,37 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 0;
+const bool testcase = 1;
 
+int bs(int ele, int pref, int k){
+    int l = 0,r = 1e11, mid, ans = 0;
+    while(l <= r){
+        mid = (l+r) >> 1;
+        if(((double)ele*100)/(pref+mid) <= k){
+            ans = mid;
+            r = mid - 1;
+        }
+        else l = mid + 1;
+    }
+    return ans;
+}
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
-   cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st (all(a));
-    // FOR(i,n)st.insert(a[i]);
-    debug(st)
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;
+   int2(n,k)
+   vi a (n);
+   int cnt = 0;
+   FOR(i,n) cin >> a[i];
+   int pref = a[0];
+   for(int i = 1; i < n; ++i){
+    // debug(pref)
+        if(((double)a[i]*100)/pref > k){
+            int incr = bs(a[i],pref,k);
+            cnt += incr;
+            pref += incr;
         }
-        else{
-            int val = *it;
-            ans[i] = val;
-            debug(val)
-            st.erase(it);
-        }
-        // debug(st)
-        
+        pref += a[i];
    }
-
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+   cout << cnt << ln;
 }
 
 signed main()

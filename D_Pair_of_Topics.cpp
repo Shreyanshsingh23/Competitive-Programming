@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -57,36 +57,24 @@ const bool testcase = 0;
 
 void solve()
 {
-   int2(n,m)
-   vi a(n), b(m);
+   int1(n)
+   vi a (n), b(n), diff(n);
    cin >> a >> b;
-   sort(all(a));
-    multiset<int,greater<int>> st (all(a));
-    // FOR(i,n)st.insert(a[i]);
-    debug(st)
-    int i = 0, j = 0;
-//    debug(a)
-
-   vi ans(m);
-    // debug(st)
-   FOR(i,m){
-        auto it = st.lower_bound(b[i]);
-        if(it == st.end()){
-            ans[i] =-1;
-            continue;
-        }
-        else{
-            int val = *it;
-            ans[i] = val;
-            debug(val)
-            st.erase(it);
-        }
-        // debug(st)
-        
+   FOR(i,n){
+    diff[i] = a[i] - b[i];
+   }
+   sort(all(diff));
+   int cnt = 0;
+    // debug(diff)
+   FOR(i,n){
+    int x = -1*diff[i] + 1;
+    int ans = lower_bound(all(diff),x) - diff.begin();
+    // debug(x,ans,n-ans)
+    cnt += n-ans;
+    if(x <= diff[i])--cnt;
    }
 
-   FOR(i,m)cout << ans[i] << ln;
-//    debug(ans)
+   cout << cnt/2 << ln;
 }
 
 signed main()
