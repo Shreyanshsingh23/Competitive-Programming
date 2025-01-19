@@ -53,14 +53,18 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-const bool testcase = 1;
-
+const bool testcase = 0;
+int n, k;
+vi a;
+void rec(int i, int curr){
+    
+}
 void solve()
 {
-   int1(n)
-   vi a (n);
+   cin >> n >> k;
+   a.resize(n);
    FOR(i,n) cin >> a[i];
-   
+   rec()
 }
 
 signed main()
