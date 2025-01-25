@@ -55,44 +55,72 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n,q,T;vi a;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
+int dp[101][10001];
+// f(level, target) -> returns that from [level...n-1], if there exists a subset which sums to target value 'target'
+bool f(int level, int target)
 {
     //base case
-    if(i == sz(s)-1)
+    if(target == 0 and level == n)
     {
-        return 0;
+        return true;
+    }
+    //pruning
+    if(level >= n and target > 0)return false;
+
+    if(dp[level][target]  != -1)
+    {
+        return dp[level][target];
     }
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
+    //transitions
+    bool ans = f(level+1,target);
+
+    if(target - a[level] >= 0)
     {
-        ans++;
+        ans = (ans or f(level+1, target - a[level]));
     }
-    return dp[i] = ans;
+
+    return dp[level][target] =  ans;
+
 }
+
+void printset(int level, int target)
+{   
+    cout << "printer: " << level << ' ' << target << ln;
+    if(level == n)return;
+
+    if(f(level+1,target-a[level]))
+    {
+        cout << a[level] << ' ';
+        printset(level+1,target-a[level]);
+    }
+    else printset(level+1,target);
+}
+
 void solve()
-{
-  cin >> s >> q;
-  
+{   
+   memset(dp,-1,sizeof(dp));
+   cin >> n >> q;
+   a.resize(n);
+   FOR(i,n) cin >> a[i];
    while(q--)
    {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
+    cin >> T;
+    cout << (f(0,T)? "true": "false") <<  ln;
+    if(f(0,T))
+    {
+        printset(0,T);
+        cout << ln;
+    }
    }
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

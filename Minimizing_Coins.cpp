@@ -56,43 +56,66 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
-{
+int n,target;
+vi a;
+
+int dp[1000001];
+//f(x) -> returns minimum number of coins required to make value x
+int f(int x)
+{   
     //base case
-    if(i == sz(s)-1)
+    if(x == 0)
     {
         return 0;
     }
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
+
+    //pruning
+    
+    //cache check
+    if(dp[x] != -1)
     {
-        ans++;
+        return dp[x];
     }
-    return dp[i] = ans;
+    //transitions
+    int ans = MAX;
+    for(int i = 0; i < n; ++i)
+    {
+        if(x-a[i] >= 0)
+        {
+            int next = f(x-a[i]);
+            if(next != MAX)
+            ans = min(ans,1+next);
+            //i.e. if it's not possible to construct the X of next call then dont add otherwise value overflows
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    return dp[x] = ans;
 }
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
+   memset(dp,-1,sizeof(dp));
+   cin >> n >> target;
+   a.resize(n);
+   FOR(i,n) cin >> a[i];
+   sort(all(a));
+   int ans = f(target);
+   if(ans == MAX)
    {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
+    cout << -1 << ln;
    }
+   else 
+   cout << ans << ln;
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

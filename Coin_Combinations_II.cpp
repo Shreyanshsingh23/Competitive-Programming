@@ -55,44 +55,48 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n,target;
+vi a;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
+int dp[101][1000000];
+int f(int x, int idx)
 {
-    //base case
-    if(i == sz(s)-1)
+    if(x == 0)
     {
-        return 0;
+        return 1;
     }
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
+    if(idx >= n and x > 0)return 0;
+
+    if(dp[idx][x] != -1)
     {
-        ans++;
+        return dp[x][idx];
     }
-    return dp[i] = ans;
+
+    int ans = 0;
+    for(int i = idx; i < n; ++i)
+    {
+        if(x - a[i] >= 0)
+        {
+            ans += f(x-a[i], i);
+            ans %= MOD;
+        }
+    }
+    return dp[idx][x] = ans;
 }
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+   memset(dp,-1,sizeof(dp));
+   cin >> n >> q;
+   a.resize(n);
+   FOR(i,n) cin >> a[i];
+   cout << f(target,0) <<  ln;
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();
