@@ -1,3 +1,5 @@
+//USACO 2020 January US Open Contest, Gold Problem 1. Time is Money
+
 #include <bits/stdc++.h>
 using namespace std;
 #ifndef ONLINE_JUDGE
@@ -53,60 +55,110 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
 
-int dp[15][15];
+int n,m,c;
+int a[1010];
+vii b;
+int dp[1001][1001];
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+void setIO(string name = "") {ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
+// f(curr,cnt,sum) -> 
+// int f(int curr, int cnt,int sum)
+// {
+//     // pruning
+//     // if(sum - (c*cnt*cnt) < 0){
+//     //     return MIN;
+//     // }
+
+//     //base case
+//     if(curr == 1){
+//        int res = sum - (c*cnt*cnt);
+//        if(res < 0){
+//         return MIN;
+//        }
+//        int up = MIN;
+//        for(int i = 0; i < b[curr].size(); ++i){
+//         up = max(up,f(b[curr][i],cnt+1,sum+a[b[curr][i]]));
+//     }
+
+//     return max(res,up);
+//     }
+
+   
+    
+//     //transitions
+//     int ans = MIN;
+//     for(int i = 0; i < b[curr].size(); ++i)
+//     {
+//         ans = max(ans,f(b[curr][i],cnt+1,sum+a[b[curr][i]]));
+//     }
+    
+//     //save and return
+
+//     return ans;
+
+// }
+
+// f(i,cnt) -> maximum earning obtainable from city 1 to city i in exactly cnt moves
+int f(int i, int cnt){
+
+    if(cnt == 0){
+        if(i == 1)return 0;
+        else return MIN;
     }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+
+    if(dp[i][cnt] != -1)return dp[i][cnt];
+
+   int ans = MIN;
+   for(int j: b[i]){
+        ans = max(ans,f(j,cnt-1)+a[i]);
+   }
+
+   return dp[i][cnt] = ans;
+
 }
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
-   a.resize(n);
-   
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
+   cin >> n >> m >> c;
+   memset(dp,-1,sizeof dp);
+   for(int i = 1; i <= n; ++i)cin >> a[i];
+   b.resize(n+1);
+   for(int i = 0; i < m; ++i){
+       int x,y;
+       cin >> x >> y;
+    //    b[x].pb(y);
+        b[y].pb(x);   // reverse graph 
    }
-   
-    cout << rec(0,0,0,0) << ln;
-
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
+    
+   int mxx = 1000, ans = 0;
+    for(int t = 0; t <= mxx; ++t){
+        int curr = f(1,t);
+        if(curr >= 0)
+        ans = max(ans,curr - 1ll*c*t*t);
+        
     }
+   
+    cout << ans << ln;
+   
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-
+    
+    setIO("time");
     int t = 1;
     testcase and cin >> t;
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
+        //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
+   
     return 0;
 }

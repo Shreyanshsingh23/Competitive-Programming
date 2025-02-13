@@ -53,47 +53,55 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
 
-int dp[15][15];
+int n;
+// int a[10010];
+vi a;
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+// Time 0(N) Space 0(1) -> partition function
+int partition(int l, int r)
+{
+   int s = l+1, e = r;
+   int pivot = a[l];
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
+   while(s <= e){
+    while(a[s] < pivot)s++;
+    while(a[e] > pivot)e--;
+
+    if(s < e){
+        swap(a[s],a[e]);
+        s++;
+        e--;
     }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
 }
+
+swap(a[l],a[e]);
+debug(a)
+   return e;
+}
+
+// Time 0(N*logN) Space 0(1) -> quick sort
+void quickSort(int l, int r)
+{
+    if(l >= r)return;
+
+    int pivot = partition(l,r);
+    quickSort(l,pivot-1);
+    quickSort(pivot+1,r);
+}
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
+   cin >> n;
    a.resize(n);
-   
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
-   }
-   
-    cout << rec(0,0,0,0) << ln;
+   FOR(i,n) cin >> a[i];
 
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
-    }
+   quickSort(0,n-1);
+   debug(a)
+   
 }
 
 signed main()

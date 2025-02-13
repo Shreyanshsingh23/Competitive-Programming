@@ -53,47 +53,50 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
 
-int dp[15][15];
+int n,m;
+string a,b,res;
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+int dp[1001][1001];
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
+//f(i,j) -> returns the length of longest common subsequence(LCS) in string a and b from [i...n] and [j...m]
+int f(int i, int j)
+{
+    //pruning
+
+    //base case
+    if(i == n or j == m)return 0;
+
+    //cache  check
+    if(dp[i][j] != -1)return dp[i][j];
+
+    //transitions
+    int ans = 0;
+    ans = max(f(i+1,j),f(i,j+1));
+    if(a[i] == b[j]){
+        res.pb(a[i]);
+        ans = max(ans, 1+f(i+1,j+1));
     }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+
+    //save and return
+    return  dp[i][j] = ans;
 }
+
+
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
-   a.resize(n);
-   
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
-   }
-   
-    cout << rec(0,0,0,0) << ln;
+   cin >> a >> b;
+   n = sz(a), m = sz(b);
+   res = "";
+   memset(dp,-1,sizeof(dp));
+   cout << f(0,0) << ln;
 
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
-    }
+//    reverse(all(res));
+   cout << res << ln;
+   
 }
 
 signed main()

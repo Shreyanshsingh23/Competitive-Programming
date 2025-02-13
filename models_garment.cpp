@@ -53,47 +53,60 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
+int budget, n;
+vii a (3);
+vi ans;
+int dp[101][2001];
+// f(i,left) -> returns the maximum amount you can spend by buying exactly 1 element from [i...n-1] garments and without exceeding the limit
+int f(int i, int left){
 
-int dp[15][15];
+    if(i == n)return 0;
+    if(left <= 0)return MIN;
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+    if(dp[i][left] != -1)return dp[i][left];
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
+    int mxx = MIN;
+    for(int size = 0; size < a[i].size(); ++size){
+        if(a[i][size] <= left){
+            // debug(a[i][size],left)
+            mxx = max(a[i][size]+f(i+1,left-a[i][size]),mxx);
+            
+        }
     }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+    return dp[i][left] = mxx;
 }
+
+int shop(int i, int money){
+    if(money < 0)return MIN;
+    if(i == n)return budget - money;
+    
+    if(dp[i][money] != -1)return dp[i][money];
+
+    int ans = MIN;
+    for(int j = 0; j < a[i].size(); ++j){
+        ans = max(ans,shop(i+1,money-a[i][j]));
+    }
+    debug(i,ans) 
+    return dp[i][money] = ans;
+}
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
-   a.resize(n);
-   
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
-   }
-   
-    cout << rec(0,0,0,0) << ln;
-
+    cin >> budget >> n;
+    memset(dp,-1,sizeof(dp));
     FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
+        int size;
+        cin >> size;
+        a[i].resize(size);
+        FOR(j,size) cin >> a[i][j];
     }
+   
+    // debug(budget,n,a)
+//    cout << f(0,budget) << ln;
+   cout << shop(0,budget) << ln;
+
 }
 
 signed main()

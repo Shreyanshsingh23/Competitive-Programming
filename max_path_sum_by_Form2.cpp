@@ -53,47 +53,76 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
 
-int dp[15][15];
+int n,m;
+vii a;
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+int dp[1001][1001];
+// This is because the calculated value for any cell can be -1 that is why we keep a boolean check
+bool done[1001][1001];
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
-    }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+//This is form 2 (Ending Form)
+// f(i,j) -> returns the maximum path sum from (i,j) to (n-1,m-1)
+int f(int i, int j)
+{
+    if(i == n-1 and j == m-1)return a[i][j];
+
+    int fir = 0, sec = 0;
+    if(i+1 < n)fir = f(i+1,j);
+    if(j+1 < m)sec = f(i,j+1);
+
+    return max(fir,sec) + a[i][j];
 }
+
+// Time Complexity of function 'f' : no. of states * (1 + avg.cost of transition)
+// -> (n*m)* (1+2) -> 0(n*m)
+
+
+// ff(i,j) -> best path sum ending at (i,j) starting from (0,0), this is the real 2nd form
+int ff(int i, int j)
+{
+    if(i == 0 and j == 0)return a[0][0];
+
+    if(done[i][j])return dp[i][j];
+
+    done[i][j] = 1;
+
+    int fir = 0, sec = 0;
+    if(i > 0)fir = ff(i-1,j) + a[i][j];
+    if(j > 0)sec = ff(i,j-1) + a[i][j];
+    return dp[i][j] = max(fir,sec);
+}
+
+void printPath(int i, int j)
+{
+    if(i == n-1 and j == m-1){
+        cout << a[i][j] << ln;
+        return;
+    }
+    cout << a[i][j] << " -> ";
+    int fir = 0, sec = 0;
+    if(i+1 < n)fir = f(i+1,j);
+    if(j+1 < m)sec = f(i,j+1);
+    if(fir > sec){
+        printPath(i+1,j);
+    }
+    else printPath(i,j+1);
+}
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
    cin >> n >> m;
-   a.resize(n);
-   
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
-   }
-   
-    cout << rec(0,0,0,0) << ln;
+   a.resize(n,vi(m));
+   FOR(i,n) FOR(j,m) cin >> a[i][j];
+ 
+   cout << f(0,0) << ln;
+   printPath(0,0);
+   cout << ln; 
 
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
-    }
+   cout << ff(n-1,m-1) << ln;
+   
 }
 
 signed main()

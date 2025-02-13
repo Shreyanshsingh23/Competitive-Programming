@@ -58,7 +58,7 @@ const bool testcase = 0;
 int n,W;
 vi a,b;
 
-int dp[100001][101];
+int dp[101][100001];
 
 // f(i,left) -> returns the maximum value you can get from item [i...n-1] if 'left' capacity is left in your bag
 int f(int i, int left){

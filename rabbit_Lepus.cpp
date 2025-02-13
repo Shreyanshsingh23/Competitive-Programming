@@ -53,52 +53,50 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
+int n;
+v<char> a;
+int dp[1010];
+int f(int i)
+{
+    if(i == n-1)return 0;
 
-int dp[15][15];
+    if(dp[i] != -1)return dp[i];
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+    //transitions
+    int ans = -1;
+    int b = 0;
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
+    if(a[i] == '"')b = 1;
+
+    for(int j = 1; j <= 5; j += 2){
+        if(i+j< n and a[i+j] != 'w'){
+            ans = max(ans,b+f(i+j));
+        }
     }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+    
+
+    return dp[i] = ans;
+
 }
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
-   a.resize(n);
+    cin >> n;
+    a.resize(n);
+    for(int i = 0; i < n; ++i) cin >> a[i];
+    debug(a);
+    memset(dp,-1,sizeof(dp));
+    cout << f(0) << ln;
    
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
-   }
-   
-    cout << rec(0,0,0,0) << ln;
-
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
-    }
 }
 
 signed main()
 {
     ShreyanshSinghGautam
+        // std::freopen("ladder.in", "r", stdin);
+        // std::freopen("ladder.out", "w", stdout);
 
     int t = 1;
     testcase and cin >> t;

@@ -56,15 +56,34 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 const bool testcase = 0;
 int n, k;
 vi a;
-void rec(int i, int curr){
-    
+vii ans;
+vi d;
+void rec(int i, int curr,vi& d){
+    if(curr > k) return;
+    if(i == n){
+        if(curr == k){
+            vi temp = d;
+            ans.pb(d);
+        
+        }
+          return;
+    }
+
+    rec(i+1, curr,d);
+    d.pb(a[i]);
+    rec(i+1, curr + a[i],d);
+    d.pop_back();
 }
 void solve()
 {
    cin >> n >> k;
    a.resize(n);
    FOR(i,n) cin >> a[i];
-   rec()
+   rec(0,0,d);
+   for(auto& e : ans){
+       for(auto& e1 : e) cout << e1 << " ";
+       cout << ln;
+   }
 }
 
 signed main()

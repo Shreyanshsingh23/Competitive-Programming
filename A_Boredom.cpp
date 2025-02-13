@@ -48,52 +48,55 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
 
-int dp[15][15];
+int n;
+int a[N],dp[N+1];
+vi freq;
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+int f(int i)
+{
+    if(i <= 0)return 0;
+   if(i == 1)return 1*freq[1];
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
-    }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+    if(dp[i] !=  -1)return dp[i];
+
+    //don't take this element
+    int ans = f(i-1);
+
+    //take this element
+    ans = max(ans,f(i-2)+freq[i]*i);
+
+  
+        return dp[i] = ans;
+    
 }
+
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
-   a.resize(n);
-   
+   cin >> n;
+   memset(dp,-1,sizeof(dp));
+   int mxx = 0;
    FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
+       cin >> a[i];
+       mxx = max(mxx,a[i]);
    }
-   
-    cout << rec(0,0,0,0) << ln;
 
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
-    }
+   freq.resize(mxx+10);
+
+   FOR(i,n)freq[a[i]]++;
+
+
+   cout << f(mxx+1) << ln;
+   
 }
 
 signed main()

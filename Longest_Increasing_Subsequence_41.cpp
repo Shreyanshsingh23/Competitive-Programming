@@ -56,7 +56,7 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 const bool testcase = 0;
 
 
-   int findLIS( vi& arr) {
+int findLIS( vi& arr) {
    int n = arr.size();
     if (n == 0) return 0;
     

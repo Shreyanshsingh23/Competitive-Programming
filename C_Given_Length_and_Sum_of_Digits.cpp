@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
-#define sz(x) x.size()
+#define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
 #define vii vector<vector<int>>
@@ -53,73 +53,91 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+
+int m,s;
+
+int f2(int cnt, int sum){
+    
+    //pruning
+
+    if(cnt < m-1 and sum == 0){
+        return MIN;
+    }
+
+    if(cnt == m-1){
+        if(sum < 10)return sum;
+        else return MIN;
+    }
+
+    int ans = MIN;
+
+    for(int i = 0; i < 10; ++i){
+        if(cnt == 0 and i == 0)continue;
+        if(sum - i >= 0){
+            int curr = f2(cnt+1,sum-i);
+            
+           if(curr != MIN){
+            int digits = log(curr,10);
+            curr *= pow(10,digits);
+            curr += i;
+           }
+            ans = max(ans,curr);
+        }
+        // else break;
+    }
+
+    return ans;
+
+}
+
+// f1(cnt,sum) -> returns the smallest number with cnt digits whose sum of digits is equal to sum
+int f1(int cnt, int sum){
+    
+    //pruning
+
+    if(cnt < m-1 and sum == 0){
+        return MAX;
+    }
+
+    if(cnt == m-1){
+        if(sum < 10)return sum;
+        else return MAX;
+    }
+
+    int ans = MAX;
+
+    for(int i = 0; i < 10; ++i){
+        if(cnt == 0 and i == 0)continue;
+        if(sum - i >= 0){
+            int curr = f1(cnt+1,sum-i);
+            
+           if(curr != MAX){
+            curr *= 10;
+            curr += i;
+           }
+            ans = min(ans,curr);
+        }
+        // else break;
+    }
+
+    return ans;
+
+}
 
 void solve()
 {
-   int2(n,s)
-//    debug(n,s)
-   if(s == 0){
-    if(n == 1){
-        cout << 0 << " 0" << ln; 
-    }
-    else{
-        cout << -1 << " -1" << ln;
-    }
-        return;
-   }
+   cin >> m >> s;
 
-   vi a,b;
-   int sum = 0;
-    
-    
-    sum = s-sum;
-    if(sum >= 9){
-        sum -= min(9ll,sum);
-        a.pb(sum);
-        a.pb(9);
-    }
-    else{
-        a.pb(sum);
-        a.pb(s-sum);
-    }
-    
-    
-    sum = 0;
-    int cnt = 0;
-    while(cnt <= n){
-        if(sum + 9 <= s){
-            b.pb(9);
-            sum += 9;
-            cnt++;
-        }
-        else{
-            break;
-        }
-    }
-
-    if(cnt > n and sum < s){
-        b.pb(-1);
-    }
-    else{
-        sum = s-sum;
-        b.pb(sum);
-        cnt++;
-        while(cnt < n){
-        b.pb(0);
-        cnt++;
-    }
-    }
-
-    FOR(i,sz(a)){
-        cout << a[i];
-    }
-    cout << ' ';
-
-    FOR(i,sz(b))cout << b[i];
-
-   
-
+   int l = f1(0,s);
+   if(l == MAX)cout << -1;
+   else cout << l;
+   cout << " ";
+   int r = f2(0,s);
+   if(r == MIN)cout << -1;
+   else cout << r;
    
 }
 

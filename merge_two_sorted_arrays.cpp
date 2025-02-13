@@ -53,47 +53,44 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
+int n,m;
+vi a,b;
 
-int dp[15][15];
+vi merge(){
+    vi ans(n+m);
+    int k = 0;
+    int i = 0, j = 0;
+    while(i < n and j < m){
+        if(a[i] < b[j]){
+            ans[k++] = a[i++];
+        }
+        else{
+            ans[k++] = b[j++];
+        }
+    }
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
-
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
+    while(i < n){
+        ans[k++] = a[i++];
     }
-    else if(x >= n or y >= m){
-        return MIN;
+    while(j < m){
+        ans[k++] = b[j++];
     }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+    return ans;
 }
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
-   a.resize(n);
+    cin >> n >> m;
+    a.resize(n);
+    b.resize(m);
+    cin >> a >> b;
+    
+    vi ans = merge();
+    cout << ans << ln;
+    
    
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
-   }
-   
-    cout << rec(0,0,0,0) << ln;
-
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
-    }
 }
 
 signed main()

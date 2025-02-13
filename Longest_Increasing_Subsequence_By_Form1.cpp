@@ -53,47 +53,48 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-int n,m;vii a;
 
-int dp[15][15];
+int dp[101];
 
-// rec(x,y) -> returns the maximum path sum from (x,y) to (n,m)
-// This is form 2 i.e. Ending form
-int rec(int x, int y, int curr, int mxx){
+int n;vi a;
+int f(int i)
+{
+    if(i == 0){
+        return 1;
+    }
 
-    if(x == n-1 and y == m-1){
-        return dp[x][y] = a[x][y];
+    if(dp[i] != -1)return dp[i];
+
+    int ans = 1;
+    for(int j = 0; j < i; ++j){
+        if(a[j] < a[i]){
+            ans = max(ans,f(j)+1);
+        }
     }
-    else if(x >= n or y >= m){
-        return MIN;
-    }
-    if(dp[x][y]!=-1){
-        return dp[x][y];
-    }
-    int f = rec(x,y+1,curr,mxx);
-    int s = rec(x+1,y,curr,mxx);
-    return dp[x][y] = max(f,s)+a[x][y];
+
+    return dp[i] = ans;
+
 }
+
+void printSequence(int i){
+
+}
+
 void solve()
 {
-    memset(dp, -1, sizeof dp);
-   cin >> n >> m;
+   cin >> n;
+   memset(dp,-1,sizeof(dp));
    a.resize(n);
-   
-   FOR(i,n){
-    a[i].resize(m);
-    FOR(j,m){
-        cin >> a[i][j];
-    }
-   }
-   
-    cout << rec(0,0,0,0) << ln;
+   FOR(i,n) cin >> a[i];
 
-    FOR(i,n){
-        FOR(j,m)cout << dp[i][j] << ' ';
-        cout << ln;
-    }
+   int mxx = f(0);
+   for(int i = 1; i< n; ++i)mxx = max(mxx,f(i));
+
+
+   cout << mxx << ln;
+   
 }
 
 signed main()
