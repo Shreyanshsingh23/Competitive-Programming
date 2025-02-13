@@ -54,45 +54,51 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-string s;
-int q;
-int dp[100010];
-int f(int i)
+const bool testcase = 1;
+int n, m;
+vi a;
+int d[-1,0,1];
+// f(i) -> returns the number of arrays that match the description if the numbers till i'th index are fixed
+int f(int i, int val)
 {
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
-    }
+    if(i == n)return 1;
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
+    int ans = 0;
+    if(a[i] != 0)return f(i+1,val);
+
+    if(i == 0){
+        
     }
-    return dp[i] = ans;
+    else {
+    for(int j = 0; j < 3; ++j){
+        int nval = a[i-1] + d[j];
+        if(nval >= 0 and nval <= m){
+            a[i] = nval;
+            ans += f(i+1,nval);
+            a[i] = 0;
+        }
+    }
 }
+ 
+}
+
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
+   cin >> n >> m;
+   a.resize(n);
+   FOR(i,n) cin >> a[i];
+   if(n == 1){
+    if(a[0] != 0)cout << 1 << ln
+    else cout << m << ln;
+    return;
    }
+   
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

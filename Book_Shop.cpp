@@ -55,44 +55,56 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+struct Node {
+    int value = -1;
+};
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
+int n,x;
+vi a,b;
+// int dp[1001][100001];
+unordered_map<string,Node> mp;
+// f() -> returns the maximum number of pages you can get from [i...n-1] books if you have 'left' money left with you
+int f(int i, int left)
 {
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
+    
+    //positive base case
+    if(i == n)return 0;
+    string s = to_string(i) + to_string(left);
+
+    //cache check
+    // if(dp[i][left] != -1)return dp[i][left];
+    if(mp.count(s) and mp[s].value >= 0){
+        return mp[s].value;
     }
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
+    //transitions
+    //1. not taking this book
+    int ans = f(i+1,left);
+    
+    //2. taking this book
+    if(left >= a[i]){
+        ans = max(ans, b[i] + f(i+1,left-a[i]));
     }
-    return dp[i] = ans;
+    return mp[s].value = ans;
+
 }
+
+
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+   cin >> n >> x;
+   a.resize(n);//price
+   b.resize(n);//pages 
+//    memset(dp,-1,sizeof(dp));
+   cin >> a >> b;
+   cout << f(0,x) << ln;
+   
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();
@@ -103,3 +115,9 @@ signed main()
     }
     return 0;
 }
+
+
+
+
+
+

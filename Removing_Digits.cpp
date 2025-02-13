@@ -55,44 +55,31 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-
-string s;
-int q;
-int dp[100010];
-int f(int i)
+int n;
+int dp[1000001];
+int f(int n)
 {
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
-    }
+    if(n == 0)return 0;
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
-    }
-    return dp[i] = ans;
+    // if(dp[n] != -1)return dp[n];
+
+    string s = to_string(n);
+    char mx = s[0];
+    for(int i = 0; i < sz(s); ++i)mx = max(mx,s[i]);
+    return dp[n] = (1 + f(n-(mx-'0')));
 }
+
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+   memset(dp,-1,sizeof(dp));
+   cin >> n;
+   cout << f(n) << ln;
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

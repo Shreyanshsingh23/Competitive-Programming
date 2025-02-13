@@ -55,44 +55,87 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n, T, k;
+vi t,s;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
+// int dp[10010]; // dp[i] -> if 1 -> this item is picked, if 0 -> this item is not picked
+
+// bool check(int level)
+// {
+//     int timeTillNow = 0, questionsTillNow = 0;
+//     for(int i = 0; i <= level; ++i){
+//         if(dp[i]){
+//             timeTillNow += t[i];
+//             ++questionsTillNow;
+//         }
+//     }
+
+//     return (timeTillNow <= T and questionsTillNow <= k);
+// }
+// rec(level) -> return the maximum skill gain you can achieve from level 'level' to n-1 within time 'T' and questions <= 'k' if [0...level-1] is decided
+// cheat code for base cases
+// Most of the times in problems asking Min or Max value:
+//      for positive testcases we return 0;
+//      for negative testcases/ pruning we return opposite infinity of the asked value
+
+// int rec(int level) 
+// {
+//     if(level == n) return 0; //+ve base case
+
+//     // first choice -> don't pick this item
+//     int ans = rec(level + 1);
+
+//     // second choice -> pick this item
+//     if(check(level)){
+//         dp[level] = 1;
+//         ans = max(ans,s[level]+rec(level+1));
+//         dp[level] = 0;
+//     }
+
+//      return ans;
+     
+// }
+
+// NOW DP Solution
+//constraints :
+// a < 10, b < 100, c < 1000
+int dp[10][100][1000];
+
+int f(int level, int timeTaken, int itemTaken)
 {
-    //base case
-    if(i == sz(s)-1)
-    {
+    if(level == n){
         return 0;
     }
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
+    if(dp[level][timeTaken][itemTaken] != -1){
+        return dp[level][timeTaken][itemTaken];
     }
-    return dp[i] = ans;
+    int ans = f(level + 1, timeTaken, itemTaken);
+
+    if(timeTaken + t[level] <= T and itemTaken + 1 <= k){
+        timeTaken += t[level];
+        ++itemTaken;
+        ans = max(ans,s[level] + f(level+1, timeTaken, itemTaken));
+         timeTaken -= t[level];
+        --itemTaken;
+    }
+    if(ans == 7)debug(level, timeTaken, itemTaken);
+    return dp[level][timeTaken][itemTaken] = ans;
 }
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+    memset(dp,-1,sizeof(dp));
+   cin >> n >> T >> k;
+   t.resize(n);
+   s.resize(n);
+   cin >> t >> s;
+   cout << f(0,0,0) << ln;
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

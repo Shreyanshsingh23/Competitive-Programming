@@ -55,44 +55,40 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n,W;
+vi a,b;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
-{
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
-    }
+int dp[100001][101];
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
+// f(i,left) -> returns the maximum value you can get from item [i...n-1] if 'left' capacity is left in your bag
+int f(int i, int left){
+    if(i == n)return 0;
+
+    if(dp[i][left] != -1)return dp[i][left];
+
+    int ans = f(i+1,left);
+    if(left - a[i] >= 0){
+        ans = max(ans,b[i]+f(i+1,left-a[i]));
     }
-    return dp[i] = ans;
+    return dp[i][left] = ans;
 }
+
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+   cin >> n >> W;
+   a.resize(n);
+   b.resize(n);
+   FOR(i,n)cin >> a[i] >> b[i];
+
+   memset(dp,-1,sizeof(dp));
+   cout << f(0,W) << ln;
+
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

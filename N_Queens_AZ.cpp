@@ -55,44 +55,85 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n;
+// rec(level) will return the no. of ways to place the queens from (level'th) row to n-1 row 
+// i.e. rec() return the same thing which is asked in the problem but from the current level to last level
+// or we can also say, rec(level) is the number of ways to populate [level...n-1] rows with valid configurations
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
-{
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
+// level -> is the number of row I am currently at
+
+// choice -> is each column in level'th level
+
+//check -> check if I implement the current choice then is the queen safe from pre-placed queens i.e. I need to keep track of all the pre-placed queens because valid choices in current level depends on the previous levels.
+
+// For that we will make an array dp of size 'n'
+//where dp[i] means the index of column where queen is placed in i'th level
+int dp[20];
+//move -> 
+
+bool check(int level, int col){
+    // checking column first
+    // for(int row = 0;row < level; ++row){
+    //     if(dp[row] == col)return false;
+    // }
+    
+    //checking for left diagonal
+    // for(int row = level - 1 , column = col -1; row >= 0 and col >= 0; --row,--column){
+    //     if(dp[row] == column)return false;
+    // }
+
+    // for(int row = level - 1 , column = col + 1;row >= 0 and col < n ; --row,++column){
+    //     if(dp[row] == column)return false;
+    // }
+
+    // either check seperately for column, left diagonal and right diagonal 
+    // or directly do this
+
+    for(int row = 0; row < level; ++row){
+        int prevRow = row;
+        int prevCol = dp[row];
+
+        if(prevCol == col or abs(prevRow - level) == abs(prevCol - col)){
+            return false;
+        }
     }
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
-    }
-    return dp[i] = ans;
+    return true;
+
+    // abs(prevRow - level) == abs(prevCol - col)) 
+    //this is checking the condition for all the diagonals because for forming diagonal difference between row and column form current cell should be same
 }
+int rec(int level){ 
+    if(level == n)return 1;
+    
+    int ans = 0;
+
+    for(int col = 0; col < n; ++col){
+        dp[level] = col;
+        if(check(level,col)){
+            ans += rec(level+1);
+            dp[level] = -1;
+        }
+    }
+    // debug(ans)
+    return ans;
+}
+
+
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
+   memset(dp,-1,sizeof(dp));
+   cin >> n;
+   cout << rec(0)/2 <<ln;
+   FOR(i,n){
+    cout << dp[i] << ' ';
    }
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

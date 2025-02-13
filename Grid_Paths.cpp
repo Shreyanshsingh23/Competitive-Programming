@@ -55,44 +55,53 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n;
+v<v<char>> a;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
+int dp[1001][1001];
+
+// f(i,j) -> reutrns the number of ways to reach (n,n) from (i,j) 
+int f(int i, int j)
 {
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
+    if(i == n-1 and j == n-1){
+        return 1;
     }
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
+    if(dp[i][j] != -1)return dp[i][j];
+
+    int ans = 0;
+    if(i+1 < n and a[i+1][j] != '*'){
+        ans = (ans + (f(i+1,j)%MOD))% MOD;
     }
-    return dp[i] = ans;
+    if(j+1 < n and a[i][j+1] != '*'){
+        ans = (ans + (f(i,j+1)%MOD))%MOD;
+    }
+
+    return dp[i][j] = ans;
 }
+
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
+   cin >> n;
+   a.resize(n);
+   FOR(i,n){
+     a[i].resize(n);
+     FOR(j,n)cin >> a[i][j];
    }
+   if(a[0][0] == '*' or a[n-1][n-1] == '*'){
+        cout << 0 << ln;
+        return;
+   }
+   memset(dp,-1,sizeof(dp));
+    
+    cout << f(0,0) << ln; 
+   
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

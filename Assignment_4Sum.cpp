@@ -56,43 +56,60 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
-{
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
-    }
+int n,b;
+set<vector<int>> ans;
+vector<int> a;int tar;
+// #define pb push_back
 
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
-    }
-    return dp[i] = ans;
-}
-void solve()
+
+void f(int i,int sum, vector<int>& temp)
 {
-  cin >> s >> q;
+    
+    if(temp.size() == 4)
+    {
+        if(sum == tar){
+            sort(all(temp));
+            ans.insert(temp);
+        }
+        return;
+    }
+    if(i == n)return;
+    //transitions
+    f(i+1,sum,temp);
   
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+       temp.pb(a[i]);
+       f(i+1,sum+a[i],temp);
+       temp.pop_back();
+    
 }
+
+void solve() {
+    cin >> n >> b;
+    a.resize(n);
+    cin >> a;
+
+
+    vector<int> temp;
+    f(0,0,temp);
+    debug(ans)
+}
+
+
+    // sort(ans.begin(),ans.end());
+    // for(int i = 0; i < ans.size(); ++i){   
+    //     sort(ans[i].begin(),ans[i].end());
+    //     cout << "size: " << ans[i].size() << endl;
+    //     for(int j = 0; j < ans[i].size(); ++j){
+    //         cout << ans[i][j] << ' ';
+    //     }
+    //     cout << endl;
+    // }
+    // return ans;
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();

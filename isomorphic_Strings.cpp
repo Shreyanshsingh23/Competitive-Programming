@@ -56,50 +56,50 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-string s;
-int q;
-int dp[100010];
-int f(int i)
-{
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
+string rec(int i,int curr, string ans){
+    if(curr == i)return ans;
+    string res = "";
+    for(int i = 0; i < ans.size(); ++i){
+        if(ans[i] == '0')res+= "01";
+        else res += "10";
     }
-
-    if(dp[i] != -1)return dp[i];
-    int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
-    }
-    return dp[i] = ans;
+    // cout << res << ln;
+   return rec(i,curr+1,res);
 }
-void solve()
+bool solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+//    string a,b;
+//    cin >> a >> b;
+//    int n = sz(a);
+//    int m = sz(b);
+//    if(n != m)return 0;
+//     map<char,set<char>> m1;
+
+//     for(int i = 0; i < a.size(); ++i){
+//        m1[a[i]].insert(b[i]);
+//     }
+//     for(int i = 0; i < a.size(); ++i){
+//        if(m1[a[i]].size() > 1)return 0;
+//     }
+//     return 1;
+    string ans = rec(2,1,"0");
+    char ch = ans[1];
+    // cout << ans << " " << ch << endl;
+    
+   debug(ans,ch,  (int) (ch-'0'));
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-    memset(dp,-1,sizeof(dp));
+
     int t = 1;
     testcase and cin >> t;
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

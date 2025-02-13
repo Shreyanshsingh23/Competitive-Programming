@@ -54,39 +54,30 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-string s;
-int q;
+const bool testcase = 1;
+int n, k;vi a;
 int dp[100010];
-int f(int i)
-{
-    //base case
-    if(i == sz(s)-1)
-    {
-        return 0;
-    }
 
-    if(dp[i] != -1)return dp[i];
+int f(int i, int prod){
+    if(i == n)return MAX;
+
+    if(dp[a[i]] != -1)return dp[a[i]];
+    
     int ans = f(i+1);
-    if(s[i] == s[i+1])
-    {
-        ans++;
-    }
-    return dp[i] = ans;
+    int x = a[i]%k;
+    if(x > 0)x = k-x;
+    ans = min(ans,x);
+
+    return dp[a[i]] = ans;
+
 }
 void solve()
 {
-  cin >> s >> q;
-  
-   while(q--)
-   {
-    int l,r;
-    cin >>l >> r;
-    l--;r--;
-    cout << f(l) - f(r)<< ln;
-    // debug(f(l),f(r));
-   }
+   memset(dp,-1,sizeof(dp));
+   cin >> n >> k;
+   a.resize(n);
+   FOR(i,n) cin >> a[i];
+   cout << f(0) << ln;
 }
 
 signed main()
@@ -100,6 +91,7 @@ signed main()
     {
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
+        
     }
     return 0;
 }
