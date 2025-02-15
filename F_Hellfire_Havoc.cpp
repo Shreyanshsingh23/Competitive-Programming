@@ -55,28 +55,56 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-int n,d;
+int n,k;
+vii dp(k+1, vi(4, 0));
+
+int delta[4][4] = {
+    {0, 1, 1, 1},  
+    {1, 0, 1, 1},  
+    {0, 0, 0, 2},  
+    {0, 0, 2, 0}   
+};
+
+
 
 void solve()
 {
-   cin >> n >> d;
-   vi a (n);
-   FOR(i,n) cin >> a[i];
- 
-   int mxEle = *max_element(all(a));
-   if(d == 2){
-    vi  best;
-    // can be maximum upto 3
-    vi ans;
-    
-   
-   }
-   else {
-        int kmax = log(mxEle,d);
-        debug(kmax)
-   }
+  cin >> n >> k;
+  if(k >= 1) {
+    dp[1][0] = 1;  
+    dp[1][1] = 1;  
+}
+if(k >= 2) {
+    dp[2][2] = 1; 
+    dp[2][3] = 1;  
+}
+
+
+
+for (int col = 2; col <= n; col++){
+    vii ndp(k+1, vi(4, 0));
+    for (int comp = 1; comp <= k; comp++){
+        for (int p = 0; p < 4; p++){
+            if(dp[comp][p] == 0)
+                continue;
+            for (int q = 0; q < 4; q++){
+                int add = delta[p][q];
+                int ncomp = comp + add;
+                if(ncomp <= k)
+                    ndp[ncomp][q] = (ndp[ncomp][q] + dp[comp][p]) % mod;
+            }
+        }
+    }
+    dp = move(ndp); 
+}
+
+int ans = 0;
+for (int i = 0; i < 4; i++){
+    ans = (ans + dp[k][i]) % mod;
+}
+cout << ans << ln;
 
 }
 
