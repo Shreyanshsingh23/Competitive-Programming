@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,73 +57,55 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int m,s;
-
-string dp1[101][1001], dp2[101][1001];
-bool done1[101][1001], done2[101][1001];
-
-string f2(int d, int sum)
+int n;
+int a[N], h[N];
+int dp[N+100][4];
+// f(i,lstOcc) -> returns the maximum number of trees you can make fall from [i...n-1] with situation lstOcc
+// where lstOcc can have only 2 values , if tree was left uncut or made fall to left then lstOcc = 0
+// and if tree was made fall to right then lstOcc = 1 because only this will affect the next tree
+int f(int i, int lstOcc)
 {
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "#";
-    }
-
-    if(done2[d][sum] == 1){
-        return dp2[d][sum];
-    }
-
-    string ans = "#";
-
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f2(d+1,sum - i);
-            if(curr != "#")
-             curr = to_string(i)+curr;
-            ans = max(ans,curr);
-        }
-    }
-    done2[d][sum] = 1;
-    return dp2[d][sum] = ans;
-}
-
-string f1(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "~";
-    }
-
-    if(done1[d][sum] == 1){
-        return dp1[d][sum];
-    }
-
+    if(i == n-1)return 1;
     
-    string ans = "~";
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f1(d+1,sum - i);
-            if(curr != "~")
-             curr = to_string(i)+curr;
-            ans = min(ans,curr);
-        }
-    }
-    done1[d][sum] = 1;
-    return dp1[d][sum] = ans;
-}
+    if(dp[i][lstOcc] != -1)return dp[i][lstOcc];
 
+    int lstPosition = a[i-1];
+
+    if(lstOcc == 1){
+        lstPosition = a[i-1]+h[i-1];
+    }
+
+    //transitions
+    //don't cut this tree
+    int ans = f(i+1,0);
+
+    //cut and make this tree fall to left if possible
+    if(a[i] - h[i] > lstPosition){
+        ans = max(ans,1+f(i+1,0));
+    }
+
+    //to right if possible
+    if(i < n-1 and a[i] + h[i] < a[i+1]){
+        ans = max(ans,1+f(i+1,1));
+    }
+    
+
+    return dp[i][lstOcc] = ans;
+}
 
 void solve()
 {
-   cin >> m >> s;
-   memset(done1,false,sizeof(done1));
-   memset(done2,false,sizeof(done2));
-   string l = f1(0,s);
-   string r = f2(0,s);
-   cout << (l == "~" ? "-1":l) << " ";
-   cout << (r == "#" ? "-1":r) << ln;
+   cin >> n;
+   
+   for(int i = 0; i < n; ++i)cin >> a[i] >> h[i];
+   if(n == 1){
+        cout << 1 << ln;
+        return;
+   }
+   
+   memset(dp,-1,sizeof(dp));
+
+   cout << 1 + f(1,0) << ln;
 }
 
 signed main()

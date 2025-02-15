@@ -57,73 +57,26 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int m,s;
+string n;
 
-string dp1[101][1001], dp2[101][1001];
-bool done1[101][1001], done2[101][1001];
-
-string f2(int d, int sum)
+int f(string x)
 {
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "#";
-    }
+    //base case
 
-    if(done2[d][sum] == 1){
-        return dp2[d][sum];
-    }
-
-    string ans = "#";
-
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f2(d+1,sum - i);
-            if(curr != "#")
-             curr = to_string(i)+curr;
-            ans = max(ans,curr);
-        }
-    }
-    done2[d][sum] = 1;
-    return dp2[d][sum] = ans;
 }
-
-string f1(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "~";
-    }
-
-    if(done1[d][sum] == 1){
-        return dp1[d][sum];
-    }
-
-    
-    string ans = "~";
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f1(d+1,sum - i);
-            if(curr != "~")
-             curr = to_string(i)+curr;
-            ans = min(ans,curr);
-        }
-    }
-    done1[d][sum] = 1;
-    return dp1[d][sum] = ans;
-}
-
 
 void solve()
 {
-   cin >> m >> s;
-   memset(done1,false,sizeof(done1));
-   memset(done2,false,sizeof(done2));
-   string l = f1(0,s);
-   string r = f2(0,s);
-   cout << (l == "~" ? "-1":l) << " ";
-   cout << (r == "#" ? "-1":r) << ln;
+   cin >> n;
+   for(int i = 0;i < sz(n)-3; ++i){
+    if(n.substr(i,3) == "000"){
+        cout << "YES" << ln;
+        cout << n << ln;
+        return;
+    }
+
+   }
+
 }
 
 signed main()

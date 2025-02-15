@@ -1,5 +1,8 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 using namespace std;
+using namespace __gnu_pbds;
 #ifndef ONLINE_JUDGE
     #define debug(...) cout << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__);
 #else
@@ -55,77 +58,62 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-int m,s;
-
-string dp1[101][1001], dp2[101][1001];
-bool done1[101][1001], done2[101][1001];
-
-string f2(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "#";
-    }
-
-    if(done2[d][sum] == 1){
-        return dp2[d][sum];
-    }
-
-    string ans = "#";
-
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f2(d+1,sum - i);
-            if(curr != "#")
-             curr = to_string(i)+curr;
-            ans = max(ans,curr);
-        }
-    }
-    done2[d][sum] = 1;
-    return dp2[d][sum] = ans;
-}
-
-string f1(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "~";
-    }
-
-    if(done1[d][sum] == 1){
-        return dp1[d][sum];
-    }
-
-    
-    string ans = "~";
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f1(d+1,sum - i);
-            if(curr != "~")
-             curr = to_string(i)+curr;
-            ans = min(ans,curr);
-        }
-    }
-    done1[d][sum] = 1;
-    return dp1[d][sum] = ans;
-}
-
+const bool testcase = 1;
+#define ordered_set tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update>
 
 void solve()
 {
-   cin >> m >> s;
-   memset(done1,false,sizeof(done1));
-   memset(done2,false,sizeof(done2));
-   string l = f1(0,s);
-   string r = f2(0,s);
-   cout << (l == "~" ? "-1":l) << " ";
-   cout << (r == "#" ? "-1":r) << ln;
+   int1(n)
+   vi a (n);
+   FOR(i,n){
+    cin >> a[i];
+    // a[i].S = i+1;
+   }
+
+   vi left(n,0), right(n,0);
+   
+   ordered_set st;
+  FOR(i,n){
+    st.insert(a[i]);
+    int l = st.order_of_key(a[i]);
+    left[i] = st.size() - l -1;
+    // debug(left[i])
+  }
+
+  ordered_set st1;
+  for(int i = n-1; i >= 0; --i){
+    st1.insert(a[i]);
+    int l = st1.order_of_key(a[i]);
+    right[i] = st1.size() - l -1;
+    // debug(right[i])
+  }
+
+//    int l = st.order_of_key(a[i].S); 
+//    int r = st.size() - l - 1;
+//    auto idx = st.find_by_order(l);
+   FOR(i,n){
+        cout << left[i] << " " << right[i] << ln;
+       }
 }
 
+
+
+
+
+
+
+
+//    for(int i = 1; i < n; ++i){
+//        if(a[i-1].F > a[i].F)left[i] = left[i-1] + 1;
+//        else left[i] = left[i-1];
+//    }
+//    for(int i = n-2; i >= 0; --i){
+//     if(a[i+1].F > a[i].F)right[i] = right[i+1] + 1;
+//     else right[i] = right[i+1];
+//    }
+//    FOR(i,n){
+//     cout << left[i] << " " << right[i] << ln;
+//    }
 signed main()
 {
     ShreyanshSinghGautam

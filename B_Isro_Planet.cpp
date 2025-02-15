@@ -56,74 +56,76 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n,m;
 
-int m,s;
-
-string dp1[101][1001], dp2[101][1001];
-bool done1[101][1001], done2[101][1001];
-
-string f2(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "#";
-    }
-
-    if(done2[d][sum] == 1){
-        return dp2[d][sum];
-    }
-
-    string ans = "#";
-
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f2(d+1,sum - i);
-            if(curr != "#")
-             curr = to_string(i)+curr;
-            ans = max(ans,curr);
-        }
-    }
-    done2[d][sum] = 1;
-    return dp2[d][sum] = ans;
-}
-
-string f1(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "~";
-    }
-
-    if(done1[d][sum] == 1){
-        return dp1[d][sum];
-    }
-
-    
-    string ans = "~";
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f1(d+1,sum - i);
-            if(curr != "~")
-             curr = to_string(i)+curr;
-            ans = min(ans,curr);
-        }
-    }
-    done1[d][sum] = 1;
-    return dp1[d][sum] = ans;
-}
-
-
+set<int> thirtyone = {1,3,5,7,8,10,12}, thirty = {4,6,9,11};
 void solve()
 {
-   cin >> m >> s;
-   memset(done1,false,sizeof(done1));
-   memset(done2,false,sizeof(done2));
-   string l = f1(0,s);
-   string r = f2(0,s);
-   cout << (l == "~" ? "-1":l) << " ";
-   cout << (r == "#" ? "-1":r) << ln;
+   cin >> n >> m;
+   vii a (n, vi (m+4));
+   vi ans (m,0);
+   FOR(i,n){
+    FOR(j,sz(a[i]))cin >> a[i][j];
+   }
+//   debug(a)
+   FOR(i,n){
+    // debug(a[i])
+    int days = 0;
+    if (thirtyone.count(a[i][1])){
+        days = 31 - a[i][0];
+        a[i][1]++;
+    }
+    else if(thirty.count(a[i][1])){
+        days = 30 - a[i][0];
+        a[i][1]++;
+    }
+    else {
+        days = 28 - a[i][0];
+        a[i][1]++;
+    }
+    days += a[i][2];
+    a[i][3]--;
+
+    if(a[i][3] < a[i][1]){
+        for(int j = a[i][1]; j <=12; ++j){
+            if(thirtyone.count(j)){
+                days += 31;
+            }
+            else if(thirty.count(j)){
+                days += 30;
+            }
+            else days += 28;
+        }
+        for(int j = 1; j <= a[i][3]; ++j){
+            if(thirtyone.count(j)){
+                days += 31;
+            }
+            else if(thirty.count(j)){
+                days += 30;
+            }
+            else days += 28;
+        }
+    }
+   else {
+    for(int j = a[i][1]; j <= a[i][3]; ++j){
+        if(thirtyone.count(j)){
+            days += 31;
+        }
+        else if(thirty.count(j)){
+            days += 30;
+        }
+        else days += 28;
+    }
+}
+    // debug(i,days)
+    for(int j = 4; j < 4+m; ++j){
+        if(a[i][j] != 0)ans[j-4] = days;
+    }
+   }
+
+   FOR(i,m)if(ans[i] == 0)ans[i] = 365;
+   FOR(i,m)cout << ans[i] << ln;
+   
 }
 
 signed main()

@@ -55,75 +55,29 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-int m,s;
+int n;
 
-string dp1[101][1001], dp2[101][1001];
-bool done1[101][1001], done2[101][1001];
 
-string f2(int d, int sum)
+bool f(int x)
 {
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "#";
-    }
-
-    if(done2[d][sum] == 1){
-        return dp2[d][sum];
-    }
-
-    string ans = "#";
-
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f2(d+1,sum - i);
-            if(curr != "#")
-             curr = to_string(i)+curr;
-            ans = max(ans,curr);
+    bool ans = 0;
+    for(int i = 0; i < 100; ++i){
+        if(x - i*111 < 0)break;
+        if((x - i*111)%11 == 0){
+            ans = 1;
+            break;
         }
     }
-    done2[d][sum] = 1;
-    return dp2[d][sum] = ans;
+    return ans;
 }
 
-string f1(int d, int sum)
+bool solve()
 {
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "~";
-    }
-
-    if(done1[d][sum] == 1){
-        return dp1[d][sum];
-    }
-
-    
-    string ans = "~";
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f1(d+1,sum - i);
-            if(curr != "~")
-             curr = to_string(i)+curr;
-            ans = min(ans,curr);
-        }
-    }
-    done1[d][sum] = 1;
-    return dp1[d][sum] = ans;
-}
-
-
-void solve()
-{
-   cin >> m >> s;
-   memset(done1,false,sizeof(done1));
-   memset(done2,false,sizeof(done2));
-   string l = f1(0,s);
-   string r = f2(0,s);
-   cout << (l == "~" ? "-1":l) << " ";
-   cout << (r == "#" ? "-1":r) << ln;
+   cin >> n;
+   return f(n);
+   
 }
 
 signed main()
@@ -131,12 +85,14 @@ signed main()
     ShreyanshSinghGautam
 
     int t = 1;
+    
     testcase and cin >> t;
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
+    
     }
     return 0;
 }

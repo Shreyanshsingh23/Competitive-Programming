@@ -56,74 +56,48 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-
-int m,s;
-
-string dp1[101][1001], dp2[101][1001];
-bool done1[101][1001], done2[101][1001];
-
-string f2(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "#";
-    }
-
-    if(done2[d][sum] == 1){
-        return dp2[d][sum];
-    }
-
-    string ans = "#";
-
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f2(d+1,sum - i);
-            if(curr != "#")
-             curr = to_string(i)+curr;
-            ans = max(ans,curr);
-        }
-    }
-    done2[d][sum] = 1;
-    return dp2[d][sum] = ans;
-}
-
-string f1(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "~";
-    }
-
-    if(done1[d][sum] == 1){
-        return dp1[d][sum];
-    }
-
-    
-    string ans = "~";
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f1(d+1,sum - i);
-            if(curr != "~")
-             curr = to_string(i)+curr;
-            ans = min(ans,curr);
-        }
-    }
-    done1[d][sum] = 1;
-    return dp1[d][sum] = ans;
-}
-
-
+int n,k;
+vii a;
 void solve()
 {
-   cin >> m >> s;
-   memset(done1,false,sizeof(done1));
-   memset(done2,false,sizeof(done2));
-   string l = f1(0,s);
-   string r = f2(0,s);
-   cout << (l == "~" ? "-1":l) << " ";
-   cout << (r == "#" ? "-1":r) << ln;
+   cin >> n >> k;
+   a.resize(n,vi(n));
+   FOR(i,n)FOR(j,n) cin >> a[i][j];
+   
+   vii dp(n);
+   FOR(i,n){
+      set<pi> st;
+      FOR(j,k)st.insert({a[i][j],j});
+      dp[i].pb((st.begin())->first);
+
+      for(int j = k; j < n; j++){
+        st.insert({a[i][j],j});
+        st.erase({a[i][j-k],j-k});
+        dp[i].pb((st.begin())->first);
+      }
+   }   
+
+   vii ans(dp.size()-k+1,vi (dp[0].size(),0));
+
+   FOR(j,dp[0].size()){
+      set<pi> st;
+      FOR(i,k)st.insert({dp[i][j],i});
+      ans[0][j] = (st.begin())->first;
+      FOR(i,dp.size()-k){
+        st.insert({dp[i+k][j],i+k});
+        st.erase({dp[i][j],i});
+        ans[i+1][j] = (st.begin())->first;
+
+      }
+   }
+   
+   int mxx = MIN;
+   FOR(i,sz(ans)){
+      FOR(j,sz(ans[0]))mxx = max(mxx,ans[i][j]);
+   }
+
+   cout << mxx << ln;
+
 }
 
 signed main()

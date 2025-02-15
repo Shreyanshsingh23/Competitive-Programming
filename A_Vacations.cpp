@@ -57,73 +57,49 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int m,s;
+int n;
+int a[110];
+int dp[110][5];
 
-string dp1[101][1001], dp2[101][1001];
-bool done1[101][1001], done2[101][1001];
+/*
 
-string f2(int d, int sum)
+prev ---  {0 -> rest}, {1 -> contest}, {2 -> gym}
+
+*/
+
+// f(i,prev) -> returns the number of days Vasya will rest from [i...n-1] if yesterday she does 'prev' activity
+int f(int i, int prev)
 {
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "#";
+    if(i == n){
+        return 0;
     }
 
-    if(done2[d][sum] == 1){
-        return dp2[d][sum];
+    if(dp[i][prev] != -1)return dp[i][prev];
+
+    //transitions
+    //rest day
+    int ans = 1+f(i+1,0);
+    // contest if possible
+    if((a[i] == 1 or a[i] == 3 )and prev != 1){
+        ans = min(ans,f(i+1,1));
+    }
+    //gym if possible
+    if((a[i] == 2 or a[i] == 3) and prev != 2){
+        ans = min(ans,f(i+1,2));
     }
 
-    string ans = "#";
-
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f2(d+1,sum - i);
-            if(curr != "#")
-             curr = to_string(i)+curr;
-            ans = max(ans,curr);
-        }
-    }
-    done2[d][sum] = 1;
-    return dp2[d][sum] = ans;
-}
-
-string f1(int d, int sum)
-{
-    if(d == m-1){
-        if(sum < 10)return to_string(sum);
-        else return "~";
-    }
-
-    if(done1[d][sum] == 1){
-        return dp1[d][sum];
-    }
-
-    
-    string ans = "~";
-    for(int i = 0; i < 10; ++i){
-        if(d == 0 and i == 0)continue;
-        if(sum - i >= 0){
-            string curr = f1(d+1,sum - i);
-            if(curr != "~")
-             curr = to_string(i)+curr;
-            ans = min(ans,curr);
-        }
-    }
-    done1[d][sum] = 1;
-    return dp1[d][sum] = ans;
+    return dp[i][prev] = ans;
 }
 
 
 void solve()
 {
-   cin >> m >> s;
-   memset(done1,false,sizeof(done1));
-   memset(done2,false,sizeof(done2));
-   string l = f1(0,s);
-   string r = f2(0,s);
-   cout << (l == "~" ? "-1":l) << " ";
-   cout << (r == "#" ? "-1":r) << ln;
+   cin >> n;
+   memset(dp,-1,sizeof(dp));
+   FOR(i,n) cin >> a[i];
+
+   cout << f(0,4) << ln;
+   
 }
 
 signed main()
