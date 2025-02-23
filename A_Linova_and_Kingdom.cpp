@@ -48,92 +48,45 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 100011;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-int n;
-int a[N];
-int dp[N];
+int n,k;
+vii a;
 
+vi dp;
 
+// f(i) -> returns the length of shortest path
 int f(int i)
 {
-    if(i == n)return 1;
-    if(i >= n)return 0;
-
-    if(dp[i] != -1)return dp[i];
-
-    //transitions
-    int ans = 1;
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-        // debug(i,idx)
-
-        if(a[idx] > a[i]){  
-            ans = max(ans,1+f(idx));
-        }
-    }
-
-    return dp[i] = ans;
-}
-
-void print(int i)
-{
-    if(i == n){
-        cout << i << ln;
-        return;
-    }
-
-    int ans = 1;
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-        // debug(i,idx)
-
-        if(a[idx] > a[i]){  
-            ans = max(ans,1+f(idx));
-        }
-    }
-
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
     
-        if(a[idx] > a[i]){  
-            if(1+f(idx) == ans){
-                cout << i << " ";
-                print(idx);
-                break;
-            }
-        }
-    }
 }
+
 
 void solve()
 {
-   cin >> n;
-   for(int i = 1; i <= n; ++i)cin >> a[i];
-   int mxx = 1;
-
-   memset(dp,-1,sizeof(dp));
- 
-   for(int i = 1; i <= n; ++i){
-       mxx = max(mxx,f(i));
+    cin >> n >> k;
+    a.resize(n+1);
+    dp.resize(n+1);
+   FOR(i,n-1){
+      int x,y;
+      cin >> x >> y;
+      a[x].pb(y);
+      a[y].pb(x);
    }
 
-   cout << mxx << ln;
-
-   for(int i = 1; i <= n; ++i){
-    if(mxx == f(i)){
-        print(i);
-        cout << ln;
-    }
-}
+   debug(a)
    
+   for(auto e : a[1]){
+     dp[e] = 1;
+   }
+   debug(dp)
 }
 
 signed main()

@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 100011;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,82 +57,28 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n;
-int a[N];
-int dp[N];
-
-
-int f(int i)
-{
-    if(i == n)return 1;
-    if(i >= n)return 0;
-
-    if(dp[i] != -1)return dp[i];
-
-    //transitions
-    int ans = 1;
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-        // debug(i,idx)
-
-        if(a[idx] > a[i]){  
-            ans = max(ans,1+f(idx));
-        }
-    }
-
-    return dp[i] = ans;
-}
-
-void print(int i)
-{
-    if(i == n){
-        cout << i << ln;
-        return;
-    }
-
-    int ans = 1;
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-        // debug(i,idx)
-
-        if(a[idx] > a[i]){  
-            ans = max(ans,1+f(idx));
-        }
-    }
-
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-    
-        if(a[idx] > a[i]){  
-            if(1+f(idx) == ans){
-                cout << i << " ";
-                print(idx);
-                break;
-            }
-        }
-    }
-}
-
 void solve()
 {
-   cin >> n;
-   for(int i = 1; i <= n; ++i)cin >> a[i];
-   int mxx = 1;
+   int1(n)
+   string s; cin >> s;
 
-   memset(dp,-1,sizeof(dp));
- 
-   for(int i = 1; i <= n; ++i){
-       mxx = max(mxx,f(i));
+   bool no = true;
+   for(int i = 1; i < n; ++i){
+    if(s[i] != 'z'){
+        no = false;
+    }
    }
 
-   cout << mxx << ln;
+   if(no){
+    cout << -1 << ln;
+    return;
+   }
 
-   for(int i = 1; i <= n; ++i){
-    if(mxx == f(i)){
-        print(i);
-        cout << ln;
-    }
-}
+   for(int i = 0; i < n; ++i){
+     cout << 'z' ;
+   }
+
+   cout <<  ln;
    
 }
 

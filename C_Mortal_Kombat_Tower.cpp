@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200010;
+const int N = 200011;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,79 +58,96 @@ int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
 int n;
-int a[N];
+// int a[N];
 
-int g(int idx)
+// int dp[N][2];
+
+vii dp(N,vi(2,-1));
+
+int c = 0;
+int f(vi&a,int i, int turn)
 {
-    int my = 0;
-    for(int j = idx; j < n; ++j){
-        if(a[j] == 1){
-            if(my >= 2){
-                return j;
-                break;
-            }
-            else{
-                my++;
-            }
-        }
-        
-    }
-
-    return n;
-}
-
-int f(int i, int cnt)
-{
+    c++;
+ 
     if(i >= n)return 0;
 
-    //transitions
-    int ans = MAX;
-    if(cnt >= 2){
-        int idx = g(i);
-        if(idx == n)return 0;
-        ans = min(ans,f(idx,0));
-        return ans;
-    }
-    // if(cnt >= 2 and a[i] == 1){
-    //     int my = 0;
-    //     for(int j = i; j < n; ++j){
-    //         if(a[i] == 1){
-    //             if(my >= 2){
-    //                 ans = min(ans,f(j,0));
-    //                 break;
-    //             }
-    //             else{
-    //                 my++;
-    //             }
-    //         }
-            
-    //     }
-    // }
+    if(dp[i][turn] != -1)return dp[i][turn];
 
-    if(a[i] == 0){
-        ans = min(ans,f(i+1,cnt));
+    //transitions
+
+    int ans = MAX;
+    // friend's turn
+    if(turn == 1){
+        //kill one boss only then pass to me
+        ans = min(ans,a[i] + f(a,i+1,0));
+        // kill second boss then pass to me
+        if(i+1 < n){
+        ans = min(ans,a[i] + a[i+1] + f(a,i+2,0));
+        }
     }
     else{
-        if(cnt == 1){
-            //don't kill second hard boss
-            int idx = g(i);
-            if(idx == n)return 0;
-            else ans = min(ans,f(idx,0));
-        }
-        ans = min(ans,1+f(i+1,cnt+1));
+        // my turn
+         // Kill 1 boss
+        ans = min(ans, f(a,i + 1, 1)); 
+        //kill second boss
+         ans = min(ans, f(a,i + 2, 1)); 
     }
 
-    return ans;
+    // int take1 = f(i+1, !turn);
+    // int take2 = f(i+2, !turn);
+
+    // if(turn == 1){
+    //     take1 += a[i];
+
+    //     take2 += a[i] + (i+1<n ? a[i+1] : 0); 
+    // }
+
+    // ans = min(take1, take2);
+
+   
+    return dp[i][turn] = ans;
 
 }
 
 void solve()
 {
-   cin >> n;
-   FOR(i,n) cin >> a[i];
+    cin >> n;
+    vi a(n);
+    FOR(i,n)cin >> a[i];
+    // memset(dp,-1,sizeof(dp));
 
-   cout << f(0,0) << ln;
-   
+    // for(int i = 0; i < n; ++i)dp[i][0] = dp[i][1] = -1;
+
+    // cout << f(a,0,1) << ln;   
+    // cout<<c<<endl;
+    int ans = 0;
+    if(a[0]==1){
+        ans =1;
+    }
+    int x = 0;
+    for(int i = 1;i<n;i++){
+        // cout<<x<<" "<<ans<<endl;
+
+        
+        if(a[i]==1){
+            x++;
+        }
+        // if(x==3){
+        //     ans++;
+        //     x = 0;
+        // }
+        else{
+            ans += x/3;
+            x = 0;
+        }
+        
+    }
+    // if(x==3){
+    //     ans++;
+    // }
+    ans += x/3;
+    cout<<ans<<endl;
+    
 }
 
 signed main()

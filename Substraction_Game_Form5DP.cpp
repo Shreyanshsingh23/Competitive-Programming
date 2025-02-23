@@ -48,92 +48,81 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 100011;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-int n;
-int a[N];
-int dp[N];
+// GAME DP -> Here a state returns that if there is any move which can lead to loose for the opponent then this move is a winning move for the current player
 
+// TC -> Nlog(N) N states * log(N) transition cost
+int x;
 
-int f(int i)
+// MY CODE
+
+// f(n,i) -> returns that if its possible for player i to win if n chips are left in the box
+// bool f(int n,int i)
+// {
+//     if(n == 0){
+//         return 0;
+//     }
+
+//     int chips = 1;
+//     while(chips <= n){
+//         if(!(f(n-chips,1-i))) return 1; // !(f(n-chips,1-i) means if there is any move by which next player can loose then this current move is a winning move for this player so return 1;
+//         chips = chips << 1;
+//     }
+
+//     //if there is no such move that can result to loss for opponent OR in other words we can say that all the possible moves are winning moves for opponent then this is a loosing move for player i(current)
+//     return 0;
+// }
+
+// VIVEK GUPTA'S CODE
+
+bool f(int n)
 {
-    if(i == n)return 1;
-    if(i >= n)return 0;
+    //pruning
 
-    if(dp[i] != -1)return dp[i];
+    //base case
+    // if there are no chips left to make a move to player looses
+    if(n == 0)return 0;
 
-    //transitions
-    int ans = 1;
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-        // debug(i,idx)
-
-        if(a[idx] > a[i]){  
-            ans = max(ans,1+f(idx));
+    // at start ans = 0 because if there no possible moves to play then player looses
+    int ans = 0;
+    for(int i = 0; (1 << i) <= n; ++i){ // (1 << i) -> poww(2,i)
+        if(f(n-(1 << i)) == 0){
+            ans = 1;
+            break;
         }
     }
 
-    return dp[i] = ans;
-}
+    return ans;
 
-void print(int i)
-{
-    if(i == n){
-        cout << i << ln;
-        return;
-    }
 
-    int ans = 1;
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-        // debug(i,idx)
-
-        if(a[idx] > a[i]){  
-            ans = max(ans,1+f(idx));
-        }
-    }
-
-    for(int j = 2; i*j <= n ; ++j){
-        int idx = i*j;
-    
-        if(a[idx] > a[i]){  
-            if(1+f(idx) == ans){
-                cout << i << " ";
-                print(idx);
-                break;
-            }
-        }
-    }
 }
 
 void solve()
 {
-   cin >> n;
-   for(int i = 1; i <= n; ++i)cin >> a[i];
-   int mxx = 1;
+    cin >> x;
+    // cout << f(x,0) << ln; // game will start from player 1 (index -> 0)
+    // cout << f(x) << ln;
 
-   memset(dp,-1,sizeof(dp));
- 
-   for(int i = 1; i <= n; ++i){
-       mxx = max(mxx,f(i));
-   }
-
-   cout << mxx << ln;
-
-   for(int i = 1; i <= n; ++i){
-    if(mxx == f(i)){
-        print(i);
-        cout << ln;
+    //Let's see the pattern
+    for(int i = 0; i <= 20; ++i){
+        cout << f(i) << ln;
     }
-}
-   
+
+    //We can see a pattern that if (x%3 == 0)ans = 0 else ans = 1
+    // so most simplest answer to this question can be
+
+    if(x%3){
+        cout << "win\n";
+    }
+    else cout << "lose\n";
 }
 
 signed main()
