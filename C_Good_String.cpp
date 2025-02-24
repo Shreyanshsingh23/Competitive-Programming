@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,44 +57,49 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n,k;
-int a[N];
+string ss;
+
 
 void solve()
 {
-   cin >> n >> k;
-   FOR(i,n) cin >> a[i];
-
-   vi ok(n);
-   ok[0] = 1;
-   for(int i = 1; i < n; ++i)
-   {
-       if(2*a[i] > a[i-1])ok[i] = 1;
+   cin >> ss;
+   mpci mp;
+   int n = ss.size();
+   FOR(i,n)mp[ss[i]]++;
+   v<pair<int,char>> size;
+   for(auto& [x,y] : mp){
+        size.pb({y,x});
    }
-
-//    FOR(i,n)cout << ok[i] << " ";
-//    cout << ln;
-
-  
-   int pref = 1;
    int ans = 0;
-   for(int i = 1; i < n; ++i){
-        if(ok[i] == 1){
-            pref++;
-            if(pref > k){
-                ans++;
-                pref--;
+   sort(all(size));
+   if(mp.size() > 2){
+        FOR(i,sz(size)){
+            if(mp.size() > 2){
+                ans += size[i].F;
+                mp.erase(size[i].S);
             }
+            else break;
         }
-        else{
-            pref = 1;
-        }
-        // debug(i,pref)
    }
 
-   cout << ans << ln;
+   string s = "";
+   FOR(i,n)if(mp.count(ss[i]))s.pb(ss[i]);
+   debug(s,ans)
+
+   bool single = true;
+   for(int i = 1; i < sz(s); ++i)if(s[i] != s[i-1]){
+        single = false;
+        break;
+   }
+
+   if(single){
+        cout << ans << ln;
+        return;
+   }
+
    
 }
+
 
 signed main()
 {
@@ -110,3 +115,4 @@ signed main()
     }
     return 0;
 }
+

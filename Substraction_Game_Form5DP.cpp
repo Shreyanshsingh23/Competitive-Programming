@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 10010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -61,6 +61,7 @@ const bool testcase = 0;
 
 // TC -> Nlog(N) N states * log(N) transition cost
 int x;
+int dp[N];
 
 // MY CODE
 
@@ -91,16 +92,19 @@ bool f(int n)
     // if there are no chips left to make a move to player looses
     if(n == 0)return 0;
 
+    //cache check
+    if(dp[n] != -1)return dp[n];
+
     // at start ans = 0 because if there no possible moves to play then player looses
     int ans = 0;
-    for(int i = 0; (1 << i) <= n; ++i){ // (1 << i) -> poww(2,i)
-        if(f(n-(1 << i)) == 0){
+    for(int m = 0; (1 << m) <= n; ++m){ // (1 << m) -> poww(2,m)
+        if(f(n-(1 << m)) == 0){
             ans = 1;
             break;
         }
     }
 
-    return ans;
+    return dp[n] = ans;
 
 
 }
@@ -108,21 +112,23 @@ bool f(int n)
 void solve()
 {
     cin >> x;
+    memset(dp,-1,sizeof(dp));
     // cout << f(x,0) << ln; // game will start from player 1 (index -> 0)
     // cout << f(x) << ln;
 
-    //Let's see the pattern
+    // In most DP + Game problems we can see some repetitive pattern
+    // So Let's see the pattern in this question
     for(int i = 0; i <= 20; ++i){
-        cout << f(i) << ln;
+        cout << i << " " <<  f(i) << ln;
     }
 
+    // We can try DP to see the pattern in game problems
     //We can see a pattern that if (x%3 == 0)ans = 0 else ans = 1
     // so most simplest answer to this question can be
 
-    if(x%3){
-        cout << "win\n";
-    }
-    else cout << "lose\n";
+    
+        cout << (x%3 == 0 ? "lose\n"  : "win\n") ;
+    
 }
 
 signed main()

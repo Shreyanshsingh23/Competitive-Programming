@@ -72,10 +72,11 @@ int f(int i)
     int ans = f(i+1);
 
     if(mp[a[i]].size() > 1){
-        for(auto e: mp[a[i]]){
-            if(e > i){
-                ans = max(ans,e-i+1 + f(e+1));
+        for(int j = mp[a[i]].size()-1; j >= 0; --j){
+            if(mp[a[i]][j] > i){
+                ans = max(ans, mp[a[i]][j]-i + 1 + f(mp[a[i]][j]+1));
             }
+            else break;
         }
     }
 

@@ -78,9 +78,9 @@ int f(int i)
 
 }
 
-void printSequence(int i){
+// void printSequence(int i){
 
-}
+// }
 
 void solve()
 {

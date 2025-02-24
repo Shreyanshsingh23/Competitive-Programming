@@ -1,3 +1,4 @@
+// CSES - Edit Distance DP Problem - https://cses.fi/problemset/task/1634
 #include <bits/stdc++.h>
 using namespace std;
 #ifndef ONLINE_JUDGE
@@ -48,51 +49,45 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200010;
+const int N = 550;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-int n,k;
-int a[N];
+string a, b;
+int n,m;
+int dp[N][N];
+
+int f(int i, int j)
+{
+    if(i == n or j == m){
+        return 0;
+    }
+
+    if(dp[i][j] != -1)return dp[i][j];
+
+    //transitions
+    int ans = 0;
+    if(a[i] == b[j])ans = max(ans,1+f(i+1,j+1));
+ 
+        ans = max(ans,f(i+1,j));
+        ans = max(ans,f(i,j+1));
+  
+
+    return dp[i][j] = ans;
+}
 
 void solve()
 {
-   cin >> n >> k;
-   FOR(i,n) cin >> a[i];
-
-   vi ok(n);
-   ok[0] = 1;
-   for(int i = 1; i < n; ++i)
-   {
-       if(2*a[i] > a[i-1])ok[i] = 1;
-   }
-
-//    FOR(i,n)cout << ok[i] << " ";
-//    cout << ln;
-
+   cin >> a >> b;
+   n = a.size(), m = b.size();
+   memset(dp,-1,sizeof(dp));
   
-   int pref = 1;
-   int ans = 0;
-   for(int i = 1; i < n; ++i){
-        if(ok[i] == 1){
-            pref++;
-            if(pref > k){
-                ans++;
-                pref--;
-            }
-        }
-        else{
-            pref = 1;
-        }
-        // debug(i,pref)
-   }
-
-   cout << ans << ln;
+   cout << max(n,m) - f(0,0) << ln;
    
 }
 
