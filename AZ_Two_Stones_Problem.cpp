@@ -1,4 +1,3 @@
-// CSES - Edit Distance DP Problem - https://cses.fi/problemset/task/1634
 #include <bits/stdc++.h>
 using namespace std;
 #ifndef ONLINE_JUDGE
@@ -49,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 5550;
+const int N = 1010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,38 +57,86 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-string a, b;
-int n,m;
+int a,b;
 int dp[N][N];
-
-int f(int i, int j)
+int f(int x, int y)
 {
-    if(i == n or j == m){
+    if(x == 0 and y == 0){
         return 0;
     }
 
-    if(dp[i][j] != -1)return dp[i][j];
-
-    //transitions
-    int ans = MAX;
-    if(a[i] == b[j])ans = min(ans,f(i+1,j+1));
-    else{
-        ans = min(ans,1 + f(i+1,j));
-        ans = min(ans,1 + f(i,j+1));
-        ans = min(ans,1 + f(i+1,j+1));
+    int ans = 0;
+    for(int z = 0; z < x; ++z){
+        if(f(z,y) == 0){
+            ans = 1;
+            break;
+        }
     }
 
-    return dp[i][j] = ans;
+    
+    for(int z = 0; z < y; ++z){
+        if(f(x,z) == 0){
+            ans = 1;
+            break;
+        }
+    }
+
+   
+        for(int z = 1; z < min(x,y); ++z){
+            if(f(x-z,y-z) == 0){
+                ans = 1;
+                break;
+            }
+        }
+    
+
+    return ans;
+
 }
 
 void solve()
 {
    cin >> a >> b;
-   n = a.size(), m = b.size();
-   FOR(i,max(n,m)+10)FOR(j,max(n,m)+10)dp[i][j] = -1;
-  
-   cout << f(0,0) << ln;
+//    cout << f(a,b) << ln;
+
+    //base case
+    dp[0][0] = 0;
+
+    for(int i = 0; i <= a; ++i){
+        for(int j = 0; j <= b; ++j){
+            
+            int ans = 0;
+    
+    for(int z = 0; z < i; ++z){
+        if(dp[z][j] == 0){ //f(z,j) changes to dp[z][j]
+            ans = 1;
+            break;
+        }
+    }
+
+    
+    for(int z = 0; z < j; ++z){
+        if(dp[i][z] == 0){
+            ans = 1;
+            break;
+        }
+    }
+
    
+    for(int z = 1; z < min(i,j); ++z){
+        if(dp[i-z][j-z] == 0){
+            ans = 1;
+            break;
+        }
+    }
+    
+    dp[i][j] = ans;  // save and return changes to only save
+    // return ans;
+        }
+    }
+
+    cout << dp[a][b] << ln;
+
 }
 
 signed main()

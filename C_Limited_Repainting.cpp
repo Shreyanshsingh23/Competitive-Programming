@@ -1,4 +1,3 @@
-// CSES - Edit Distance DP Problem - https://cses.fi/problemset/task/1634
 #include <bits/stdc++.h>
 using namespace std;
 #ifndef ONLINE_JUDGE
@@ -49,47 +48,98 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 5550;
+const int N = 300010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-string a, b;
-int n,m;
-int dp[N][N];
+int n,k;
+string s;
 
-int f(int i, int j)
-{
-    if(i == n or j == m){
-        return 0;
+
+bool check(string& s, vi& a, int mid, int k) {
+    int n = sz(s);
+    
+    v<bool> ok(n, false);
+    for (int i = 0; i < n; i++) {
+        if (s[i] == 'B' and a[i] > mid) {
+            ok[i] = true;
+        }
     }
-
-    if(dp[i][j] != -1)return dp[i][j];
-
-    //transitions
-    int ans = MAX;
-    if(a[i] == b[j])ans = min(ans,f(i+1,j+1));
-    else{
-        ans = min(ans,1 + f(i+1,j));
-        ans = min(ans,1 + f(i,j+1));
-        ans = min(ans,1 + f(i+1,j+1));
+    int cnt = 0;
+    int i = 0;
+    while (i < n) {
+        if (ok[i]) {
+            cnt++;
+            i++; 
+            while (i < n and (ok[i] or s[i] == 'B' or 
+                  (s[i] == 'R' and a[i] <= mid))) {
+                i++;
+            }
+        } else {
+            i++;
+        }
     }
-
-    return dp[i][j] = ans;
+    
+    return cnt <= k;
 }
+
 
 void solve()
 {
-   cin >> a >> b;
-   n = a.size(), m = b.size();
-   FOR(i,max(n,m)+10)FOR(j,max(n,m)+10)dp[i][j] = -1;
-  
-   cout << f(0,0) << ln;
+   cin >> n >> k >> s;
+   vi a(n);
+   FOR(i,n) cin >> a[i];
+
+   mpci mp;
+   FOR(i,n) mp[s[i]]++;
+   if(mp['B'] == 0){
+        cout << 0 << ln;
+        return;
+   }
+
+   if(k == 0){
+      int mxx = -1;
+      FOR(i,n){
+        if(s[i] == 'B') mxx = max(mxx,a[i]);
+      }
+
+      cout << mxx << ln;
+      return;
+   }
+
+   vi c;
    
+   FOR(i,n){
+    c.pb(a[i]);
+   }
+   sort(all(c));
+   vi b = {0};
+   b.pb(c[0]);
+   for(int i = 1; i < sz(c); ++i){
+    if(c[i] != c[i-1]) b.pb(c[i]);
+   }
+
+//    debug(b)
+   
+
+   int l = 0, r = sz(b) -1, mid, ans = 0;
+   while(l <= r)
+   {
+        mid = l + (r-l)/2;
+        int g = b[mid];
+        if(check(s,a,g,k)){
+            ans = mid;
+            r = mid-1;
+        }
+        else l = mid+1;
+   }
+
+   cout << b[ans] << ln;
 }
 
 signed main()

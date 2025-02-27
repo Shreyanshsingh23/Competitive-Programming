@@ -1,4 +1,3 @@
-// CSES - Edit Distance DP Problem - https://cses.fi/problemset/task/1634
 #include <bits/stdc++.h>
 using namespace std;
 #ifndef ONLINE_JUDGE
@@ -49,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 5550;
+const int N = 10010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,37 +57,41 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-string a, b;
-int n,m;
-int dp[N][N];
+int n;
 
-int f(int i, int j)
-{
-    if(i == n or j == m){
-        return 0;
-    }
 
-    if(dp[i][j] != -1)return dp[i][j];
-
-    //transitions
-    int ans = MAX;
-    if(a[i] == b[j])ans = min(ans,f(i+1,j+1));
-    else{
-        ans = min(ans,1 + f(i+1,j));
-        ans = min(ans,1 + f(i,j+1));
-        ans = min(ans,1 + f(i+1,j+1));
-    }
-
-    return dp[i][j] = ans;
-}
+int dp[N] , a[N];
 
 void solve()
 {
-   cin >> a >> b;
-   n = a.size(), m = b.size();
-   FOR(i,max(n,m)+10)FOR(j,max(n,m)+10)dp[i][j] = -1;
-  
-   cout << f(0,0) << ln;
+   cin >> n;
+   
+   // dp[i] -> number of ways to reach D after exactly i moves
+   // a[i] -> number of ways to reach A,B,C after exactly i moves
+
+   dp[0] = dp[1] = 0;
+   a[0] = 0;
+   a[1] = 1;
+    int prevDp = 0, prevA = 1, curDp = 0, curA = 0;
+   for(int i = 2; i <= n; ++i)
+   {
+        curA = (prevDp + prevA*2)%MOD;
+        /*  If the ant is at A, B, or C after i-1 steps, then in the next step:
+        //It can go to two other vertices (except itself).
+        Thus, the number of ways to reach A, B, or C after i steps is:
+
+        a[i] = dp[i-1] + 2*a[i-1]
+        i.e. if ant is at D then from there it can come to D by dp[i-1] ways and if it is at A,B,C then it can come to A,B,C by 2*a[i-1] ways
+        */
+        curDp = prevA*3;
+        curDp %= MOD;
+
+        prevDp = curDp;
+        prevA = curA;
+   }
+
+   cout << prevDp << ln;
+
    
 }
 

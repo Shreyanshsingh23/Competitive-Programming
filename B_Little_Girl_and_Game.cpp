@@ -55,26 +55,59 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 const bool testcase = 0;
 
-void solve()
+string s;
+
+// struct Node {
+//     int value = -1;
+// };
+
+// map<string,Node> mm;
+
+// int f(string& x)
+// {
+//     if(mm[x] != (Node) -1)return mm[x];
+
+//     //base case
+//     mpci mp;
+//     for(auto e : x)mp[e]++;
+//     int odd = 0;
+//     for(auto& [x,y] : mp){
+//         if(y&1)odd++;
+//     }
+//     if(odd < 2)return 1;
+
+    
+
+//     int ans = 0;
+//     for(int i = 0; i < sz(x); ++i){
+//         string ns = x.substr(0,i);
+//         ns += x.substr(i+1);
+//         if(f(ns) == 0){
+//             ans = 1;
+//             break;
+//         }
+//     }
+
+//     return mm[x] = ans;
+//     // return ans;
+// }
+
+bool solve()
 {
-   string s;
+  
    cin >> s;
+   mpci mp;
+    for(auto e : s)mp[e]++;
+    int odd = 0;
+    for(auto& [x,y] : mp){
+        if(y&1)odd++;
+    }
+    if(odd < 2)return 1;
 
-   string temp = s;
-   reverse(all(temp));
+    if(odd & 1)return 1;
+    return 0;
 
-   if(s == temp){
-    cout << "First" << ln;
-    return;
-   }
-
-   int n = sz(s) -1 ;
-   if(n&1){
-    cout << "Second" << ln;
-   }
-   else{
-    cout << "First" << ln;
-   }
+//    cout << (f(s) == 1 ? "First" : "Second") << ln;
    
 }
 
@@ -87,8 +120,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() == 1 ? "First" : "Second") << ln;
+        // solve();
     }
     return 0;
 }
