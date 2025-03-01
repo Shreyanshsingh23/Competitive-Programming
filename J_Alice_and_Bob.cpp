@@ -48,49 +48,34 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 10010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-int n;
-
-
-int dp[N] , a[N];
+const bool testcase = 1;
 
 void solve()
 {
-   cin >> n;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
-   // dp[i] -> number of ways to reach D after exactly i moves
-   // a[i] -> number of ways to reach A,B or C after exactly i moves
-
-   dp[0] = dp[1] = 0;
-   a[0] = 0;
-   a[1] = 1;
-    int prevDp = 0, prevA = 1, curDp = 0, curA = 0;
-   for(int i = 2; i <= n; ++i)
-   {
-        curA = (prevDp + prevA*2)%MOD;
-        /*  If the ant is at A, B, or C after i-1 steps, then in the next step:
-        //It can go to two other vertices (except itself).
-        Thus, the number of ways to reach A, B, or C after i steps is:
-
-        a[i] = dp[i-1] + 2*a[i-1]
-        i.e. if ant is at D then from there it can come to D by dp[i-1] ways and if it is at A,B,C then it can come to A,B,C by 2*a[i-1] ways
-        */
-        curDp = prevA*3;
-        curDp %= MOD;
-
-        prevDp = curDp;
-        prevA = curA;
+   mpii mp;
+   FOR(i,n) mp[a[i]]++;
+   if(sz(mp) == 1){
+        cout << a[0] << ln;
+        return;
    }
 
-   cout << prevDp << ln;
+   if(sz(mp) == 2){
+        int mxx = 0;
+        for(auto& i : mp) mxx = max(mxx,mp[i.F]);
+        cout << mxx << ln;
+        return;
+   }
 
    
 }

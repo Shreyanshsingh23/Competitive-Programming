@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 10010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,42 +57,45 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int n;
-
-
-int dp[N] , a[N];
+bool ok[26];
+int n,k;
+string s;
 
 void solve()
 {
-   cin >> n;
-   
-   // dp[i] -> number of ways to reach D after exactly i moves
-   // a[i] -> number of ways to reach A,B or C after exactly i moves
+    cin >> n >> k >> s;
+    FOR(i,k){
+        char ch;
+        cin >> ch;
+        ok[ch-'a'] = 1;
+    }
 
-   dp[0] = dp[1] = 0;
-   a[0] = 0;
-   a[1] = 1;
-    int prevDp = 0, prevA = 1, curDp = 0, curA = 0;
-   for(int i = 2; i <= n; ++i)
-   {
-        curA = (prevDp + prevA*2)%MOD;
-        /*  If the ant is at A, B, or C after i-1 steps, then in the next step:
-        //It can go to two other vertices (except itself).
-        Thus, the number of ways to reach A, B, or C after i steps is:
+   int dp[200010] = {0};
+   if(ok[s[0]-'a'])dp[0] = 1;
+    int prev = -1;
+    if(!ok[s[0]-'a'])prev = 0;
+   for(int i = 1; i < n; ++i)
+   {  
+        if(!ok[s[i] - 'a']){
+            dp[i] = dp[i-1];
+            prev = i;
+        }
+        else{
+            if(ok[s[i-1]-'a']){
+                if(prev == -1){
+                    dp[i] = dp[i-1] + i + 1;
+                }
+                else dp[i] = dp[i-1] + i - prev;
+        }
+        else{
+            dp[i] = dp[i-1] + 1;
+        }
+    }
+    // debug(i,dp[i],prev)
 
-        a[i] = dp[i-1] + 2*a[i-1]
-        i.e. if ant is at D then from there it can come to D by dp[i-1] ways and if it is at A,B,C then it can come to A,B,C by 2*a[i-1] ways
-        */
-        curDp = prevA*3;
-        curDp %= MOD;
-
-        prevDp = curDp;
-        prevA = curA;
    }
 
-   cout << prevDp << ln;
-
-   
+    cout << dp[n-1] << ln;
 }
 
 signed main()

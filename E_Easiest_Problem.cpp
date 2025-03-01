@@ -48,50 +48,94 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 10010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-int n;
-
-
-int dp[N] , a[N];
+const bool testcase = 1;
 
 void solve()
 {
-   cin >> n;
-   
-   // dp[i] -> number of ways to reach D after exactly i moves
-   // a[i] -> number of ways to reach A,B or C after exactly i moves
+   int1(n)
+   string s;
+   cin >> s;
 
-   dp[0] = dp[1] = 0;
-   a[0] = 0;
-   a[1] = 1;
-    int prevDp = 0, prevA = 1, curDp = 0, curA = 0;
-   for(int i = 2; i <= n; ++i)
+   int f0 = -1, f1 = -1, l0 = -1, l1 = -1;
+   FOR(i,n)
    {
-        curA = (prevDp + prevA*2)%MOD;
-        /*  If the ant is at A, B, or C after i-1 steps, then in the next step:
-        //It can go to two other vertices (except itself).
-        Thus, the number of ways to reach A, B, or C after i steps is:
-
-        a[i] = dp[i-1] + 2*a[i-1]
-        i.e. if ant is at D then from there it can come to D by dp[i-1] ways and if it is at A,B,C then it can come to A,B,C by 2*a[i-1] ways
-        */
-        curDp = prevA*3;
-        curDp %= MOD;
-
-        prevDp = curDp;
-        prevA = curA;
+        if(s[i] == '0' and f0 == -1) f0 = i;
+        if(s[i] == '1' and f1 == -1) f1 = i;
+        if(s[i] == '0') l0 = i;
+        if(s[i] == '1') l1 = i;
    }
 
-   cout << prevDp << ln;
+   
+   string a = "", b = "";
+   FOR(i,f1)a += '0';
+   FOR(i,f0)b += '1';
 
+   FOR(i,n){
+       if(s[i] == '0'){
+           int cnt = 0;
+           int j = i;
+           while(j < n and s[j] == '0'){
+               cnt++;
+               j++;
+            }
+            if(cnt < 3){
+            continue;
+        }
+        else{
+            FOR(k,cnt) a += '0';
+            i += cnt;
+            continue;
+        }
+    }
+    if(s[i] == '1'){
+        a += '1';
+    }
+}
+
+FOR(i,n)
+{
+    if(s[i] == '1'){
+        int cnt = 0;
+        int j = i;
+        while(j < n and s[j] == '1'){
+            cnt++;
+            j++;
+        }
+        if(cnt < 3){
+            continue;
+        }
+        else{
+            FOR(k,cnt) b += '1';
+            i += cnt;
+            continue;
+        }
+    }
+    if(s[i] == '0'){
+        b += '0';
+    }
+}
+    for(int i = l1; i < n; i++) a += '0';
+    for(int i = l0 ; i < n; i++) b += '1';
+
+  debug(a, b);
+
+  int ans1 = 0, ans2 = 0;
+  FOR(i,n-1){
+    if(a[i] == a[i+1])ans1++;
+  }
+
+  FOR(i,n){
+    if(b[i] == b[i+1])ans2++;
+  }
+
+  cout << max(ans1, ans2) << ln;
    
 }
 
