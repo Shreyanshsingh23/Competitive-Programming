@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,27 +57,31 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n;
-int a[N+10];
+
 
 void solve()
 {
-   cin >> n;
-   FOR(i,n) cin >> a[i];
+   int1(n)
+   v<pi> a (n), b(n), c(n);
 
-   sort(a,a+n);
+   FOR(i,n) cin >> a[i].F, a[i].S = i;
+   FOR(i,n) cin >> b[i].F, b[i].S = i;
+   FOR(i,n) cin >> c[i].F, c[i].S = i;
+   
+   sort(all(a),greater<pi>());
+   sort(all(b),greater<pi>());
+   sort(all(c),greater<pi>());
 
-   int ans = 0, prev = 0;
-   for(int i = 0; i < n; ++i)
-   {
-        if(i - prev + 1 >= a[i]){
-            ans++;
-            prev = i+1;
-        }
+   int ans = 0;
+   FOR(i,3){
+      FOR(j,3){
+          FOR(k,3){
+            if(a[i].S != b[j].S and a[i].S != c[k].S and b[j].S != c[k].S)ans = max(ans, a[i].F + b[j].F + c[k].F);
+          }
+      }
    }
 
    cout << ans << ln;
-   
 }
 
 signed main()

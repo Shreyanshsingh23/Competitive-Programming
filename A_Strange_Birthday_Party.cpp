@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200010;
+const int N = 300010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,26 +57,43 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n;
-int a[N+10];
+
+int n,m;
+int a[N], b[N];
+bool c[N];
+
+int dp[N][3];
+int lastTaken = 0;
+
+int f(int i, int done)
+{
+    if(i == n)return 0;
+
+    // if(dp[i][done] != -1)return dp[i][done];
+
+    int ans = MAX;
+    //transitions
+
+    // give the dollars instead of gift 
+    ans = min(ans, b[a[i]-1] + f(i+1,0));
+
+    //give any gift whose index is less or equal to a[i]
+    lastTaken++;
+    ans = min(ans,b[lastTaken] + f(i+1,1));
+    lastTaken--;
+    
+    return dp[i][done] = ans;
+}
 
 void solve()
 {
-   cin >> n;
+   cin >> n >> m;
    FOR(i,n) cin >> a[i];
+   FOR(i,m) cin >> b[i];
+    sort(a,a+n);
+//    FOR(i,n+2)FOR(j,3)dp[i][j] = -1;
 
-   sort(a,a+n);
-
-   int ans = 0, prev = 0;
-   for(int i = 0; i < n; ++i)
-   {
-        if(i - prev + 1 >= a[i]){
-            ans++;
-            prev = i+1;
-        }
-   }
-
-   cout << ans << ln;
+    cout << f(0,0) << ln;
    
 }
 

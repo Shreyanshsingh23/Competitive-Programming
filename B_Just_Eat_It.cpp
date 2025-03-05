@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,27 +57,45 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n;
-int a[N+10];
 
-void solve()
+bool solve()
 {
-   cin >> n;
-   FOR(i,n) cin >> a[i];
-
-   sort(a,a+n);
-
-   int ans = 0, prev = 0;
-   for(int i = 0; i < n; ++i)
-   {
-        if(i - prev + 1 >= a[i]){
-            ans++;
-            prev = i+1;
+   int1(n)
+   vi a (n);
+   int sum = 0;
+   FOR(i,n) cin >> a[i], sum += a[i];
+   if(sum < 0){
+    FOR(i,n){
+        if(a[i] >= sum){
+            return 0;
         }
+    }
+    return 1;
+   }
+// debug(sum)
+   vi pref(n);
+   int prev = -1;
+
+   pref[0] = a[0];
+   if(pref[0] >= sum)return 0;
+   if(pref[0] <= 0){
+       pref[0] = 0; 
+       prev = 1;
    }
 
-   cout << ans << ln;
-   
+   for(int i = 1; i < n; ++i){
+     pref[i] = pref[i-1] + a[i];
+     if(i == n-1 and pref[i] >= sum and prev != -1)return 0;
+     if(i < n-1 and pref[i] >= sum){
+        return 0;
+     }
+     if(pref[i] <= 0){
+         pref[i] = 0;
+         prev = i+1;
+        }
+    }
+// debug(pref)
+   return 1;
 }
 
 signed main()
@@ -89,8 +107,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }
