@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 110;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,19 +57,18 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
+int n;
+vii a(2);
+
 void solve()
 {
-   int n,x;cin >> n >> x;
-   int ans = 0;
-   for(int a = 1; a<= min(x,n); ++a){
-        for(int b = 1; b <= n/a; ++b){
-            if(a*b > n or a+b > x)break;
-            int c = min(x - a - b, (n - a*b)/ (a+b)); 
-            ans += c;
-        }
+   cin >> n;
+   FOR(i,2){
+        a[i].resize(n);
+        FOR(j,n) cin >> a[i][j];
    }
-   // just solve the equations (ab*bc*ac <= n) and (a+b+c <= x) to take out the possible values of a,b,c
-   cout << ans << ln;
+
+   
 }
 
 signed main()

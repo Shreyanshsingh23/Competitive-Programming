@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 110;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -59,17 +59,45 @@ const bool testcase = 1;
 
 void solve()
 {
-   int n,x;cin >> n >> x;
-   int ans = 0;
-   for(int a = 1; a<= min(x,n); ++a){
-        for(int b = 1; b <= n/a; ++b){
-            if(a*b > n or a+b > x)break;
-            int c = min(x - a - b, (n - a*b)/ (a+b)); 
-            ans += c;
-        }
-   }
-   // just solve the equations (ab*bc*ac <= n) and (a+b+c <= x) to take out the possible values of a,b,c
-   cout << ans << ln;
+   int1(n)
+    int c;
+    string s;
+    cin >> c >> s;
+    int cnt = 0;
+    mpci mp;
+
+    FOR(i,n){ mp[s[i]]++; if(mp[s[i]] == 1)cnt++;}
+    int ok = 0;
+    FOR(i,cnt+1){
+        if((i*(i+1))/2 > c){break;}
+        ok = i;
+    }
+    
+    if(ok == 0){
+        cout << cnt*c << ln;
+        return;
+    }
+
+    v<pair<int,char>> aa;
+    for(auto it : mp){
+        aa.pb({it.S,it.F});
+    }
+    sort(all(aa),greater<pair<int,char>>());
+    vi pref(sz(aa));
+    pref[0] = aa[0].F;
+    for(int i = 1; i < sz(aa); ++i){
+        pref[i] += pref[i-1] + aa[i].F;
+    }
+    int ans = (n*(n+1))/2;
+    FOR(i,sz(aa)){
+        int trans = (i+1)*c;
+        int left = n - pref[i];
+        int cost = ((left*(left+1))/2);
+        ans = min(ans,trans+cost);
+    }
+    
+    cout << ans << ln;
+
 }
 
 signed main()

@@ -48,28 +48,98 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 110;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
-int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+int dx[4] = {0,1,0,-1}, dy[4] = {1,0,-1,0};
+const bool testcase = 0;
+
+int n,m;
+v<v<char>> a;
+v<v<bool>> b;
+
+//DFS
+void f(int i, int j)
+{
+
+    if(b[i][j])return;
+    
+    b[i][j] = 1;
+    if(i+1 < n and a[i+1][j] == '.')f(i+1,j);
+    if(i > 0 and a[i-1][j] == '.')f(i-1,j);
+    if(j+1 < m and a[i][j+1] == '.')f(i,j+1);
+    if(j > 0 and a[i][j-1] == '.')f(i,j-1);
+}
+
+bool inrange(int x, int y, int n, int m)
+{
+    if (((0 <= x) && (x < n)) && ((0 <= y) && (y < m)))
+        return true;
+    return false;
+}
 
 void solve()
 {
-   int n,x;cin >> n >> x;
+   cin >> n >> m;
+   a.resize(n, v<char> (m,0));
+   b.resize(n, v<bool> (m,0));
+   FOR(i,n)FOR(j,m) cin >> a[i][j];
+
    int ans = 0;
-   for(int a = 1; a<= min(x,n); ++a){
-        for(int b = 1; b <= n/a; ++b){
-            if(a*b > n or a+b > x)break;
-            int c = min(x - a - b, (n - a*b)/ (a+b)); 
-            ans += c;
-        }
-   }
-   // just solve the equations (ab*bc*ac <= n) and (a+b+c <= x) to take out the possible values of a,b,c
-   cout << ans << ln;
+
+//    FOR(i,n){
+//      FOR(j,m){
+//         if(a[i][j] == '.'){
+//         if(!b[i][j]){
+//             ans++;
+//             f(i,j);
+//         }
+//      }
+//     }
+//    }
+
+//    cout << ans << ln;
+
+
+      FOR(i,n){
+         FOR(j,m){
+            
+            if(a[i][j] == '#')continue;
+            if(b[i][j])continue;
+
+            // now means a[i][j] == '.' and b[i][j] == 0
+
+            queue<pi> q;
+            q.push({i,j});
+            b[i][j] = 1;
+            ans++;
+
+            while(!q.empty()){
+                auto s = q.front();
+                q.pop();
+                int x = s.F, y = s.S;
+                b[x][y] = 1;
+
+                for(int i = 0; i < 4; ++i){
+                    int nx = x + dx[i];
+                    int ny = y + dy[i];
+
+                    if((inrange(nx,ny,n,m) and a[nx][ny] == '.') and b[nx][ny] == 0){
+                        b[nx][ny] = 1;
+                        q.push({nx,ny});
+                    }
+                }
+
+            }
+         }
+      }
+
+
+      cout << ans << ln;
+   
 }
 
 signed main()
