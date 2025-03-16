@@ -107,7 +107,7 @@ void find_ancestor()
  
             // Storing maximum edge
             mx[i][j]
-                = max(mx[i - 1][j],
+                = (mx[i - 1][j]+
                       mx[i - 1][dp[i - 1][j]]);
         }
     }
@@ -128,7 +128,7 @@ int getMax(int a, int b)
     int diff = level[b] - level[a];
     while (diff > 0) {
         int log = log2(diff);
-        ans = max(ans, mx[log][b]);
+        ans += mx[log][b];
  
         // Changing Node B to its
         // parent at 2 ^ i distance
@@ -151,8 +151,8 @@ int getMax(int a, int b)
             i--;
  
         // Updating ans
-        ans = max(ans, mx[i][a]);
-        ans = max(ans, mx[i][b]);
+        ans += mx[i][a];
+        ans += mx[i][b];
  
         // Changing value to its parent
         a = dp[i][a];

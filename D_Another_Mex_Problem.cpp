@@ -48,7 +48,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,48 +57,24 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n;
-vii a(2);
-
 void solve()
 {
-   cin >> n;
-   FOR(i,2){
-        a[i].resize(n);
-        cin >> a[i];
-   }
-   if(n == 1){
-        cout << 0 << ln;
-        return;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+
+   set<int> st;
+   FOR(i,n)st.insert(i+1);
+
+   FOR(i,n-1){
+     if(st.find(a[i]) != st.end())st.erase(a[i]);
    }
 
-   vi pref1(n), pref2(n);
-   pref2[n-1] = a[0][n-1];
-   pref1[0] = a[1][0];
+   int q = st.size();
+
+   cout << fact[q] << ln;
+
    
-   for(int i = 1; i < n-1; ++i){
-        pref1[i] = pref1[i-1] + a[1][i];
-   }
-
-   for(int i = n-2; i > 0; --i){
-        pref2[i] = pref2[i+1] + a[0][i];
-   }
-
-   int minn = MAX;
-   for(int i = 0; i < n; ++i){
-        if(i == 0){
-            minn = min(minn,pref2[i+1]);
-            continue;
-        }
-        if(i == n-1){
-            minn = min(minn,pref1[i-1]);
-            continue;
-        }
-        minn = min(minn,max(pref2[i+1],pref1[i-1]));
-   }
-
-
-   cout << minn << ln;
 }
 
 signed main()
@@ -107,7 +83,7 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
     while (t--)
     {
      //   cout << (solve() ? "YES": "NO") << ln;

@@ -66,27 +66,33 @@ void solve()
      return;
    }
 
-   vi a, b;
+   vi a;
 
    int c = 0;
    int f = n , s = 1;
    bool vis [n+1] = {0};
 
    while(f > s){
-     if(f >= 0)a.pb(f);
-     if(s <= n)a.pb(s);
-     s += 2;
-     f -= 2;
+    if(f == s){
+      a.pb(f--);
+      break;
+    }
+     a.pb(f--);
+     a.pb(s++);
 
    }
-   cout << a << ln; 
+   if(n&1){
+     a.pb(n/2 + 1);
+   }
+   cout << a <<ln;
+  
    
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-
+ 
     int t = 1;
     testcase and cin >> t;
     // compFact();

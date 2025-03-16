@@ -57,48 +57,30 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n;
-vii a(2);
-
-void solve()
+bool solve()
 {
-   cin >> n;
-   FOR(i,2){
-        a[i].resize(n);
-        cin >> a[i];
-   }
-   if(n == 1){
-        cout << 0 << ln;
-        return;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+
+   int minn = *min_element(all(a));
+
+   mpii mp;
+   FOR(i,n)mp[a[i]]++;
+
+   bool ok = false;
+
+
+   FOR(i,n){
+     if(a[i] % minn != 0)ok = true;
    }
 
-   vi pref1(n), pref2(n);
-   pref2[n-1] = a[0][n-1];
-   pref1[0] = a[1][0];
+   if(ok)return 1;
+
+   if(mp[minn] == 1)return 1;
+   return 0;
+
    
-   for(int i = 1; i < n-1; ++i){
-        pref1[i] = pref1[i-1] + a[1][i];
-   }
-
-   for(int i = n-2; i > 0; --i){
-        pref2[i] = pref2[i+1] + a[0][i];
-   }
-
-   int minn = MAX;
-   for(int i = 0; i < n; ++i){
-        if(i == 0){
-            minn = min(minn,pref2[i+1]);
-            continue;
-        }
-        if(i == n-1){
-            minn = min(minn,pref1[i-1]);
-            continue;
-        }
-        minn = min(minn,max(pref2[i+1],pref1[i-1]));
-   }
-
-
-   cout << minn << ln;
 }
 
 signed main()
@@ -110,8 +92,8 @@ signed main()
     // compFact();
     while (t--)
     {
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

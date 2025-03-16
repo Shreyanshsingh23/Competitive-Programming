@@ -56,49 +56,74 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
+int n;vi a;
 
-int n;
-vii a(2);
+int tellMax(int idx){
+    //stop when increasing sequence ends
+    for(int i = idx+1; i < n; ++i){
+        if(a[i] < a[i-1])return i-1;
+    }
+    return n-1;
+}
+
+int tellMin(int idx){
+    //stop when decreasing sequence ends
+    for(int i = idx+1; i < n; ++i){
+        if(a[i] > a[i-1])return i-1;
+    }
+    return n;
+}
+
+// void solve()
+// {
+//    cin >> n;
+//    int q;cin >> q;
+//    a.resize(n);
+//    FOR(i,n) cin >> a[i];
+   
+//    int ans = 0;
+//    int i = 0;
+//    while(i < n){
+//      i = tellMax(i);
+//      if(i < n)ans+= a[i];
+//      else break;
+//      i++;
+//      i = tellMin(i);
+//      if(i < n)ans -= a[i];
+//      else break;
+//      i++;
+//    }
+
+//    cout << ans << ln;
+// }
+
+//Above solution is accepted solution
+
+
+//using DP solution
+
+// d1(idx) -> maximum sum of a subsequence possible till idx provided that length of sequence is odd
+
+
+//d2(idx) -> maximum sum of a subsequence possible till idx provided length of subsequence is even
 
 void solve()
 {
-   cin >> n;
-   FOR(i,2){
-        a[i].resize(n);
-        cin >> a[i];
-   }
-   if(n == 1){
-        cout << 0 << ln;
-        return;
-   }
+    int n,q;
+    cin >> n >> q;
+    vi arr(n+1);
+    for(int i = 1; i <= n; ++i)cin >> arr[i];
 
-   vi pref1(n), pref2(n);
-   pref2[n-1] = a[0][n-1];
-   pref1[0] = a[1][0];
-   
-   for(int i = 1; i < n-1; ++i){
-        pref1[i] = pref1[i-1] + a[1][i];
-   }
+    vi dp1(n+1), dp2(n+1);
+    dp1[0] = -1e9;dp2[0] = 0;
 
-   for(int i = n-2; i > 0; --i){
-        pref2[i] = pref2[i+1] + a[0][i];
-   }
+    for(int i = 1; i <= n; ++i){
+        dp1[i] = max(dp1[i-1],dp2[i-1]+arr[i]); // ya toh pichle wale ka odd maximum utha lo ya toh pichle wale ke even maximum me iss number ko plus kardo, plus isliye kyuki agr even sequence me add karoge toh yeh to odd index pe hi aayega isliye yeh plus hi hoga
+        
+        dp2[i] = max(dp2[i-1],dp1[i-1]-arr[i]);// ya toh pichle wale ka even maximum utha lo ya to pichle wale ke odd maximum me se iss number ko minus kardo,minus isliye kyuki yeh even idx pe aayega toh isse toh substract hi hona hai
+    }
 
-   int minn = MAX;
-   for(int i = 0; i < n; ++i){
-        if(i == 0){
-            minn = min(minn,pref2[i+1]);
-            continue;
-        }
-        if(i == n-1){
-            minn = min(minn,pref1[i-1]);
-            continue;
-        }
-        minn = min(minn,max(pref2[i+1],pref1[i-1]));
-   }
-
-
-   cout << minn << ln;
+    cout << max(dp1[n],dp2[n]) << ln;
 }
 
 signed main()

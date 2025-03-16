@@ -55,50 +55,36 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-int n;
-vii a(2);
+int n,m,d;
+
+int a [101][101];
 
 void solve()
 {
-   cin >> n;
-   FOR(i,2){
-        a[i].resize(n);
-        cin >> a[i];
-   }
-   if(n == 1){
-        cout << 0 << ln;
-        return;
-   }
+   cin >> n >> m >> d;
+   FOR(i,n)FOR(j,m) cin >> a[i][j];
 
-   vi pref1(n), pref2(n);
-   pref2[n-1] = a[0][n-1];
-   pref1[0] = a[1][0];
-   
-   for(int i = 1; i < n-1; ++i){
-        pref1[i] = pref1[i-1] + a[1][i];
-   }
-
-   for(int i = n-2; i > 0; --i){
-        pref2[i] = pref2[i+1] + a[0][i];
-   }
-
-   int minn = MAX;
+  
+   bool poss = true;
+   int ops = MAX;
    for(int i = 0; i < n; ++i){
-        if(i == 0){
-            minn = min(minn,pref2[i+1]);
-            continue;
+    for(int j = 0; j < m; ++j){
+        int target = a[i][j];
+        int cnt = 0;
+        for(int k = 0; k < n; ++k){
+            for(int l = 0; l < m; ++l){
+                cnt += (abs(a[k][l] - target)/d);
+                if(abs(a[k][l] - target)%d != 0){poss = false;break;}
+            }
         }
-        if(i == n-1){
-            minn = min(minn,pref1[i-1]);
-            continue;
-        }
-        minn = min(minn,max(pref2[i+1],pref1[i-1]));
+        ops = min(ops,cnt);
+    }
    }
-
-
-   cout << minn << ln;
+   if(!poss)cout << -1 << ln
+   else cout << ops << ln;
+   
 }
 
 signed main()

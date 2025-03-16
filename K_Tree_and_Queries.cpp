@@ -48,57 +48,158 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+// const int N = 1000010;
+const int N = 100005;
 int fact [N] ;
 int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
+// void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-int n;
-vii a(2);
+ int n,q;
+// Depths of Nodes
+vector<int> level(N);
+const int LG = 20;
+ 
+// Parent at every 2^i level
+vector<vector<int> > dp(LG, vector<int>(N));
+ 
+// Maximum node at every 2^i level
+vector<vector<int> > mx(LG, vector<int>(N));
+ 
+// Graph that stores destinations
+// and its weight
+vector<vector<pair<int, int> > > a(N);
+// int n;
+ 
+// Function to traverse the nodes
+// using the Depth-First Search Traversal
+void dfs_lca(int x, int par, int lev)
+{
+    dp[0][x] = par;
+    level[x] = lev;
+    for (auto i : a[x]) {
+ 
+        // Condition to check if its
+        // equal to its parent then skip
+        if (i.first == par)
+            continue;
+        mx[0][i.first] = i.second;
+ 
+        // DFS Recursive Call
+        dfs_lca(i.first, x, lev + 1);
+    }
+}
+ 
+// Function to find the ancestor
+void find_ancestor()
+{
+ 
+    // Loop to set every 2^i distance
+    for (int i = 1; i < LG; i++) {
+        // Loop to calculate for
+        // each node in the N-ary tree
+        for (int j = 1; j <= n; j++) {
+            dp[i][j]
+                = dp[i - 1][dp[i - 1][j]];
+ 
+            // Storing maximum edge
+            mx[i][j]
+                = (mx[i - 1][j]+
+                      mx[i - 1][dp[i - 1][j]]);
+        }
+    }
+}
+ 
+int getMax(int a, int b)
+{
+    // Swapping if node a is at more depth
+    // than node b because we will
+    // always take at more depth
+    if (level[b] < level[a])
+        swap(a, b);
+ 
+    int ans = 0;
+ 
+    // Difference between the depth of
+    // the two given nodes
+    int diff = level[b] - level[a];
+    while (diff > 0) {
+        int log = log2(diff);
+        ans += mx[log][b];
+ 
+        // Changing Node B to its
+        // parent at 2 ^ i distance
+        b = dp[log][b];
+ 
+        // Subtracting distance by 2^i
+        diff -= (1 << log);
+    }
+ 
+    // Take both a, b to its
+    // lca and find maximum
+    while (a != b) {
+        int i = log2(level[a]);
+ 
+        // Loop to find the 2^ith
+        // parent that is different
+        // for both a and b i.e below the lca 
+        while (i > 0
+               && dp[i][a] == dp[i][b])
+            i--;
+ 
+        // Updating ans
+        ans += mx[i][a];
+        ans += mx[i][b];
+ 
+        // Changing value to its parent
+        a = dp[i][a];
+        b = dp[i][b];
+    }
+    return ans;
+}
+ 
+// Function to compute the Least
+// common Ancestor
+void compute_lca()
+{
+    dfs_lca(1, 0, 0);
+    find_ancestor();
+}
+ 
+
+// int n, q;
+// v<v<pi>> a;
 
 void solve()
 {
    cin >> n;
-   FOR(i,2){
-        a[i].resize(n);
-        cin >> a[i];
+   a.resize(n+1);
+   FOR(i,n-1) {
+      int x,y,w;
+      cin >> x >> y >> w;
+      a[x].pb({y,w});
+      a[y].pb({x,w});
    }
-   if(n == 1){
-        cout << 0 << ln;
-        return;
+   compute_lca();
+   cin >> q;
+   while(q--) {
+    int x,y;
+    cin >> x >> y;
+    vi ff(x), ss(y);
+    FOR(i,x){
+       cin >>  ff[i];
+    }
+    FOR(i,y){
+        cin >> ss[i];
+    }
+  
+
    }
 
-   vi pref1(n), pref2(n);
-   pref2[n-1] = a[0][n-1];
-   pref1[0] = a[1][0];
    
-   for(int i = 1; i < n-1; ++i){
-        pref1[i] = pref1[i-1] + a[1][i];
-   }
-
-   for(int i = n-2; i > 0; --i){
-        pref2[i] = pref2[i+1] + a[0][i];
-   }
-
-   int minn = MAX;
-   for(int i = 0; i < n; ++i){
-        if(i == 0){
-            minn = min(minn,pref2[i+1]);
-            continue;
-        }
-        if(i == n-1){
-            minn = min(minn,pref1[i-1]);
-            continue;
-        }
-        minn = min(minn,max(pref2[i+1],pref1[i-1]));
-   }
-
-
-   cout << minn << ln;
 }
 
 signed main()

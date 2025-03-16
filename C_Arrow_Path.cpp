@@ -58,47 +58,61 @@ int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
 int n;
-vii a(2);
+v<string> a(2);
+int cnt = 0;
+int previ = -1, prevj = -1;
+// f(i,j,sec) -> returns whether robot can reach cell[i][j] on an even second
+bool f(int i, int j, int sec)
+{
+    if(i == 1 and j == n-1){
+        if(sec == 0)return true;
+        else return false;
+    }
+    cnt++;
+    // debug(cnt)
+    
+    //transitions
+    bool ans = 0;
+    previ = i;
+    prevj = j;
+    
+    if(sec == 0){
+        if(i+1 < 2 and (i+1 != previ or j != prevj)){
+            ans |= f(i+1,j,1-sec);
+        }
+        if(i > 0 and (i-1 != previ or j != prevj)){
+            ans |= f(i-1,j,1-sec);
+        }
+        if(j+1 < n and (i != previ or j+1 != prevj)){
+            ans |= f(i,j+1,1-sec);
+        }
+        if(j > 0 and (i != previ or j-1 != prevj)){
+            ans |= f(i,j-1,1-sec);
+        }
+    }
+    else{
+        if(a[i][j] == '>'){
+            ans |= f(i,j+1,1-sec);
+        }
+        else{
+            ans |= f(i,j-1,1-sec);
+        }
+    }
+
+    return ans;
+}
 
 void solve()
 {
    cin >> n;
-   FOR(i,2){
-        a[i].resize(n);
-        cin >> a[i];
-   }
-   if(n == 1){
-        cout << 0 << ln;
-        return;
-   }
-
-   vi pref1(n), pref2(n);
-   pref2[n-1] = a[0][n-1];
-   pref1[0] = a[1][0];
+   debug(n)
+   FOR(i,2)cin >> a[i];
    
-   for(int i = 1; i < n-1; ++i){
-        pref1[i] = pref1[i-1] + a[1][i];
-   }
-
-   for(int i = n-2; i > 0; --i){
-        pref2[i] = pref2[i+1] + a[0][i];
-   }
-
-   int minn = MAX;
-   for(int i = 0; i < n; ++i){
-        if(i == 0){
-            minn = min(minn,pref2[i+1]);
-            continue;
-        }
-        if(i == n-1){
-            minn = min(minn,pref1[i-1]);
-            continue;
-        }
-        minn = min(minn,max(pref2[i+1],pref1[i-1]));
-   }
-
-
-   cout << minn << ln;
+   cout << f(0,0,0) << ln;
+   debug(cnt)
+   cnt = 0;
+   previ = -1, prevj = -1;
+   
 }
 
 signed main()

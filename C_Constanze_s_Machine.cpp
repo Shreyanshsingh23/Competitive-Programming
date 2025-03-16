@@ -48,57 +48,43 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-int n;
-vii a(2);
+string s;
+
+int dp[N];
+// dp[i] = number of ways to construct [1...i] characters 
 
 void solve()
 {
-   cin >> n;
-   FOR(i,2){
-        a[i].resize(n);
-        cin >> a[i];
-   }
-   if(n == 1){
-        cout << 0 << ln;
-        return;
-   }
-
-   vi pref1(n), pref2(n);
-   pref2[n-1] = a[0][n-1];
-   pref1[0] = a[1][0];
-   
-   for(int i = 1; i < n-1; ++i){
-        pref1[i] = pref1[i-1] + a[1][i];
-   }
-
-   for(int i = n-2; i > 0; --i){
-        pref2[i] = pref2[i+1] + a[0][i];
-   }
-
-   int minn = MAX;
-   for(int i = 0; i < n; ++i){
-        if(i == 0){
-            minn = min(minn,pref2[i+1]);
-            continue;
+    cin >> s;
+    int n = sz(s);
+    FOR(i,n){
+        if(s[i] == 'm' or s[i] == 'w'){
+            cout << 0 << ln;
+            return;
         }
-        if(i == n-1){
-            minn = min(minn,pref1[i-1]);
-            continue;
+    }
+
+    dp[0] = dp[1] = 1;
+    //dp[0] = 1 means there is one way to construct empty string
+    //dp[1] = 1 means there is one way to construct one character as long as it is valid character
+
+    for(int i = 2; i <= n; ++i){
+        if(s[i-1] == s[i-2] and (s[i-1] == 'n' or s[i-1] == 'u')){
+            dp[i] = (dp[i-1] + dp[i-2])%MOD;
         }
-        minn = min(minn,max(pref2[i+1],pref1[i-1]));
-   }
+        else dp[i] = dp[i-1];
+    }
 
-
-   cout << minn << ln;
+    cout << dp[n] << ln;
 }
 
 signed main()
