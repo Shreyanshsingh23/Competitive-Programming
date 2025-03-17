@@ -58,65 +58,49 @@ int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
 int n;
-v<string> a(2);
-int cnt = 0;
-int previ = -1, prevj = -1;
-set<pi> vis;
-// f(i,j,sec) -> returns whether robot can reach cell[i][j] on an even second
-bool f(int i, int j, int sec)
+string s;
+
+int f(int l, int r, char ch)
 {
-    // debug(i,j,sec)
-    if(i == 1 and j == n-1){
-        // debug("if",i,j,sec)
-        return true;
-    }
-    if(vis.count({i,j}))return 0;
-    cnt++;
-    vis.insert({i,j});
-    // debug(cnt)
-    
-    //transitions
-    bool ans = 0;
-    previ = i;
-    prevj = j;
-    
-    if(sec == 0){
-        if(i+1 < 2 and (i+1 != previ or j != prevj)){
-            if(f(i+1,j,1-sec))return 1;
-        }
-        if(i > 0 and (i-1 != previ or j != prevj)){
-            if(f(i-1,j,1-sec))return 1;
-        }
-        if(j+1 < n and (i != previ or j+1 != prevj)){
-            if(f(i,j+1,1-sec))return 1;
-        }
-        if(j > 0 and (i != previ or j-1 != prevj)){
-            if(f(i,j-1,1-sec))return 1;
-        }
-    }
-    else{
-        if(a[i][j] == '>'){
-            if(f(i,j+1,1-sec))return 1;
-        }
-        else{
-            if(f(i,j-1,1-sec))return 1;
-        }
+    // debug(l,r,ch)
+   
+    if(l == r){
+        if(s[l] == ch)return 0;
+        return 1;
     }
 
-    return 0;
+    int size = r-l+1;
+    int ans1 = 0, ans2 = 0;
+    for(int i = l; i <= (l+r)/2; ++i){
+        if(s[i] != ch)ans1++;
+        // debug(ch,s[i])
+    }
+    for(int i = (l+r)/2 + 1; i <= r; ++i){
+        if(s[i] != ch)ans2++;
+    }
+    // debug(ans1,ans2)
+    
+        return min(ans1 + f((l+r)/2+1,r,ch+1),ans2 + f(l,(l+r)/2,ch+1));
+    
+
 }
 
-bool solve()
+void solve()
 {
-   cin >> n;
-   FOR(i,2)cin >> a[i];
+   cin >> n >> s;
+   if(n == 1){
+    if(s == "a")cout << 0 ;
+    else cout << 1;
+    cout << ln;
+    return;
+   }
    
-   bool ans = f(0,0,0);
-   vis.clear();
-   return ans;
-   cnt = 0;
-   previ = -1, prevj = -1;
-   
+
+   int ans = f(0,n-1,'a');
+
+   cout << ans << ln;
+
+
 }
 
 signed main()
@@ -128,8 +112,8 @@ signed main()
     // compFact();
     while (t--)
     {
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

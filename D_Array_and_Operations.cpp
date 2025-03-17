@@ -57,65 +57,65 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-int n;
-v<string> a(2);
-int cnt = 0;
-int previ = -1, prevj = -1;
-set<pi> vis;
-// f(i,j,sec) -> returns whether robot can reach cell[i][j] on an even second
-bool f(int i, int j, int sec)
+int n,k,pref;
+vi a;
+
+int f()
 {
-    // debug(i,j,sec)
-    if(i == 1 and j == n-1){
-        // debug("if",i,j,sec)
-        return true;
-    }
-    if(vis.count({i,j}))return 0;
-    cnt++;
-    vis.insert({i,j});
-    // debug(cnt)
-    
-    //transitions
-    bool ans = 0;
-    previ = i;
-    prevj = j;
-    
-    if(sec == 0){
-        if(i+1 < 2 and (i+1 != previ or j != prevj)){
-            if(f(i+1,j,1-sec))return 1;
-        }
-        if(i > 0 and (i-1 != previ or j != prevj)){
-            if(f(i-1,j,1-sec))return 1;
-        }
-        if(j+1 < n and (i != previ or j+1 != prevj)){
-            if(f(i,j+1,1-sec))return 1;
-        }
-        if(j > 0 and (i != previ or j-1 != prevj)){
-            if(f(i,j-1,1-sec))return 1;
-        }
-    }
-    else{
-        if(a[i][j] == '>'){
-            if(f(i,j+1,1-sec))return 1;
-        }
-        else{
-            if(f(i,j-1,1-sec))return 1;
-        }
+    int ans = 0;
+    for(int i = 0; i < n - 2*k; ++i){
+        ans += a[i];
     }
 
-    return 0;
+    mpii mp;
+    for(int i = n-2*k; i < n; ++i){
+        mp[a[i]]++;
+    }
+
+    priority_queue<pi> pq;
+
+    for(auto [x,y] : mp){
+        pq.push({y,x});
+    }
+
+    while(!pq.empty()){
+        auto f = pq.top();
+        pq.pop();
+
+        if(!pq.empty()){
+            auto s = pq.top();
+            pq.pop();
+
+            f.F--;
+            s.F--;
+            if(f.F)pq.push(f);
+            if(s.F)pq.push(s);
+        }
+        else if(f.F > 1){
+            ans++;
+            f.F -= 2;
+            if(f.F)pq.push(f);
+        }
+        else ans += f.S;
+    }
+
+    return ans;
 }
 
-bool solve()
+
+
+void solve()
 {
-   cin >> n;
-   FOR(i,2)cin >> a[i];
+   cin >> n >> k;
+   a.resize(n);
+   cin >> a;
+   pref = 0;
+   FOR(i,n)pref += a[i];
    
-   bool ans = f(0,0,0);
-   vis.clear();
-   return ans;
-   cnt = 0;
-   previ = -1, prevj = -1;
+   sort(all(a));
+   
+   int ans = f();
+   cout << ans << ln;
    
 }
 
@@ -128,8 +128,8 @@ signed main()
     // compFact();
     while (t--)
     {
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }
