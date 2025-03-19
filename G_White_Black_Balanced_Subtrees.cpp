@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -48,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 4510;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,44 +58,52 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
+int n;
+int b[N];
+vii a;
 string s;
+int ans = 0;
 
-//Only two types of string can work
-// i) alternating sequences -> abababab (of even length)
-// ii) all same characters, its also type of alternating but both characters are same (aaaaaaa)
+pi f(int node, int prev)
+{
+    pi p = {0,0};
+    for(auto e : a[node]){
+        if(e != prev){
+            pi t = f(e,node);
+            p.F += t.F;
+            p.S += t.S;
+        }
+    }
+
+    if(s[node-1] == 'W')p.F++;
+    else p.S++;
+    if(p.F == p.S)ans++;
+    return p;
+}
+
 
 void solve()
 {
-   cin >> s;
-   
-   int ans = 0;
-   for(int i = 0; i <= 9; ++i){
-        for(int j = 0; j <= 9; ++j){
-            int len = 0;
-            bool ok = true;
-            for(char e : s){
-                if(ok and e == (i+'0')){
-                    len++;
-                    ok = false;
-                }
-                else if(!ok and e == (j+'0')) {
-                    len++;
-                    ok = true;
-                }
-            }
+    cin >> n;
+    FOR(i,n-1) cin >> b[i+2];
+    cin >> s;
+    a.resize(n+1);
 
-            if(i!=j){
-                len -= (len%2);
-            }
-            ans = max(ans,len);
-        }
-   }
+    for(int i = 2; i <= n; ++i){
+        int x = i, y = b[i];
+        a[x].pb(y);
+        a[y].pb(x);
+    }
+    
+    pi p = f(1,0);
+    cout << ans << ln;
 
-   cout << sz(s)-ans << ln;
 
-   
+
+    ans = 0;
+    a = {{}};
+
 }
-
 
 signed main()
 {
@@ -103,11 +112,11 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;
 }
-

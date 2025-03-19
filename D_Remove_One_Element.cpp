@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -55,46 +56,35 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
-
-string s;
-
-//Only two types of string can work
-// i) alternating sequences -> abababab (of even length)
-// ii) all same characters, its also type of alternating but both characters are same (aaaaaaa)
+const bool testcase = 0;
 
 void solve()
 {
-   cin >> s;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
-   int ans = 0;
-   for(int i = 0; i <= 9; ++i){
-        for(int j = 0; j <= 9; ++j){
-            int len = 0;
-            bool ok = true;
-            for(char e : s){
-                if(ok and e == (i+'0')){
-                    len++;
-                    ok = false;
-                }
-                else if(!ok and e == (j+'0')) {
-                    len++;
-                    ok = true;
-                }
-            }
+   int dp[n][2];
 
-            if(i!=j){
-                len -= (len%2);
-            }
-            ans = max(ans,len);
+    dp[0][0] = dp[0][1] = 1;
+    int ans = 1;
+   for(int i = 1; i < n; ++i){
+        dp[i][0] = dp[i][1] = 1;
+        if(a[i] > a[i-1]){
+            dp[i][0] = dp[i-1][0]+1;
+            dp[i][1] = dp[i-1][1]+1;
         }
+        if(i > 1){
+            if(a[i] > a[i-2]){
+                dp[i][1] = max(dp[i][1],dp[i-2][0]+1);
+            }
+        }
+
+        ans = max({ans,dp[i][0],dp[i][1]});
    }
 
-   cout << sz(s)-ans << ln;
-
-   
+   cout << ans << ln;
 }
-
 
 signed main()
 {
@@ -103,11 +93,11 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;
 }
-

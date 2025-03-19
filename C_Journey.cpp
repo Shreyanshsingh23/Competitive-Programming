@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -55,46 +56,50 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-string s;
+int n;
+vii a;
 
-//Only two types of string can work
-// i) alternating sequences -> abababab (of even length)
-// ii) all same characters, its also type of alternating but both characters are same (aaaaaaa)
+/*
+ for leaves ans[i] = 0 because from there we can't visit any node.
+
+
+    Expected Value: If node i has k children, its expected journey is:
+
+    ans[i]=1+ k1 ∑ans[v j]
+
+
+    The "+1" accounts for the move from i to its child.
+
+*/
+long double dfs(int cur = 1, int prev = 0)
+{
+    long double sum = 0;
+    for(auto e : a[cur]){
+        if(e != prev){
+            sum += dfs(e,cur) + 1;
+        }
+    }
+     return sum ? sum / (a[cur].size() - (prev != 0)) : 0;
+}
 
 void solve()
 {
-   cin >> s;
-   
-   int ans = 0;
-   for(int i = 0; i <= 9; ++i){
-        for(int j = 0; j <= 9; ++j){
-            int len = 0;
-            bool ok = true;
-            for(char e : s){
-                if(ok and e == (i+'0')){
-                    len++;
-                    ok = false;
-                }
-                else if(!ok and e == (j+'0')) {
-                    len++;
-                    ok = true;
-                }
-            }
+   cin >> n;
+   a.resize(n+1);
 
-            if(i!=j){
-                len -= (len%2);
-            }
-            ans = max(ans,len);
-        }
+   FOR(i,n-1){
+     int x,y;
+     cin >> x >> y;
+     a[x].pb(y);
+     a[y].pb(x);
    }
 
-   cout << sz(s)-ans << ln;
-
+  
+   sett(15) << dfs() << ln;
    
 }
-
 
 signed main()
 {
@@ -103,11 +108,11 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;
 }
-

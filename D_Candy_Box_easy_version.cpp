@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -57,44 +58,56 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-string s;
+bool cmp(pi& a, pi& b){
+    return a.S > b.S;
+}
 
-//Only two types of string can work
-// i) alternating sequences -> abababab (of even length)
-// ii) all same characters, its also type of alternating but both characters are same (aaaaaaa)
 
 void solve()
 {
-   cin >> s;
-   
-   int ans = 0;
-   for(int i = 0; i <= 9; ++i){
-        for(int j = 0; j <= 9; ++j){
-            int len = 0;
-            bool ok = true;
-            for(char e : s){
-                if(ok and e == (i+'0')){
-                    len++;
-                    ok = false;
-                }
-                else if(!ok and e == (j+'0')) {
-                    len++;
-                    ok = true;
-                }
-            }
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
 
-            if(i!=j){
-                len -= (len%2);
+   mpii mp;
+   int mxx = -1;
+   FOR(i,n)
+   {
+        mp[a[i]]++;
+        mxx = max(mxx,mp[a[i]]);
+   }
+
+   v<pi> c(mp.size());
+   int j = 0;
+   for(auto& e: mp)c[j++] = e;
+   sort(all(c),cmp);
+
+   v<bool> b(mxx+10,0);
+
+   int ans = 0;
+
+   FOR(i,sz(c)){
+        int x = c[i].S;
+        if(b[x] == 0){
+            ans += x;
+            b[x] = 1;
+        }
+        else{
+            int y = x-1;
+            while(y > 0 and b[y] == 1){
+                y--;
             }
-            ans = max(ans,len);
+            if(y == 0)break;
+            ans += y;
+            b[y] = 1;
         }
    }
 
-   cout << sz(s)-ans << ln;
+
+   cout << ans << ln;
 
    
 }
-
 
 signed main()
 {
@@ -103,11 +116,11 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;
 }
-

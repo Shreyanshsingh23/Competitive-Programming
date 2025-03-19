@@ -55,14 +55,81 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
+
+int n,m;
+string a[1010];
+v<string> res;
+string s,fin;
+int b[1010][1010];
+set<pi> vis;
+
+void f(int i, int j)
+{
+    if(vis.count({i,j}))return;
+    debug(i,j)
+    if(a[i][j] == '#'){
+        return ;
+    }
+
+    if(a[i][j] == 'B'){
+        if(sz(fin) == 0 or sz(s) < sz(fin))fin = s;
+        return;
+    }
+
+    
+   vis.insert({i,j});
+
+    //up
+    if(i > 0 and a[i-1][j] != '#'){
+        s += 'U';
+        f(i-1,j);
+        s.pop_back();
+    }
+
+    //down
+    if(i+1 < n and a[i+1][j] != '#'){
+        s += 'D';
+        f(i+1,j);
+        s.pop_back();
+    }
+    //left
+    if(j > 0 and a[i][j-1] != '#'){
+        s += 'L';
+        f(i,j-1);
+        s.pop_back();
+    }
+    //right
+    if(j+1 < m and a[i][j+1] != '#'){
+        s += 'R';
+        f(i,j+1);
+        s.pop_back();
+    }
+    
+    vis.erase({i,j});
+}
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   cin >> n >> m;
+   FOR(i,n)cin >> a[i];
+
+   FOR(i,n)FOR(j,m)b[i][j] = -1;
    
+   FOR(i,n)FOR(j,m){
+    if(a[i][j] == 'A'){
+       f(i,j);
+        break;
+    }
+   }
+
+   if(sz(fin)){
+    cout << "YES\n" << sz(fin) << '\n' << fin << ln;
+   }
+   else{
+    cout << "NO\n";
+   }
+
 }
 
 signed main()

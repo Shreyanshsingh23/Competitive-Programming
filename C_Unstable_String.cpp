@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -48,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 200010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,44 +58,54 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-string s;
-
-//Only two types of string can work
-// i) alternating sequences -> abababab (of even length)
-// ii) all same characters, its also type of alternating but both characters are same (aaaaaaa)
-
+int dp[N][2];
 void solve()
 {
-   cin >> s;
-   
-   int ans = 0;
-   for(int i = 0; i <= 9; ++i){
-        for(int j = 0; j <= 9; ++j){
-            int len = 0;
-            bool ok = true;
-            for(char e : s){
-                if(ok and e == (i+'0')){
-                    len++;
-                    ok = false;
-                }
-                else if(!ok and e == (j+'0')) {
-                    len++;
-                    ok = true;
-                }
+    string s;
+    cin >> s;
+    int n = sz(s);
+    int ans = 0;
+    
+    for(int i = 0; i < n; ++i){
+        if(i == 0){
+            switch(s[i]){
+                case '0':
+                    dp[i][0] = 1;
+                    break;
+                    case '1':
+                    dp[i][1] = 1;
+                    break;
+                    default:
+                    dp[i][0] = 1;
+                    dp[i][1] = 1;
+                    break;
             }
-
-            if(i!=j){
-                len -= (len%2);
-            }
-            ans = max(ans,len);
         }
-   }
-
-   cout << sz(s)-ans << ln;
-
-   
+        else{
+            switch (s[i])
+            {
+                case '0':
+                dp[i][0] = max(0ll,dp[i-1][1])+1;
+                break;
+                case '1':
+                dp[i][1] = max(0ll,dp[i-1][0])+1;
+                break;
+                default:
+                dp[i][0] = max(0ll,dp[i-1][1])+1;
+                dp[i][1] = max(0ll,dp[i-1][0])+1;
+                break;
+            }
+        }
+    }
+    
+    FOR(i,n){
+        ans += max(dp[i][0],dp[i][1]);
+    }
+    
+    cout << ans << ln;
+    memset(dp,0,sizeof(dp));
+    
 }
-
 
 signed main()
 {
@@ -103,11 +114,11 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;
 }
-

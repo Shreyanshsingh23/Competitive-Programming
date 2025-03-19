@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -55,46 +56,63 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-string s;
+int n,m;
+vii adj;
 
-//Only two types of string can work
-// i) alternating sequences -> abababab (of even length)
-// ii) all same characters, its also type of alternating but both characters are same (aaaaaaa)
+vi ans;
+
+
+void bfs(int node)
+{
+    queue<int> q;
+    set<int> st;
+    q.push(node);
+    int cnt = 0;
+    st.insert(node);
+    while(!q.empty()){
+        int s = q.front();
+        q.pop();
+        cnt++;
+        for(auto e: adj[s]){
+            if(st.count(e) == 0){
+                q.push(e);
+                st.insert(e);
+            }
+        }
+    }
+
+    for(auto e : st){
+        ans[e] = cnt;
+    }
+}
 
 void solve()
 {
-   cin >> s;
-   
-   int ans = 0;
-   for(int i = 0; i <= 9; ++i){
-        for(int j = 0; j <= 9; ++j){
-            int len = 0;
-            bool ok = true;
-            for(char e : s){
-                if(ok and e == (i+'0')){
-                    len++;
-                    ok = false;
-                }
-                else if(!ok and e == (j+'0')) {
-                    len++;
-                    ok = true;
-                }
-            }
+   cin >> n >> m;
+   adj.resize(n+1);
+   ans.resize(n+1,-1);
 
-            if(i!=j){
-                len -= (len%2);
-            }
-            ans = max(ans,len);
-        }
+
+   FOR(i,m){
+     int x;cin >> x;
+     vi t(x);
+     FOR(j,x)cin >> t[j];
+     for(int j = 1; j < x; ++j){
+        adj[t[j]].pb(t[j-1]);
+        adj[t[j-1]].pb(t[j]);
+     }
    }
+//    debug(adj)
 
-   cout << sz(s)-ans << ln;
-
+   for(int i = 1; i <= n; ++i){
+    if(ans[i] == -1)bfs(i);
+   }
    
+   for(int i = 1; i <= n; ++i)cout << ans[i] << ' ';
+   cout << ln;
 }
-
 
 signed main()
 {
@@ -103,11 +121,11 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;
 }
-
