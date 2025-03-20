@@ -61,9 +61,34 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
    
+   v<v<pi>> a (n+1);
+
+   FOR(i,n-1){
+     int x,y;
+     cin >> x >> y;
+     a[x].pb({y,i});
+     a[y].pb({x,i});
+   }
+   
+   vi ans(n+1), occ(n+1);
+   occ[1] = n;
+   function<void (int,int)> dfs = [&](int cur, int prev)
+   {
+        for(auto& [x,i]: a[cur]){
+            if(x != prev){
+                occ[x] = i;
+                ans[x] = ans[cur] + (i < occ[cur]);
+                dfs(x,cur);
+            }
+            else continue;
+        }
+   };
+
+   dfs(1,-1);
+
+   int res = *max_element(all(ans));
+   cout << res << ln;
 }
 
 signed main()

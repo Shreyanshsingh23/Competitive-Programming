@@ -10,9 +10,10 @@ using namespace std;
 template <typename T> std::ostream &operator<<(std::ostream &stream, const vector<T> &vec) {for(size_t i = 0; i < vec.size(); i++) { stream << vec[i]; if (i != vec.size() - 1) stream << ' '; }; return stream; } template <typename T> std::istream &operator>>(std::istream &stream, vector<T> &vec) {for (T &x : vec) stream >> x; return stream; } template <typename T, typename U> std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr) {stream << pr.first << ' ' << pr.second; return stream; } template <typename T, typename U> std::istream &operator>>(std::istream &stream, pair<T, U> &pr) {stream >> pr.first >> pr.second; return stream; } template <typename A, typename B> string to_string(pair<A, B> p); template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p); template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p); string to_string(const string &s) { return '"' + s + '"'; } string to_string(char c) {string s; s += c; return s; } string to_string(const char *s) { return to_string((string)s); } string to_string(bool b) { return (b ? "1" : "0"); } string to_string(vector<bool> v) {bool first = true; string res = "{"; for (int i = 0; i < static_cast<int>(v.size()); i++) {if (!first) {res += ", "; } first = false; res += to_string(v[i]); } res += "}"; return res; } template <size_t N> string to_string(bitset<N> v) {string res = ""; for (size_t i = 0; i < N; i++) {res += static_cast<char>('0' + v[i]); } return res; } template <typename A> string to_string(A v) {bool first = true; string res = "{"; for (const auto &x : v) {if (!first) {res += ", "; } first = false; res += to_string(x); } res += "}"; return res; } template <typename A, typename B> string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; } template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; } template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; } void debug_out() { cout << endl; } template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) {cout << " " << to_string(H); debug_out(T...); }
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
-// #define int long long
+#define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -53,63 +54,44 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-// int n, target;
-// int a[101];
-// int dp[101][1000000];
-
-// // f(i, x) -> returns the number of distint ordered ways you can produce a money sum X from
-// // coins [i....n-1]
-// int f(int i, int x)
-// {
-//     //pruning
-
-//     //cache check
-//     if(dp[i][x] != -1)
-//     {
-//         return dp[i][x];
-//     }
-
-//     //base case
-//     if(i == n)
-//     {
-//         if(x == 0)return 1;
-//         else return 0;
-//     }
-
-
-//     //transitions
-
-//     int ans = 0;
+void solve()
+{
+   int1(n)
+   vi u(n), s(n);
+   cin >> u >> s;
+   vii a(n+1);
     
-//     if(x-a[i] >= 0)
-//     {
-//         ans += f(i,x-a[i]);
-//     }
-//     ans += f(i+1,x);
+   set<int> exist;
+   FOR(i,n){
+      a[u[i]].pb(s[i]);
+      exist.insert(u[i]);
+   }
+   
 
-//     return dp[i][x] = ans;
-// }
+   for(auto x: exist){
+     sort(all(a[x]),greater<int>());
+     for(int i = 1; i < sz(a[x]); ++i){
+        a[x][i] += a[x][i-1];
+     }
+   }
 
-// void solve()
-// {
-//     memset(dp,-1,sizeof(dp));
-//     cin >> n >> target;
-//     for(int i = 0; i < n; ++i){
-//         cin >> a[i];
-//     }
-//     cout << f(0,target);
-// }
+   vi ans(n+1,0);
 
-void solve(){
-    int n,x;
-    cin >> n >> x;
-    vi a(n);
-    cin >> a;
+   for(auto x: exist)
+   {
+        for(int i = 1; i <= a[x].size(); ++i){
+            int idx = (a[x].size()/i)*i;
+            ans[i] += a[x][idx-1];
+        }
+   }
 
-    
+    FOR(i,n)cout << ans[i+1] << ' ';
+    cout << ln;
+   
 }
 
 signed main()
@@ -119,8 +101,9 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
