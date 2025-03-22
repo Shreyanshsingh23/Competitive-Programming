@@ -58,37 +58,46 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-
-void solve()
+bool solve()
 {
    int1(n)
    vi a (n);
-   FOR(i,n) cin >> a[i];
+   cin >> a;
 
-   vi dp(2), mp(n+1,1e9);
-   // dp[i] -> minimum number of balls left from [i...n]
-   // mp[a[i]] -> minimum number of balls will left if you delete the segment of balls from 
-   // [j...i] where j < i. If you will delete the segment [j...i] then mp[a[i]] 
-   // will be dp[i+1] because the segment got deleted so answer again becomes the same as the
-   // next ball to (i) i.e. (i+1)
+   mpii mp;
+   FOR(i,n)mp[a[i]]++;
+   if(sz(mp) == 1)return 1;
 
-   for(int i = n-1; i >= 0; --i){
-        int &ans = dp[i&1];
-        
-        //not delete this ball
-        ans = 1+dp[(i+1)&1];
+   vi l(n), r(n);
+   l[0] = a[0];r[n-1] = a[n-1];
+   for(int i = 1; i < n; ++i)l[i] = a[i] ^ l[i-1];
+   for(int i = n-2; i >= 0; --i)r[i] = a[i] ^ r[i+1];
 
-        //delete if possible(i.e. if any previous occurence of same color is found)
-        if(mp[a[i]] != 1e9){
-            ans = min(ans,mp[a[i]]);
-        }
-        mp[a[i]] = min(dp[(i+1)&1],mp[a[i]]);
+
+
+   for(int i = 0; i < n-1; ++i){
+      if(l[i] == r[i+1])return 1;
    }
 
-   cout << n-dp[0] << ln;
+   int xorr = l[n-1];
+   int s = -1, e = -1;
+   for(int i = 0; i < n; ++i){
+     if(l[i] == xorr){
+        s = i;
+        break;
+     }
+   }
 
-   // This second array mp is based on color of balls not index and this is a good and useful stragegy for optimizing, we store the best answer after deleting or adding the range
-   
+   for(int i = n-1; i >= 0; --i){
+    if(r[i] == xorr){
+        e = i;
+        break;
+    }
+   }
+
+   return (e-s > 1);
+
+
    
 }
 
@@ -102,8 +111,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

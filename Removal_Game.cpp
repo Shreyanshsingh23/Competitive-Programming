@@ -56,39 +56,80 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
+
+int n;
+vi a;
+
+int fir = 0, s = 0;
+int cnt = 0;
+int dp[5010][5010];
+
+// l-> 0...n
+// r-> n...0
+// dp[l][r] -> returns the maximum difference between score1 and score2 between range [l...r]
+// dp[l][r] = max(a[l]+(-dp[l+1][r]), a[r]+(-dp[l][r-1]))
+
+// int f(int l, int r)
+// {
+//     if(l == r){
+//         return a[l];
+//     }
+
+//     int& ans = dp[l][r];
+//     if(ans != -1)return ans;
+
+//     // take left
+//     ans = f(l+1,r) + a[l];
+    
+//     // take right
+//     ans = max(ans,f(l,r-1) + a[r]);
+
+//     ans = max(a[l]-f(l+1,r),a[r]-f(l,r-1));
+//     return  ans;
+// }
+
+
+/*
+    LEARNING
+
+    if we talk about range [l..r]
+
+    starting with player 1
+    he can either take leftmost element or rightmost element
+    if he takes leftmost element then a[l] gets added to score1 player 2 has to play in the range [l+1 .... r]
+    and if he takes rightmost element then a[r] gets added to score1 and player 2 has to play in the range [l .... r-1]
+
+    so player2 also wants maximum score so score2 for range [l+1 ... r] is nothing but -dp[l+1][r], or similarly for range  [l ... r-1] score2  is -dp[l][r-1]
+
+    so as we(player 1) want to maximize the equation score1 - score2,
+    dp[l][r] = max(a[l]+(-dp[l+1][r]), a[r]+(-dp[l][r-1]))
+
+
+*/ 
 
 
 void solve()
 {
-   int1(n)
-   vi a (n);
+   cin >> n;
+   a.resize(n);
+   cin >> a;
    FOR(i,n) cin >> a[i];
 
-   vi dp(2), mp(n+1,1e9);
-   // dp[i] -> minimum number of balls left from [i...n]
-   // mp[a[i]] -> minimum number of balls will left if you delete the segment of balls from 
-   // [j...i] where j < i. If you will delete the segment [j...i] then mp[a[i]] 
-   // will be dp[i+1] because the segment got deleted so answer again becomes the same as the
-   // next ball to (i) i.e. (i+1)
+   for(int l = n; l >= 0; --l){
+      for(int r = 0; r <= n; ++r){
+        int& ans = dp[l][r];
+         if(l == r){
+            ans = a[l];
+            continue;
+         }
 
-   for(int i = n-1; i >= 0; --i){
-        int &ans = dp[i&1];
-        
-        //not delete this ball
-        ans = 1+dp[(i+1)&1];
-
-        //delete if possible(i.e. if any previous occurence of same color is found)
-        if(mp[a[i]] != 1e9){
-            ans = min(ans,mp[a[i]]);
-        }
-        mp[a[i]] = min(dp[(i+1)&1],mp[a[i]]);
+         ans = max(a[l]-dp[l+1][r], a[r]-dp[l][r-1]);
+      }
    }
 
-   cout << n-dp[0] << ln;
 
-   // This second array mp is based on color of balls not index and this is a good and useful stragegy for optimizing, we store the best answer after deleting or adding the range
-   
+   cout << (accumulate(all(a),0ll) + dp[0][n-1])/2 << ln;
    
 }
 

@@ -49,47 +49,58 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 200010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
+int nCr(int n, int r){return fact[n]/(fact[r]*fact[n-r]);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+    string s;
+    cin >> s;
 
-   vi dp(2), mp(n+1,1e9);
-   // dp[i] -> minimum number of balls left from [i...n]
-   // mp[a[i]] -> minimum number of balls will left if you delete the segment of balls from 
-   // [j...i] where j < i. If you will delete the segment [j...i] then mp[a[i]] 
-   // will be dp[i+1] because the segment got deleted so answer again becomes the same as the
-   // next ball to (i) i.e. (i+1)
-
-   for(int i = n-1; i >= 0; --i){
-        int &ans = dp[i&1];
-        
-        //not delete this ball
-        ans = 1+dp[(i+1)&1];
-
-        //delete if possible(i.e. if any previous occurence of same color is found)
-        if(mp[a[i]] != 1e9){
-            ans = min(ans,mp[a[i]]);
+    int n = sz(s);
+    string  a = "", b = "";
+    FOR(i,n){
+        if(i&1){
+            a += '1';
+            b += '0';
         }
-        mp[a[i]] = min(dp[(i+1)&1],mp[a[i]]);
-   }
+        else{
+            a += '0';
+            b += '1';
+        }
+    }
 
-   cout << n-dp[0] << ln;
+    if(s == a or s == b){
+        cout << "0 1\n";
+        return;
+    }
+    int c = 0;
+    int ans = 0;
 
-   // This second array mp is based on color of balls not index and this is a good and useful stragegy for optimizing, we store the best answer after deleting or adding the range
-   
-   
+    int i = 0;
+    while(i < n)
+    {
+        int  cnt = 1;
+        int j = i+1;
+        while(j < n and s[j] == s[i]){
+            ++j;
+            ++cnt;
+        }
+        if(cnt > 1){
+            c+= cnt-1;
+            ans += cnt*(cnt-1);
+        }
+        
+        i = j;
+    }
+    cout << c << ' ' << ans << ln;
 }
 
 signed main()
@@ -98,7 +109,7 @@ signed main()
 
     int t = 1;
     testcase and cin >> t;
-    // compFact();
+    compFact();
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 

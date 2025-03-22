@@ -66,11 +66,24 @@ void solve()
 {
    cin >> n;
    a.resize(n);
-   for(int i = 0; i < n; ++i) cin >> a[i];
-   int fir = a[0] , sec = 2e9;
-   int dp[200010];
-   dp[0] = 0;
+   cin >> a;
 
+   int s = 1e9, t = 1e9, ans = 0;
+
+   for(int i = 0; i < n; ++i){
+      if(s > t)swap(s,t);
+      if(a[i] <= s){
+        s = a[i];
+      }
+      else if(a[i] > t){
+        s = a[i];
+        ans++;
+      }
+      else if(a[i] <= t and a[i] > s){
+        t = a[i];
+      }
+   }
+  cout << ans << ln;
 }
 
 signed main()

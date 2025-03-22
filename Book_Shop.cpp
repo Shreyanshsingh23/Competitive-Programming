@@ -5,10 +5,10 @@ using namespace std;
 #else
     #define debug(...);
 #endif
-
-
+ 
+ 
 template <typename T> std::ostream &operator<<(std::ostream &stream, const vector<T> &vec) {for(size_t i = 0; i < vec.size(); i++) { stream << vec[i]; if (i != vec.size() - 1) stream << ' '; }; return stream; } template <typename T> std::istream &operator>>(std::istream &stream, vector<T> &vec) {for (T &x : vec) stream >> x; return stream; } template <typename T, typename U> std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr) {stream << pr.first << ' ' << pr.second; return stream; } template <typename T, typename U> std::istream &operator>>(std::istream &stream, pair<T, U> &pr) {stream >> pr.first >> pr.second; return stream; } template <typename A, typename B> string to_string(pair<A, B> p); template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p); template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p); string to_string(const string &s) { return '"' + s + '"'; } string to_string(char c) {string s; s += c; return s; } string to_string(const char *s) { return to_string((string)s); } string to_string(bool b) { return (b ? "1" : "0"); } string to_string(vector<bool> v) {bool first = true; string res = "{"; for (int i = 0; i < static_cast<int>(v.size()); i++) {if (!first) {res += ", "; } first = false; res += to_string(v[i]); } res += "}"; return res; } template <size_t N> string to_string(bitset<N> v) {string res = ""; for (size_t i = 0; i < N; i++) {res += static_cast<char>('0' + v[i]); } return res; } template <typename A> string to_string(A v) {bool first = true; string res = "{"; for (const auto &x : v) {if (!first) {res += ", "; } first = false; res += to_string(x); } res += "}"; return res; } template <typename A, typename B> string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; } template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; } template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; } void debug_out() { cout << endl; } template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) {cout << " " << to_string(H); debug_out(T...); }
-
+ 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
 #define ln '\n';
@@ -45,66 +45,84 @@ int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
 int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
 typedef pair<int, int> pi;
-
+ 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
 const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
-
+ 
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-struct Node {
-    int value = -1;
-};
-
-int n,x;
+ 
+int n,k;
 vi a,b;
-// int dp[1001][100001];
-unordered_map<string,Node> mp;
+int dp[2][100001];
+ 
 // f() -> returns the maximum number of pages you can get from [i...n-1] books if you have 'left' money left with you
-int f(int i, int left)
+
+// i-> 0...n
+// left-> k...0
+// int f(int i, int left)
+// {
+//     //positive base case
+//     if(i == n)return 0;
+ 
+//     //cache check
+//     if(dp[i][left] != -1)return dp[i][left];
+ 
+//     //transitions
+//     //1. not taking this book
+//     int ans = f(i+1,left);
+    
+//     //2. taking this book
+//     if(left >= a[i]){
+//         ans = max(ans, b[i] + f(i+1,left-a[i]));
+//     }
+//     return dp[i][left] = ans;
+ 
+// }
+
+int f()
 {
-    
-    //positive base case
-    if(i == n)return 0;
-    string s = to_string(i) + to_string(left);
+    for(int i = n; i >= 0; --i){
+        for(int left = 0; left <= k; ++left){
+            int& ans = dp[i&1][left];
 
-    //cache check
-    // if(dp[i][left] != -1)return dp[i][left];
-    if(mp.count(s) and mp[s].value >= 0){
-        return mp[s].value;
+            if(i == n)
+            {
+                ans = 0;
+                continue;
+            }
+
+            int ans1 = dp[(i+1)&1][left];
+
+            int ans2 = 0;
+            if(left - a[i] >= 0){
+                ans2 = dp[(i+1)&1][left-a[i]] + b[i];
+            }
+            ans = max(ans1,ans2);
+        }
     }
 
-    //transitions
-    //1. not taking this book
-    int ans = f(i+1,left);
-    
-    //2. taking this book
-    if(left >= a[i]){
-        ans = max(ans, b[i] + f(i+1,left-a[i]));
-    }
-    return mp[s].value = ans;
-
+    return dp[0][k];
 }
-
-
+ 
 void solve()
 {
-   cin >> n >> x;
-   a.resize(n);//price
-   b.resize(n);//pages 
-//    memset(dp,-1,sizeof(dp));
+   cin >> n >> k;
+   a.resize(n);
+   b.resize(n);
    cin >> a >> b;
-   cout << f(0,x) << ln;
+   cout << f() << ln;
    
 }
-
+ 
 signed main()
 {
     ShreyanshSinghGautam
-
+ 
     int t = 1;
     testcase and cin >> t;
     // compFact();
@@ -115,9 +133,3 @@ signed main()
     }
     return 0;
 }
-
-
-
-
-
-

@@ -56,8 +56,7 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
-
+const bool testcase = 0;
 
 void solve()
 {
@@ -65,31 +64,18 @@ void solve()
    vi a (n);
    FOR(i,n) cin >> a[i];
 
-   vi dp(2), mp(n+1,1e9);
-   // dp[i] -> minimum number of balls left from [i...n]
-   // mp[a[i]] -> minimum number of balls will left if you delete the segment of balls from 
-   // [j...i] where j < i. If you will delete the segment [j...i] then mp[a[i]] 
-   // will be dp[i+1] because the segment got deleted so answer again becomes the same as the
-   // next ball to (i) i.e. (i+1)
+   vi b;
+   for(auto e : a){
+     auto it = lower_bound(all(b),e);
 
-   for(int i = n-1; i >= 0; --i){
-        int &ans = dp[i&1];
-        
-        //not delete this ball
-        ans = 1+dp[(i+1)&1];
-
-        //delete if possible(i.e. if any previous occurence of same color is found)
-        if(mp[a[i]] != 1e9){
-            ans = min(ans,mp[a[i]]);
-        }
-        mp[a[i]] = min(dp[(i+1)&1],mp[a[i]]);
+     if(it == b.end()){
+        b.pb(e);
+     }
+     else{
+        *it = e;
+     }
    }
-
-   cout << n-dp[0] << ln;
-
-   // This second array mp is based on color of balls not index and this is a good and useful stragegy for optimizing, we store the best answer after deleting or adding the range
-   
-   
+   cout << sz(b) << ln;
 }
 
 signed main()

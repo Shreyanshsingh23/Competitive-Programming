@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -48,51 +49,70 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
-int fact [N] ;
-int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
+const int N = 100010;
+const int M = 111;
+const bool testcase = 0;
 
-int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
-int n, m;
-vi a;
-int d[-1,0,1];
-// f(i) -> returns the number of arrays that match the description if the numbers till i'th index are fixed
-int f(int i, int val)
-{
-    if(i == n)return 1;
+int n,m;
+int a[N];
+int dp[N][M];
 
-    int ans = 0;
-    if(a[i] != 0)return f(i+1,val);
+// i-> 0...n
+//prev->0...m
+// int f(int i, int prev)
+// {
+//     if(i == n)return 1;
+//     int ans = 0;
+//     if(a[i] != 0){
+//         if(abs(prev-a[i]) <= 1){
+//             ans = f(i+1,a[i]);
+//         }
+//     }
+//     else{
+//         int start = (i == 0)? 1:max(1ll,prev-1);
+//         int end = (i == 0)? m: min(m,prev+1);
 
-    if(i == 0){
-        
-    }
-    else {
-    for(int j = 0; j < 3; ++j){
-        int nval = a[i-1] + d[j];
-        if(nval >= 0 and nval <= m){
-            a[i] = nval;
-            ans += f(i+1,nval);
-            a[i] = 0;
-        }
-    }
-}
- 
-}
+//         for(int x = start; x <= end; ++x){
+//             ans += f(i+1,x);
+//         }
+//     }
+//     return ans;
+// }
 
 void solve()
 {
-   cin >> n >> m;
-   a.resize(n);
-   FOR(i,n) cin >> a[i];
-   if(n == 1){
-    if(a[0] != 0)cout << 1 << ln
-    else cout << m << ln;
-    return;
-   }
-   
+    cin >> n >> m;
+    for(int i = 0; i < n; ++i)cin >> a[i];
+    
+
+    for(int i = n; i >= 0; --i){
+        for(int prev = m; prev >= 0; --prev){
+            int& ans = dp[i&1][prev];
+
+            if(i == n)
+            {
+                ans = 1;
+                continue;
+            }
+            ans = 0;
+            if(a[i] != 0){
+                if(abs(prev-a[i]) <= 1){
+                    ans = dp[(i+1)&1][a[i]];
+                }
+            }
+            else{
+                int start = (i == 0)? 1ll:max(1ll,prev-1);
+                int end = (i == 0)? m: min(m,prev+1);
+
+                for(int x = start; x <= end; ++x){
+                    ans += dp[(i+1)&1][x];
+                    ans %= MOD;
+                }
+            }
+        }
+    }
+
+    cout << dp[0][a[0]] << ln;
 }
 
 signed main()
@@ -102,8 +122,9 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }

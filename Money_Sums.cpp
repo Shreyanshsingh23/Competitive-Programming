@@ -56,54 +56,116 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
+int n;
+int a[105];
+int dp[101];
+set<int> st;
+
+// i -> 0...n
+// cur -> 0...(some M)
+// int f(int i, int cur)
+// {
+//     if(i == n){
+//         return st.size();
+//     }
+//     // int& ans = dp[i][cur];
+//     int ans = 0;
+//     // if(ans != -1)return ans;
+    
+//     // not take
+//     ans = max(ans,f(i+1,cur));
+    
+//     //take
+//     st.insert(cur+a[i]);
+//     ans = max(ans,f(i+1,cur+a[i]));
+
+//     return ans;
+// }
+
+int c[100010];
+
+int f()
+{
+
+    for(int i = 0; i< n; ++i){
+        
+        int& ans = dp[i];
+        if(i == 0){
+            ans = 1;
+            c[a[i]] = 1;
+            c[0] = 1;
+            continue;
+        }
+        int t[100010];
+        for(int j = 0; j <= 100000; ++j)t[j] = 0;
+        for(int j = 0; j <= 100000; ++j){
+            if(c[j] > 0){
+                // debug(j+a[i])
+                t[j+a[i]]++;
+            }
+        }
+        
+        for(int j = 0; j <= 100000; ++j)if(t[j] > 0)c[j] = t[j];
+        
+        int cnt = 0;
+        for(int j = 0; j <= 100000; ++j){
+            if(c[j] > 0){
+                cnt++;
+            }
+        }
+
+        ans = cnt;
+    }
+
+    return dp[n-1]-1;
+}
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-
-   vi dp(2), mp(n+1,1e9);
-   // dp[i] -> minimum number of balls left from [i...n]
-   // mp[a[i]] -> minimum number of balls will left if you delete the segment of balls from 
-   // [j...i] where j < i. If you will delete the segment [j...i] then mp[a[i]] 
-   // will be dp[i+1] because the segment got deleted so answer again becomes the same as the
-   // next ball to (i) i.e. (i+1)
-
-   for(int i = n-1; i >= 0; --i){
-        int &ans = dp[i&1];
-        
-        //not delete this ball
-        ans = 1+dp[(i+1)&1];
-
-        //delete if possible(i.e. if any previous occurence of same color is found)
-        if(mp[a[i]] != 1e9){
-            ans = min(ans,mp[a[i]]);
-        }
-        mp[a[i]] = min(dp[(i+1)&1],mp[a[i]]);
-   }
-
-   cout << n-dp[0] << ln;
-
-   // This second array mp is based on color of balls not index and this is a good and useful stragegy for optimizing, we store the best answer after deleting or adding the range
-   
-   
+    cin >> n;
+    FOR(i,n) cin >> a[i];
+    if(n == 1){
+        cout << "1\n" << a[0] << ln;
+        return;
+    }
+    for(int i = 0; i <= 100000; ++i)c[i] = 0;
+    cout << f() << ln;
+    for(int i= 1; i<= 100000; ++i){
+        if(c[i] > 0)cout << i << ' ';
+    }
+    cout << '\n';
 }
 
 signed main()
 {
     ShreyanshSinghGautam
-
+    
     int t = 1;
     testcase and cin >> t;
     // compFact();
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
+      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }
     return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -65,28 +65,18 @@ void solve()
    int1(n)
    vi a (n+1);
    FOR(i,n) cin >> a[i+1];
-   vi dp(n+1,0),right(n+1,0);
+   vi dp(n+1,0);
    for(int i = 1; i <= n; ++i){
       dp[i] = dp[i-1]+a[i];
     }
-    right[n] = a[n];
-    for(int i = n-1; i >=0;--i){
-        right[i] = right[i+1]+a[i];
+   int minn = *min_element(all(dp));
+   if(minn < 0){
+    dp[n] -= 2*minn;
    }
-   int ans = MIN;
-   for(int i = 1; i <= n; ++i){
-    ans = max(ans,abs(dp[i]) + right[i] - a[i]);
-   }
+
+   cout << dp[n] << ln;
    
-//    int cnt = 0;
-//    for(int i = 1; i <= n; ++i){
-//      if(abs(dp[i]) + right[i] - a[i] == ans)cnt++;
-//    }
-//    if(cnt == 1){
-//      cout << 1 << ln;
-//      return;
-//    }
-   cout << ans << ln;
+
 
 }
 

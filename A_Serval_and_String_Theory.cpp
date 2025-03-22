@@ -58,37 +58,43 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-
-void solve()
+bool solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
+   int k;cin >> k;
+   string s;
+   cin >> s;
+   if(n == 1)return 0;
 
-   vi dp(2), mp(n+1,1e9);
-   // dp[i] -> minimum number of balls left from [i...n]
-   // mp[a[i]] -> minimum number of balls will left if you delete the segment of balls from 
-   // [j...i] where j < i. If you will delete the segment [j...i] then mp[a[i]] 
-   // will be dp[i+1] because the segment got deleted so answer again becomes the same as the
-   // next ball to (i) i.e. (i+1)
 
-   for(int i = n-1; i >= 0; --i){
-        int &ans = dp[i&1];
-        
-        //not delete this ball
-        ans = 1+dp[(i+1)&1];
-
-        //delete if possible(i.e. if any previous occurence of same color is found)
-        if(mp[a[i]] != 1e9){
-            ans = min(ans,mp[a[i]]);
+   for (int i = 0; i < n / 2; i++) {
+    if (s[i] < s[n-1-i]) {
+        return 1; 
+    } else if (s[i] > s[n-1-i]) {
+        if (k >= 1) {
+            return 1; 
+        } else {
+            return 0;
         }
-        mp[a[i]] = min(dp[(i+1)&1],mp[a[i]]);
-   }
+    }
+    }
 
-   cout << n-dp[0] << ln;
+    bool ok = true;
+    for (int i = 1; i < n; i++) {
+        if (s[i] != s[0]) {
+            ok = false;
+            break;
+        }
+    }
+    
+    if (ok) {
+        return 0;
+    }
 
-   // This second array mp is based on color of balls not index and this is a good and useful stragegy for optimizing, we store the best answer after deleting or adding the range
-   
+    if (n >= 2 and k >= 1) {
+        return 1; 
+    }
+    return 0;
    
 }
 
@@ -102,8 +108,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

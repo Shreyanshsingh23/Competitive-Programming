@@ -56,59 +56,57 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-// int n, target;
-// int a[101];
-// int dp[101][1000000];
 
-// // f(i, x) -> returns the number of distint ordered ways you can produce a money sum X from
-// // coins [i....n-1]
-// int f(int i, int x)
+
+int dp[2][1000001];
+
+
+// // i ->  0...n
+// // rem -> k...0
+// int f(int i, int rem)
 // {
-//     //pruning
-
-//     //cache check
-//     if(dp[i][x] != -1)
-//     {
-//         return dp[i][x];
+//     if(i == n){
+//         return rem == 0;
 //     }
 
-//     //base case
-//     if(i == n)
-//     {
-//         if(x == 0)return 1;
-//         else return 0;
+//     int &ans = 0;
+//     //not take
+//     int ans1 = f(i+1,rem);
+
+//     // take if possible
+//     int ans2 = 0;
+//     if(rem-a[i] >= 0){
+//         ans2 = f(i,rem-a[i]);
 //     }
 
-
-//     //transitions
-
-//     int ans = 0;
-    
-//     if(x-a[i] >= 0)
-//     {
-//         ans += f(i,x-a[i]);
-//     }
-//     ans += f(i+1,x);
-
-//     return dp[i][x] = ans;
-// }
-
-// void solve()
-// {
-//     memset(dp,-1,sizeof(dp));
-//     cin >> n >> target;
-//     for(int i = 0; i < n; ++i){
-//         cin >> a[i];
-//     }
-//     cout << f(0,target);
+//     ans = ans1 + ans2;
+//     return ans;
 // }
 
 void solve(){
-    int n,x;
-    cin >> n >> x;
+    int n,k;
+    cin >> n >> k;
     vi a(n);
     cin >> a;
 
+    for(int i = n; i >= 0; --i){
+        for(int j = 0; j <= k; ++j){
+            int &ans = dp[i&1][j];
+            if(i == n){
+                ans = (j == 0);
+                continue;
+            }
+            int ans1 = dp[(i+1)&1][j];
+
+            int ans2 = 0;
+            if(j-a[i] >= 0){
+                ans2 = dp[i&1][j-a[i]];
+            }
+            ans = ans1+ans2;
+            ans %= MOD;
+        }
+    }
+    cout << dp[0][k] << ln;
     
 }
 

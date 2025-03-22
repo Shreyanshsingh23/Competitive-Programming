@@ -59,35 +59,94 @@ int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
 
+int calculateMex(vector<int>& a, int l, int r) {
+    set<int> elements;
+    for (int i = l; i <= r; i++) {
+        elements.insert(a[i]);
+    }
+    
+    int mex = 0;
+    while (elements.count(mex)) {
+        mex++;
+    }
+    return mex;
+}
+
 void solve()
 {
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-
-   vi dp(2), mp(n+1,1e9);
-   // dp[i] -> minimum number of balls left from [i...n]
-   // mp[a[i]] -> minimum number of balls will left if you delete the segment of balls from 
-   // [j...i] where j < i. If you will delete the segment [j...i] then mp[a[i]] 
-   // will be dp[i+1] because the segment got deleted so answer again becomes the same as the
-   // next ball to (i) i.e. (i+1)
-
-   for(int i = n-1; i >= 0; --i){
-        int &ans = dp[i&1];
-        
-        //not delete this ball
-        ans = 1+dp[(i+1)&1];
-
-        //delete if possible(i.e. if any previous occurence of same color is found)
-        if(mp[a[i]] != 1e9){
-            ans = min(ans,mp[a[i]]);
-        }
-        mp[a[i]] = min(dp[(i+1)&1],mp[a[i]]);
+   
+   int ff = calculateMex(a,0,n-1);
+   if(ff == 0){
+        cout << "1\n1 " << n << ln;
+        return;
    }
 
-   cout << n-dp[0] << ln;
+   mpii mp;
+   FOR(i,n)mp[a[i]]++;
+   if(sz(mp) == 1 and a[0] == 0){
+      cout << "3\n1 2\n3" << sz(a) << "\n1 2\n";
+      return;
+   }
+   v<pi> ops;
 
-   // This second array mp is based on color of balls not index and this is a good and useful stragegy for optimizing, we store the best answer after deleting or adding the range
+   if(a[0] == 0){
+     vi b;
+     
+     int s = n-1;
+        for(int i = 1; i < n; ++i){
+            if(a[i] != 0){
+                s = i;
+                break;
+            }
+        }
+        int val = calculateMex(a,0,s);
+        b.pb(val);
+        for(int i = s+1; i < n; ++i)b.pb(a[i]);
+        a = b;
+   }
+
+
+   while(sz(a) > 1){
+     vi b;
+     int l = -1;
+     for(int i = 1; i < sz(a);++i){
+        if(a[i] == 0){
+            l = i;
+            break;
+        }
+     }
+     if(l == -1){
+        ops.pb({1,sz(a)});
+        break;
+     }
+     if(l == sz(a)-1){
+        
+     }
+     int r = sz(a)-1;
+     for(int i = l+1; i < sz(a); ++i){
+        if(a[i] != 0){
+            r = i;
+            break;
+        }
+     }
+     FOR(i,l)b.pb(a[i]);
+
+     int val = calculateMex(a,l,r);
+     b.pb(val);
+
+     for(int i = r+1; i < sz(a); ++i)b.pb(a[i]);
+        a = b;
+        ops.pb({l+1,r+1});
+        debug(b)
+   }
+
+   cout << sz(ops) << ln;
+   for(auto& e : ops)cout << e.F << ' ' << e.S << ln;
+   cout << ln;
+    
    
    
 }
