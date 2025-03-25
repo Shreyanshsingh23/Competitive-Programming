@@ -58,46 +58,22 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-void solve()
+bool solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-
-   int zero=count(all(a),0);
-   if(zero==0){
-    cout<<1<<endl;
-    cout<<1<<" "<<n<<endl;
-    return;
-   }
-
-   if(a[0]!=0){
-    cout<<2<<endl;
-    cout<<2<<" "<<n<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   if(a[n-1]!=0){
-    cout<<2<<endl;
-    cout<<1<<" "<<n-1<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   int index=-1;
-   for(int i=0;i<n;i++){
-    if(a[i]!=0){
-        index=i;
-        break;
-    }
-   }
-
-   cout<<3<<endl;
-   cout<<1<<" "<<n-2<<endl;
-   cout<<2<<" "<<3<<endl;
-   cout<<1<<" "<<2<<endl;
-
+    int a,b,c,d;
+    cin >> a >> b >> c >> d;
+    vi vv;
+    vv.pb(a*a + c*c);
+    vv.pb(a*a + d*d);  
+    vv.pb(b*b + d*d);  
+    vv.pb(b*b + d*d);  
+    // debug(vv)
+    FOR(i,3)if(vv[i] != vv[i+1])return 0;
+    
+    int dia1=(b*b)+(a*a);
+    int dia2=(c*c)+(d*d);
+    if(dia1!=dia2) return 0;
+   return 1;
 }
 
 signed main()
@@ -110,8 +86,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "Yes": "No") << ln;
+        // solve();
     }
     return 0;
 }

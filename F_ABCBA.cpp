@@ -56,48 +56,32 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
-
+const bool testcase = 0;
+bool isPalindrome(string& s){
+    int l=0,r=s.size()-1;
+    while(r>l){
+        if(s[r--]!=s[l++]) return false;
+    }
+    
+    return true;
+}
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-
-   int zero=count(all(a),0);
-   if(zero==0){
-    cout<<1<<endl;
-    cout<<1<<" "<<n<<endl;
-    return;
-   }
-
-   if(a[0]!=0){
-    cout<<2<<endl;
-    cout<<2<<" "<<n<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   if(a[n-1]!=0){
-    cout<<2<<endl;
-    cout<<1<<" "<<n-1<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   int index=-1;
-   for(int i=0;i<n;i++){
-    if(a[i]!=0){
-        index=i;
-        break;
+   string s; cin>>s;
+    if(isPalindrome(s)){
+        cout<<s<<ln;
+        return;
     }
-   }
+    int count=1;
+    char ch=s[s.size()-1];
+    for(int i=s.size()-2;i>=0;i--){
+        if(s[i]==ch) count++;
+        else break;
+    }
 
-   cout<<3<<endl;
-   cout<<1<<" "<<n-2<<endl;
-   cout<<2<<" "<<3<<endl;
-   cout<<1<<" "<<2<<endl;
-
+    string temp=s.substr(0,s.size()-count);
+    reverse(all(temp));
+    cout<<s+temp<<endl;
 }
 
 signed main()

@@ -52,7 +52,7 @@ const int mod = 998244353;
 const int N = 200010;
 int fact [N] ;
 int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
+void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,mod);invFact[N-1] = modInv(fact[N-1],mod);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),mod);}
 int nCr(int n, int r){return fact[n]/(fact[r]*fact[n-r]);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
@@ -82,12 +82,12 @@ void solve()
         return;
     }
     int c = 0;
-    int ans = 0;
+    int ans = 1;
 
     int i = 0;
     while(i < n)
     {
-        int  cnt = 1;
+        int cnt = 1;
         int j = i+1;
         while(j < n and s[j] == s[i]){
             ++j;
@@ -95,11 +95,16 @@ void solve()
         }
         if(cnt > 1){
             c+= cnt-1;
-            ans += cnt*(cnt-1);
+            ans *= (cnt);
+            ans %= mod;
         }
-        
+
         i = j;
     }
+
+    ans *= fact[c];
+    ans %= mod;
+
     cout << c << ' ' << ans << ln;
 }
 

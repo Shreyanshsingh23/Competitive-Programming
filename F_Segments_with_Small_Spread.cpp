@@ -61,43 +61,22 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
+   int k; cin >> k;
    vi a (n);
    FOR(i,n) cin >> a[i];
-
-   int zero=count(all(a),0);
-   if(zero==0){
-    cout<<1<<endl;
-    cout<<1<<" "<<n<<endl;
-    return;
+   
+   int mxx = MIN, minn = MAX;
+   int  l = 0, ans = 0;
+   for(int r = 0; r < n; ++r){
+     minn = min(minn,a[r]);
+     mxx = max(mxx,a[r]);
+     if(mxx - minn <= k)ans += ((r-l)*(r-l+1))/2;
+     else {
+        while(a[l] != mxx or a[l] != minn)l++;
+        l++;
+     }
+     
    }
-
-   if(a[0]!=0){
-    cout<<2<<endl;
-    cout<<2<<" "<<n<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   if(a[n-1]!=0){
-    cout<<2<<endl;
-    cout<<1<<" "<<n-1<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   int index=-1;
-   for(int i=0;i<n;i++){
-    if(a[i]!=0){
-        index=i;
-        break;
-    }
-   }
-
-   cout<<3<<endl;
-   cout<<1<<" "<<n-2<<endl;
-   cout<<2<<" "<<3<<endl;
-   cout<<1<<" "<<2<<endl;
-
 }
 
 signed main()

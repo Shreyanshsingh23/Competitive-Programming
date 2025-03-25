@@ -56,48 +56,30 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
    int1(n)
+   int k;cin >> k;
+   mpii mp;
    vi a (n);
    FOR(i,n) cin >> a[i];
-
-   int zero=count(all(a),0);
-   if(zero==0){
-    cout<<1<<endl;
-    cout<<1<<" "<<n<<endl;
-    return;
+   int l = 0,cnt = 0, ans = 0;
+   
+   for(int r = 0; r < n; ++r){
+        mp[a[r]]++;
+        if(mp[a[r]] == 1)cnt++;
+        while(cnt > k){
+            mp[a[l]]--;
+            if(mp[a[l]] == 0)cnt--;
+            l++;
+        }
+        ans += r-l+1;
    }
 
-   if(a[0]!=0){
-    cout<<2<<endl;
-    cout<<2<<" "<<n<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   if(a[n-1]!=0){
-    cout<<2<<endl;
-    cout<<1<<" "<<n-1<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   int index=-1;
-   for(int i=0;i<n;i++){
-    if(a[i]!=0){
-        index=i;
-        break;
-    }
-   }
-
-   cout<<3<<endl;
-   cout<<1<<" "<<n-2<<endl;
-   cout<<2<<" "<<3<<endl;
-   cout<<1<<" "<<2<<endl;
-
+   cout << ans << ln;
+   
 }
 
 signed main()

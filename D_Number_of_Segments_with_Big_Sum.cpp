@@ -56,48 +56,28 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
    int1(n)
+   int k;cin >> k;
    vi a (n);
    FOR(i,n) cin >> a[i];
-
-   int zero=count(all(a),0);
-   if(zero==0){
-    cout<<1<<endl;
-    cout<<1<<" "<<n<<endl;
-    return;
+   
+   int ans = 0;
+   int r = 0,sum = 0;
+   for(int l = 0; l < n; ++l){
+        while(r < n and sum < k){
+            sum += a[r];
+            ++r;
+        }
+        if(sum >= k)ans += n-r+1;
+        sum -= a[l];
+        debug(l,r,sum,ans)
    }
 
-   if(a[0]!=0){
-    cout<<2<<endl;
-    cout<<2<<" "<<n<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   if(a[n-1]!=0){
-    cout<<2<<endl;
-    cout<<1<<" "<<n-1<<endl;
-    cout<<1<<" "<<2<<endl;
-    return;
-   }
-
-   int index=-1;
-   for(int i=0;i<n;i++){
-    if(a[i]!=0){
-        index=i;
-        break;
-    }
-   }
-
-   cout<<3<<endl;
-   cout<<1<<" "<<n-2<<endl;
-   cout<<2<<" "<<3<<endl;
-   cout<<1<<" "<<2<<endl;
-
+   cout << ans << ln;
 }
 
 signed main()
