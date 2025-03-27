@@ -56,7 +56,7 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
@@ -67,16 +67,28 @@ void solve()
    
    int mxx = MIN, minn = MAX;
    int  l = 0, ans = 0;
+    int lstmxx = -1, lstminn = -1;
    for(int r = 0; r < n; ++r){
      minn = min(minn,a[r]);
      mxx = max(mxx,a[r]);
-     if(mxx - minn <= k)ans += ((r-l)*(r-l+1))/2;
-     else {
-        while(a[l] != mxx or a[l] != minn)l++;
-        l++;
-     }
      
+        if(mxx-minn > k) { 
+            if(mxx > lstmxx){
+                while(l <= r and a[l] != minn)l++;
+            }
+            else{
+                while(l <= r and a[l] != mxx)l++;
+            }
+         l++;
+         minn = MAX, mxx = MIN;
+         for(int j = l; j <= r; ++j)minn = min(minn,a[j]), mxx = max(mxx,a[j]);
+        }
+        
+         if(mxx - minn <= k)ans += r-l+1;
+         lstmxx = mxx, lstminn = minn;
+         debug(l,r,mxx,minn,ans)
    }
+   cout << ans << ln;
 }
 
 signed main()

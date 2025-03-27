@@ -49,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 5010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,44 +58,38 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int n;
-int a[N],dp[N][N];
-vi p;
-
-int pref(int l, int r)
+bool check(vii& a, int i, int mid)
 {
-    if(l == 0)return p[r];
-    return p[r] - p[l-1];
+    int distance = abs(a[i][0]-a[mid][0])*abs(a[i][0]-a[mid][0]) + abs(a[i][1]-a[mid][1])*abs(a[i][1]-a[mid][1]);
+    return distance <= (a[i][2]*a[i][2]);
 }
 
-int f(int l, int r)
-{
-    if(l == r)return a[l];
-
-    int& ans = dp[l][r];
-    if(ans != -1)return ans;
-    
-    // take leftmost
-    int ans1 = a[l] + (pref(l+1,r) - f(l+1,r));
-    // if we take leftmost then a[l] will get added to our answer and when second player will play in the interval [l+1...r] then we will get pref(l+1,r) - (the score he will make out of the that interval) or we can say pref(l+1,r ) - the sum of elements he will select in that range
-
-    // take rightmost
-    int ans2 = a[r] + (pref(l,r-1) - f(l,r-1));
-
-    return ans = max(ans1,ans2);
-}
 
 void solve()
 {
-   cin >> n;
+   int1(n)
+   vii a (n,vi(3));
    FOR(i,n) cin >> a[i];
-   p.resize(n);
-   p[0] = a[0];
-   for(int i = 1; i < n; ++i){
-        p[i] = p[i-1] + a[i];
+   
+   int ans = 0;
+   FOR(i,n){
+     int l = i+1,r = n-1, mid, res = 0;
+     while(l <= r)
+     {
+        mid = (l+r) >> 1;
+        if(check(a,i,mid)){
+            ans = mid;
+            l = mid + 1;
+        }
+        else r = mid - 1;
+     }
+     if(res == 0){
+        ans += i;
+     }
+     else ans += res;
    }
-   memset(dp,-1,sizeof(dp));
-   cout << f(0,n-1) << ln;
+
+   cout << ans << ln;
 }
 
 signed main()

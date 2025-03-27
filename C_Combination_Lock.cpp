@@ -49,53 +49,45 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 5010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-int n;
-int a[N],dp[N][N];
-vi p;
-
-int pref(int l, int r)
-{
-    if(l == 0)return p[r];
-    return p[r] - p[l-1];
-}
-
-int f(int l, int r)
-{
-    if(l == r)return a[l];
-
-    int& ans = dp[l][r];
-    if(ans != -1)return ans;
-    
-    // take leftmost
-    int ans1 = a[l] + (pref(l+1,r) - f(l+1,r));
-    // if we take leftmost then a[l] will get added to our answer and when second player will play in the interval [l+1...r] then we will get pref(l+1,r) - (the score he will make out of the that interval) or we can say pref(l+1,r ) - the sum of elements he will select in that range
-
-    // take rightmost
-    int ans2 = a[r] + (pref(l,r-1) - f(l,r-1));
-
-    return ans = max(ans1,ans2);
-}
+const bool testcase = 1;
 
 void solve()
 {
-   cin >> n;
-   FOR(i,n) cin >> a[i];
-   p.resize(n);
-   p[0] = a[0];
-   for(int i = 1; i < n; ++i){
-        p[i] = p[i-1] + a[i];
+   int1(n)
+   vi a (n);
+   if(!(n&1)){
+    cout << -1 << ln;
+    return;
    }
-   memset(dp,-1,sizeof(dp));
-   cout << f(0,n-1) << ln;
+
+   mpii mp;
+   int cnt = 0;
+
+   FOR(i,n+1){
+        if(i == 0){
+            continue;
+        }
+        mp[i] = (i+cnt)%n;
+        cnt++;
+   }
+   
+   for(auto& [x,y]: mp){
+     if(y == 0){
+        a[n-1] = x;
+        continue;
+     }
+     a[y-1] = x;
+   }
+
+   cout << a << ln;
+   
 }
 
 signed main()

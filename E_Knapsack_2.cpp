@@ -13,7 +13,6 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
-#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -49,53 +48,70 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 5010;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
-void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+int n,W;
+vi a,b;
 
-int n;
-int a[N],dp[N][N];
-vi p;
+map<pair<int,string>,int> mp;
 
-int pref(int l, int r)
+int alreadyTaken(string& s)
 {
-    if(l == 0)return p[r];
-    return p[r] - p[l-1];
+    int m = sz(s);
+    int ans = 0;
+    int i = 0;
+    while(i < m)
+    {
+        string t = "";
+        while(i < m and s[i] != 'z'){
+            t += s[i];
+            ++i;
+        }
+        ++i;
+        int idx = 0;
+        FOR(j,sz(t)){
+            idx = idx*10 + (t[j]-'0');
+        }
+        ans += a[idx];
+    }
+    return ans;
 }
 
-int f(int l, int r)
-{
-    if(l == r)return a[l];
+// f(i,left) -> returns the maximum value you can get from item [i...n-1] if 'left' capacity is left in your bag
+int f(int i, string taken){
+    if(i == n)return 0;
 
-    int& ans = dp[l][r];
-    if(ans != -1)return ans;
+    if(mp[{i,taken}] > 0){
+        debug(mp[{i,taken}])
+        return mp[{i,taken}];
+    }
+
+    int ans = f(i+1,taken);
+    int already = alreadyTaken(taken);
     
-    // take leftmost
-    int ans1 = a[l] + (pref(l+1,r) - f(l+1,r));
-    // if we take leftmost then a[l] will get added to our answer and when second player will play in the interval [l+1...r] then we will get pref(l+1,r) - (the score he will make out of the that interval) or we can say pref(l+1,r ) - the sum of elements he will select in that range
-
-    // take rightmost
-    int ans2 = a[r] + (pref(l,r-1) - f(l,r-1));
-
-    return ans = max(ans1,ans2);
+    taken += to_string(i)+'z';
+    if(already + a[i] <= W){
+        ans = max(ans,b[i]+f(i+1,taken));
+    }
+    mp[{i,taken}] = ans;
+    return ans;
 }
 
 void solve()
 {
-   cin >> n;
-   FOR(i,n) cin >> a[i];
-   p.resize(n);
-   p[0] = a[0];
-   for(int i = 1; i < n; ++i){
-        p[i] = p[i-1] + a[i];
-   }
-   memset(dp,-1,sizeof(dp));
-   cout << f(0,n-1) << ln;
+   cin >> n >> W;
+   a.resize(n);
+   b.resize(n);
+   FOR(i,n)cin >> a[i] >> b[i];
+
+   cout << f(0,"") << ln;
+//    debug(mp)
+
 }
 
 signed main()
@@ -105,9 +121,8 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    for(int i = 1; i <= t; ++i)
+    while (t--)
     {
-      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }

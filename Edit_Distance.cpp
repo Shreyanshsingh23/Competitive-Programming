@@ -62,34 +62,53 @@ string a, b;
 int n,m;
 int dp[N][N];
 
-int f(int i, int j)
-{
-    if(i == n or j == m){
-        return 0;
-    }
+// i-> 0...n
+// j-> 0...m
+// int f(int i, int j)
+// {
+//     if(i == n or j == m){
+//         return 0;
+//     }
 
-    if(dp[i][j] != -1)return dp[i][j];
+//     if(dp[i][j] != -1)return dp[i][j];
 
-    //transitions
-    int ans = MAX;
-    if(a[i] == b[j])ans = min(ans,f(i+1,j+1));
-    else{
-        ans = min(ans,1 + f(i+1,j));
-        ans = min(ans,1 + f(i,j+1));
-        ans = min(ans,1 + f(i+1,j+1));
-    }
+//     //transitions
+//     int ans = MAX;
+//     if(a[i] == b[j])ans = min(ans,f(i+1,j+1));
+    
+//         ans = min(ans,1 + f(i+1,j));
+//         ans = min(ans,1 + f(i,j+1));
 
-    return dp[i][j] = ans;
-}
+
+//     return dp[i][j] = ans;
+// }
 
 void solve()
 {
    cin >> a >> b;
    n = a.size(), m = b.size();
-   FOR(i,max(n,m)+10)FOR(j,max(n,m)+10)dp[i][j] = -1;
   
-   cout << f(0,0) << ln;
-   
+   for(int i = n; i >= 0;--i)
+   {
+        for(int j = m; j >= 0;--j)
+        {
+            int& ans = dp[i][j];
+                if(i == n or j == m){
+                    ans = 0;
+                    continue;
+                }
+                int ans3 = MAX,ans1 = MAX, ans2 = MAX;
+                if(a[i] == b[j])ans3 = dp[i+1][j+1];
+                
+                ans1 = 1+dp[i+1][j];
+                ans2 = 1+dp[i][j+1];
+
+                ans = min({ans3,ans1,ans2});
+        }       
+   }
+   cout << dp[0][0] << ln;
+
+   FOR(i,n+1)FOR(j,m+1) debug(i,j,dp[i][j])
 }
 
 signed main()
