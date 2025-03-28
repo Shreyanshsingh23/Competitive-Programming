@@ -49,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200011;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -60,50 +60,31 @@ const bool testcase = 0;
 
 int n;
 vii a;
-int dp[N];
-
-int next(int i)
-{
-
-    int l = 0, r = n-1, mid, ans = n;
-
-    while(l <= r)
-    {
-        mid = (l+r) >> 1;
-        if(a[mid][0] > a[i][1]){
-            ans = mid;
-            r = mid - 1;
-        }
-        else l = mid + 1;
-    }
-    return ans;
-}
-
-int f(int i)
-{
-    if(i >= n)return 0;
-    
-    int& ans = dp[i];
-    if(dp[i] != -1)return ans;
-
-    // don't attend it
-    ans = f(i+1);
-    
-    // attend it
-    ans = max(ans,a[i][2] + f(next(i)));
-    
-    return ans;
-}
+vi parent;
 
 void solve()
 {
-    memset(dp,-1,sizeof(dp));
-    cin >> n;
-   a.resize(n,vi(3));
-   FOR(i,n) cin >> a[i];
-   sort(all(a));
+   cin >> n;
+   a.resize(n+1);
+   parent.resize(n+1);
+   FOR(i,n-1)
+   {
+        int u,v;
+        cin >> u >> v;
+        a[u].pb(v);
+        a[v].pb(u);
+   }
+
+   for(int i = 1; i <= n; ++i){
+       for(auto e : a[i]){
+         if(parent[e] == 0)parent[e] = i;
+       }
+   }
+   parent[1] = 0;
+
+   for(int j )
    
-   cout << f(0) << ln;
+   
 }
 
 signed main()

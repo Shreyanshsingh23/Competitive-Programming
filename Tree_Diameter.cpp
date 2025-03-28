@@ -49,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200011;
+const int N = 1000010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -60,50 +60,52 @@ const bool testcase = 0;
 
 int n;
 vii a;
-int dp[N];
+int ans = 1;
 
-int next(int i)
+int f(int node, int prev)
 {
-
-    int l = 0, r = n-1, mid, ans = n;
-
-    while(l <= r)
-    {
-        mid = (l+r) >> 1;
-        if(a[mid][0] > a[i][1]){
-            ans = mid;
-            r = mid - 1;
+    int res = 1;
+    priority_queue<int> pq;
+    for(auto e: a[node]){
+        if(e != prev){
+            int x = f(e,node);
+            pq.push(x);
+            res = max(res,1+x);
         }
-        else l = mid + 1;
     }
-    return ans;
-}
 
-int f(int i)
-{
-    if(i >= n)return 0;
-    
-    int& ans = dp[i];
-    if(dp[i] != -1)return ans;
+    if(pq.size() >= 2){
+        int c = pq.top();
+        pq.pop();
+        int d = pq.top();
+        ans = max(ans,d+c);
+        // debug(node,c,d)
+    }
+    else if(pq.size() == 1){
+        ans = max(ans,pq.top());
+        // debug(node,pq.top())
+    }
+    return res;
 
-    // don't attend it
-    ans = f(i+1);
-    
-    // attend it
-    ans = max(ans,a[i][2] + f(next(i)));
-    
-    return ans;
 }
 
 void solve()
 {
-    memset(dp,-1,sizeof(dp));
-    cin >> n;
-   a.resize(n,vi(3));
-   FOR(i,n) cin >> a[i];
-   sort(all(a));
-   
-   cout << f(0) << ln;
+   cin >> n;
+   a.resize(n);
+   FOR(i,n-1){
+     int u,v;
+     cin >> u >> v;
+     u--;v--;
+     a[u].pb(v);
+     a[v].pb(u);
+   }
+   if(n == 1){
+        cout << 0 << ln;
+        return;
+   }
+   int x = f(0,-1);
+   cout << ans << ln;
 }
 
 signed main()

@@ -49,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 200011;
+const int N = 200010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,52 +58,36 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int n;
-vii a;
-int dp[N];
+ int n;
+ vii a;
+ int dp[N];
 
-int next(int i)
-{
+int f(int node)
+{   
 
-    int l = 0, r = n-1, mid, ans = n;
-
-    while(l <= r)
-    {
-        mid = (l+r) >> 1;
-        if(a[mid][0] > a[i][1]){
-            ans = mid;
-            r = mid - 1;
-        }
-        else l = mid + 1;
+    int& res = dp[node];
+    if(res != -1)return res;
+    int temp = 0;
+    for(auto e: a[node]){
+        temp += 1+f(e);
     }
-    return ans;
+
+    return res = temp;
 }
 
-int f(int i)
-{
-    if(i >= n)return 0;
-    
-    int& ans = dp[i];
-    if(dp[i] != -1)return ans;
-
-    // don't attend it
-    ans = f(i+1);
-    
-    // attend it
-    ans = max(ans,a[i][2] + f(next(i)));
-    
-    return ans;
-}
 
 void solve()
 {
+   cin >> n;
+   a.resize(n+1);
     memset(dp,-1,sizeof(dp));
-    cin >> n;
-   a.resize(n,vi(3));
-   FOR(i,n) cin >> a[i];
-   sort(all(a));
+   FOR(i,n-1){
+     int x;cin >> x;
+     a[x].pb(i+2);
+   }
+   dp[1] = f(1);
+   for(int i = 1; i <= n; ++i)cout << dp[i] << ' ';
    
-   cout << f(0) << ln;
 }
 
 signed main()
