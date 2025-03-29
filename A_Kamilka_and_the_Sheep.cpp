@@ -61,17 +61,11 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
-        }
-    }
-    cout << ans << ln;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
 
+   sort(all(a));
+   cout << a[n-1]-a[0] << ln;
    
 }
 

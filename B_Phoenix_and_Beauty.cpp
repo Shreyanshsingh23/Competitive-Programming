@@ -61,18 +61,38 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
-        }
-    }
-    cout << ans << ln;
-
+   int k;cin >> k;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
+
+   vi b;
+
+    set<int> st;
+    for(auto e : a) {
+        if(st.count(e) == 0) {
+            b.push_back(e);
+        }
+        st.insert(e);
+    }
+
+    if(b.size() > k) {
+        cout << -1 << endl;
+        return;
+    }
+
+    while(b.size() < k) {
+        b.push_back(2);
+    }
+
+
+    int mx = 100;
+    cout << b.size() * mx << endl;
+    while(mx--) {
+        cout << b << ' ';
+    }
+
+    cout << ln;
 }
 
 signed main()

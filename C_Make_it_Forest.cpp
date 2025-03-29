@@ -56,25 +56,45 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-void solve()
-{
-   int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
+
+vii adj;
+vi vis;
+
+void dfs(int node) {
+    vis[node] = -1;
+    for (int e : adj[node]) {
+        if (vis[e] != -1) {
+            dfs(e);
         }
     }
-    cout << ans << ln;
-
-   
 }
 
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    adj.resize(n + 1);
+    vis.resize(n + 1, 0);
+
+    for (int i = 0; i < m; i++) {
+        int u, v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+    }
+
+    int c = 0;
+    for (int i = 1; i <= n; i++) {
+        if (vis[i] != -1) {
+            dfs(i);
+            c++;
+        }
+    }
+
+    int ans = m - (n - c);
+    cout << ans << ln;
+}
 signed main()
 {
     ShreyanshSinghGautam

@@ -61,18 +61,27 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
-        }
-    }
-    cout << ans << ln;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
 
+   int odd = 0;
+   for (int i = 0; i < n; i++) {
+       if (a[i]&1) {
+           odd++;
+       }
+   }
+   int even = n - odd;
    
+   if (odd == 0 or even == 0) {
+       cout << *max_element(all(a)) << ln;
+       return;
+   }
+   
+   int sum = 0;
+   for (int i = 0; i < n; i++) {
+       sum += a[i];
+   }
+   cout << sum-(odd-1) << ln;
 }
 
 signed main()

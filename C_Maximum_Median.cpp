@@ -56,23 +56,36 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
 void solve()
 {
    int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
-        }
-    }
-    cout << ans << ln;
+   int k; cin >> k;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   sort(all(a));
+   int mid = n/2;
+   int current = a[mid]; 
 
-   
+   for (int i = mid; i < n - 1; i++) {
+       int gap = (a[i + 1] - a[i]) * (i - mid + 1);
+       if (gap <= k) {
+           k -= gap;
+           current = a[i + 1];4
+       } else {
+           current += k / (i - mid + 1); 
+           k = 0;
+           break;
+       }
+   }
+
+   if (k > 0) {
+       current += k / (n - mid);
+   }
+
+   cout << current << ln;
+
 }
 
 signed main()

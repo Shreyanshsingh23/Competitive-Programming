@@ -66,9 +66,16 @@ int dp[N][N];
 // j-> 0...m
 // int f(int i, int j)
 // {
-//     if(i == n or j == m){
+//     if(i == n and j == m){
 //         return 0;
 //     }
+//     if(i == n){
+//         return m-j;
+//     }
+//     if(j == m){
+//         return n-i;
+//     }
+    
 
 //     if(dp[i][j] != -1)return dp[i][j];
 
@@ -78,6 +85,7 @@ int dp[N][N];
     
 //         ans = min(ans,1 + f(i+1,j));
 //         ans = min(ans,1 + f(i,j+1));
+//         ans = min(ans,1+f(i+1,j+1));
 
 
 //     return dp[i][j] = ans;
@@ -85,30 +93,42 @@ int dp[N][N];
 
 void solve()
 {
-   cin >> a >> b;
-   n = a.size(), m = b.size();
-  
+    cin >> a >> b;
+    n = a.size(), m = b.size();
+   
+    // cout << f(0,0) << ln;
+
+
    for(int i = n; i >= 0;--i)
    {
         for(int j = m; j >= 0;--j)
         {
             int& ans = dp[i][j];
-                if(i == n or j == m){
+                if(i == n and j == m){
                     ans = 0;
                     continue;
                 }
-                int ans3 = MAX,ans1 = MAX, ans2 = MAX;
-                if(a[i] == b[j])ans3 = dp[i+1][j+1];
-                
-                ans1 = 1+dp[i+1][j];
-                ans2 = 1+dp[i][j+1];
+                if(i == n){
+                    ans = m-j;
+                    continue;
+                }
+                if(j == m){
+                    ans = n-i;
+                    continue;
+                }
 
-                ans = min({ans3,ans1,ans2});
+                ans = dp[i+1][j]+1;
+                ans = min(ans,1+dp[i][j+1]);
+                ans = min(ans,1+dp[i+1][j+1]);
+
+                if(a[i] == b[j])ans = min(ans,dp[i+1][j+1]);
+
         }       
    }
    cout << dp[0][0] << ln;
 
-   FOR(i,n+1)FOR(j,m+1) debug(i,j,dp[i][j])
+//    FOR(i,n+1)FOR(j,m+1) debug(i,j,dp[i][j])
+
 }
 
 signed main()

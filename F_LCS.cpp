@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -53,70 +54,56 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+
 string a,b;
 int n,m;
+int dp[3010][3010];
+int f(int i, int j)
+{
+    if(i == n or j == m){
+        return 0;
+    }
+
+    int& ans = dp[i][j];
+    if(dp[i][j] != -1)return dp[i][j];
+
+    ans = f(i+1,j);
+    ans = max(ans,f(i,j+1));
+
+    if(a[i] == b[j]){
+        ans = max(ans,1+f(i+1,j+1));
+    }
+    return ans;
+}
+
+void print(int i, int j)
+{
+    if(i == n or j == m){
+        return;
+    }
+
+    int ans = f(i,j);
+
+    if(ans == 1+f(i+1,j+1)){
+        cout << a[i];
+        print(i+1,j+1);
+    }
+    else if(ans == f(i+1,j))
+    print(i+1,j);
+    else print(i,j+1);
+
+}
+
 void solve()
 {
    cin >> a >> b;
+   memset(dp,-1,sizeof(dp));
    n = sz(a), m = sz(b);
-   
-   map<char,int> sa, sb;
-    string ans = "";
-    int i = 0;
-    for(i = 0; i < min(n,m); ++i){
-        if(a[i] == b[i]){
-            ans += a[i];
-            continue;
-        }
-        if((sb.count(a[i]) and sb[a[i]] > 0) or (sa.count(b[i]) and sa[b[i]] > 0)
-        ){
-           if(sb.count(a[i]) and sb[a[i]] > 0){
-                ans += a[i];
-                sb[a[i]]--;
-                if(sb[a[i]] == 0)sb.erase(a[i]);
-           }
-            if (sa.count(b[i]) and sa[b[i]] > 0){
-                ans += b[i];
-                sa[b[i]]--;
-                if(sa[b[i]] == 0)sa.erase(b[i]);
-            }
-        }
-        // if(sa.count(b[i]) and sa[b[i]] > 0){
-        //     ans += b[i];
-        //     sa[b[i]]--;
-        //     if(sa[b[i]] == 0)sa.erase(b[i]);
-        // }
-        else{
-            sa[a[i]]++;
-            sb[b[i]]++;
-       }
-       if( i >= 10){
-       }
-    }
-
-    while(i < n){
-        if(sb.count(a[i]) and sb[a[i]] > 0){
-            ans += a[i];
-            sb[a[i]]--;
-            if(sb[a[i]] == 0)sb.erase(a[i]);
-            
-        }
-        ++i;
-    }
-    while(i < m){
-        if(sa.count(b[i]) and sa[b[i]] > 0){
-            ans += b[i];
-            sa[b[i]]--;
-            if(sa[b[i]] == 0)sa.erase(b[i]);
-        }
-        ++i;
-    }
-    
-    cout << ans << ln;
-
-
+   int mxx = f(0,0);
+    print(0,0);
 }
 
 signed main()
@@ -126,8 +113,9 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }

@@ -61,18 +61,28 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
+   vi a (2*n);
+   FOR(i,2*n) cin >> a[i];
+   
+    mpii mp;
+    FOR(i,2*n){
+        if(mp[a[i]] == -1){
+            mp[a[i]] = i;
+        }
+        else mp[a[i]] = -1;
+    }
+
+    int ans = 0;
+    FOR(i,2*n){
+        if((mp[a[i]] - i) > 1){
+            if(i+1 < 2*n){
+                if(abs(mp[a[i+1]] - mp[a[i]]) < 2 and abs(mp[a[i+1]]-(i+1)) > 1){ans++;
+                    // debug(i)
+                }
+            }
         }
     }
     cout << ans << ln;
-
-   
 }
 
 signed main()

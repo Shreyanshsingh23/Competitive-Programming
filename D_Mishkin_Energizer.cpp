@@ -61,18 +61,27 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
-        }
+   string s;cin >> s;
+   mpci mp;
+   FOR(i,n) mp[s[i]]++;
+   int br = 0;
+   for(int i = 0; i < n-1; ++i){
+    if(s[i] != s[i+1])br++;
+   }
+   if(sz(mp) == 1 or br < 2){
+     cout << -1 << ln;
+     return;
     }
-    cout << ans << ln;
+    if(mp['L'] == mp['T'] and mp['L'] == mp['I']){
+         cout << 0 << ln;
+         return;
+    }
 
-   
+   int mxx = MIN;
+   for(auto e:mp){
+      mxx = max(mxx,e.S);
+   }
+   debug(mxx)
 }
 
 signed main()

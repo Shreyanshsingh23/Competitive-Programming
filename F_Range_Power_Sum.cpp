@@ -56,23 +56,29 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-void solve()
-{
-   int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
-        }
+
+void solve() {
+    int N;
+    cin >> N;
+    vi A(N), prefix(N);
+    
+    for (int i = 0; i < N; i++) cin >> A[i];
+
+    int sum_squares = 0, prefix_square_sum = 0;
+    prefix[0] = A[0];
+
+    for (int i = 1; i < N; i++) {
+        prefix[i] = prefix[i - 1] + A[i];
     }
-    cout << ans << ln;
 
-   
+    for (int i = 0; i < N; i++) {
+        sum_squares += A[i] * A[i];
+        prefix_square_sum += prefix[i] * prefix[i];
+    }
+
+    cout << sum_squares + prefix_square_sum << "\n";
 }
 
 signed main()

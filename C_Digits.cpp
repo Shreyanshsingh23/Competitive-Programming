@@ -58,23 +58,17 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-void solve()
+const char *s = "31415926535897932384626433832795";
+
+int Answer(int n)
 {
-   int1(n)
-   string s;
-   cin >> s;
-    // debug(n)
-    int ans = n - 1;
-    for (int i = 1; i + 1 < n; ++i) {
-        if (s[i - 1] == s[i + 1]) {
-            ans--;
-        }
+    int ans = 1;
+    while(n--){
+        int x;cin >> x;
+        ans *= x;
     }
-    cout << ans << ln;
-
-   
+    return ans;
 }
-
 signed main()
 {
     ShreyanshSinghGautam
@@ -82,11 +76,10 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    for(int i = 1; i <= t; ++i)
+    for(int i = 0; i < t; ++i)
     {
-      //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+        int n = s[i] - '0';
+        cout << Answer(n) << ln;
     }
     return 0;
 }
