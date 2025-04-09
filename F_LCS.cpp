@@ -30,32 +30,6 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
 #define F first
-#define S second
-#define sett(n)          cout<<fixed<<setprecision(n)
-int log(int num , int base){int ans = 0; while(num){num /= base;ans++;} return ans;}//an extra
-int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
-int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
-int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans =
-poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
-bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n % 2 == 0 || n % 3 == 0) return false; for (int i = 5; i * i <= n; i = i + 6) if (n % i == 0 || n % (i + 2) == 0) return false; return true; }
-int modPow(int a, int b, int m) { int ans = 1; while (b) { if (b & 1) ans = (ans * a) % m; b /= 2; a = (a * a) % m; } return ans; }
-int modInv(int n, int m){return modPow(n, m - 2, m); }
-int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
-int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
-int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
-int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
-#define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
-typedef pair<int, int> pi;
-
-const int MOD = 1e9 + 7;
-const int mod = 998244353;
-const int N = 1000010;
-int fact [N] ;
-int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
-
-void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
-int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
 string a,b;
@@ -86,14 +60,13 @@ void print(int i, int j)
     }
 
     int ans = f(i,j);
-
-    if(ans == 1+f(i+1,j+1)){
+    
+    if(ans == f(i+1,j))print(i+1,j);
+    else if(ans == f(i,j+1))print(i,j+1);
+    else{
         cout << a[i];
         print(i+1,j+1);
     }
-    else if(ans == f(i+1,j))
-    print(i+1,j);
-    else print(i,j+1);
 
 }
 
@@ -102,7 +75,7 @@ void solve()
    cin >> a >> b;
    memset(dp,-1,sizeof(dp));
    n = sz(a), m = sz(b);
-   int mxx = f(0,0);
+    f(0,0);
     print(0,0);
 }
 

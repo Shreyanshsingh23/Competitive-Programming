@@ -57,88 +57,74 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
-int n,L = 0, I = 0, T = 0, cnt = 0;
-vi ops;string s;
 
-char get(char a, char b)
-{
-    if(a > b)swap(a,b);
-    if(a == 'I'){
-        if(b == 'L')return 'T';
-        return 'L';
+bool check(const vi& a, int k, int mid) {
+    int n = sz(a);
+    int cnt = 0;  
+    
+    v<bool> c(mid, false);
+    int missing = mid;  
+    
+    for (int i = 0; i < n; i++) {
+        if (a[i] < mid and !c[a[i]]) {
+            c[a[i]] = true;
+            missing--;
+        }
+        
+        if (missing == 0) {
+            cnt++;
+           for(auto e: c)e = false;
+            missing = mid;
+        }
     }
-    if(a == 'L'){
-        if(b == 'I')return 'T';
-        return 'I';
-    }
-    if(a == 'T'){
-        if(b == 'I')return 'L';
-        return 'I';
-    }
+    
+    return cnt >= k;
 }
-
-
-void performOperationHere(int i)
-{
-    char a = get(s[i],s[i+1]);
-    char b = get(s[i],a);
-
-    int f = i+1+cnt;
-    FOR(i,2*(max({L,T,I}))){
-        ops.pb(f);
-    }
-    cnt += 2*max({L,I,T});
-
-    L = 0, T = 0, I = 0;
-}
-void performLastOperation(int i)
-{
-    char a = get(s[i],s[i-1]);
-    char b = get(s[i],a);
-    FOR(j,2*max({L,I,T})){
-        ops.pb(i+j+cnt+1);
-    }
-    cnt += 2*max({L,I,T});
-    // L = 0, I = 0, T = 0, cnt = 0;
-}
-
 
 void solve()
 {
-   cin >> n >> s;
-   L = count(all(s),'L'), T = count(all(s),'T'), I = count(all(s),'I');
-   if(n == 1 or (L == n or I == n or T == n)){
-        cout << -1 << ln;
-        L = 0, T = 0, I = 0;
+   int1(n)
+   int k;cin >> k;
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+    
+    if (k == n) {
+        int ans = MAX;
+        for (int num : a) {
+            ans = min(ans, (num == 0) ? 1ll : 0ll);
+        }
+        cout<<  ans << ln;
         return;
-   }
-
-   L = 0, T = 0, I = 0;
-   ops = {};
-   cnt = 0;
-   FOR(i,n-1){
-        if(s[i] == 'L')L++;
-        else if(s[i] == 'I')I++;
-        else T++;
-        if(s[i] != s[i+1]){
-            performOperationHere(i);
+    }
+    
+    if (k == 1) {
+        set<int> st;
+        for (int num : a) {
+            st.insert(num);
         }
-   }
-
-   if(s.back() == 'L')L++;
-   else if(s.back() == 'T')T++;
-   else I++;
-
-   for(int i = n-1; i >= 0; --i){
-        if(s[i] != s[i-1]){
-            performLastOperation(i-1);
-            break;
+        
+        int mex = 0;
+        while (st.find(mex) != st.end()) {
+            mex++;
         }
-   }
-
-//    debug(s)
-   cout << cnt << ln;
-   for(auto e : ops)cout << e << ln;
+        cout << mex << ln;
+        return;
+    }
+    int l = 0, r = n + 1, mid, ans = 0;
+    
+    while (l <= r) {
+         mid = (l + r) >> 1;
+        
+        if (check(a,k,mid)) {
+            ans = mid;
+            l = mid + 1;
+        } 
+        else {
+            r = mid - 1;
+        }
+    }
+    
+    cout <<  ans << ln; 
 }
 
 signed main()

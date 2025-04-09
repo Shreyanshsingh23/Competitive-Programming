@@ -57,88 +57,59 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
-int n,L = 0, I = 0, T = 0, cnt = 0;
-vi ops;string s;
 
-char get(char a, char b)
-{
-    if(a > b)swap(a,b);
-    if(a == 'I'){
-        if(b == 'L')return 'T';
-        return 'L';
+int f(int x, int y, int sz, int b) {
+    if (sz == 2) {
+        if (x == 1 and y == 1) return b;
+        if (x == 2 and y == 2) return b + 1;
+        if (x == 2 and y == 1) return b + 2;
+        if (x == 1 and y == 2) return b + 3;
     }
-    if(a == 'L'){
-        if(b == 'I')return 'T';
-        return 'I';
-    }
-    if(a == 'T'){
-        if(b == 'I')return 'L';
-        return 'I';
-    }
+    int half = sz / 2;
+    int c = (sz * sz) / 4;
+
+    if (x <= half and y <= half) return f(x, y, half, b);
+    if (x > half and y > half) return f(x - half, y - half, half, b + c);
+    if (x > half and y <= half) return f(x - half, y, half, b + 2 * c);
+    return f(x, y - half, half, b + 3 * c);
 }
 
-
-void performOperationHere(int i)
-{
-    char a = get(s[i],s[i+1]);
-    char b = get(s[i],a);
-
-    int f = i+1+cnt;
-    FOR(i,2*(max({L,T,I}))){
-        ops.pb(f);
+pi g(int d, int sz, int b, int x0, int y0) {
+    if (sz == 2) {
+        int x = d - b;
+        if (x == 0) return {x0 + 0, y0 + 0};
+        if (x == 1) return {x0 + 1, y0 + 1};
+        if (x == 2) return {x0 + 1, y0 + 0};
+        return {x0 + 0, y0 + 1};
     }
-    cnt += 2*max({L,I,T});
+    int half = sz / 2;
+    int c = (sz * sz) / 4;
 
-    L = 0, T = 0, I = 0;
+    if (d < b + c) return g(d, half, b, x0, y0);
+    if (d < b + 2 * c) return g(d, half, b + c, x0 + half, y0 + half);
+    if (d < b + 3 * c) return g(d, half, b + 2 * c, x0 + half, y0);
+    return g(d, half, b + 3 * c, x0, y0 + half);
 }
-void performLastOperation(int i)
-{
-    char a = get(s[i],s[i-1]);
-    char b = get(s[i],a);
-    FOR(j,2*max({L,I,T})){
-        ops.pb(i+j+cnt+1);
-    }
-    cnt += 2*max({L,I,T});
-    // L = 0, I = 0, T = 0, cnt = 0;
-}
-
-
 void solve()
 {
-   cin >> n >> s;
-   L = count(all(s),'L'), T = count(all(s),'T'), I = count(all(s),'I');
-   if(n == 1 or (L == n or I == n or T == n)){
-        cout << -1 << ln;
-        L = 0, T = 0, I = 0;
-        return;
-   }
-
-   L = 0, T = 0, I = 0;
-   ops = {};
-   cnt = 0;
-   FOR(i,n-1){
-        if(s[i] == 'L')L++;
-        else if(s[i] == 'I')I++;
-        else T++;
-        if(s[i] != s[i+1]){
-            performOperationHere(i);
+   int1(n)
+   int size = (1LL << n);
+    int q;cin >> q;
+        while (q--) {
+            string t;
+            cin >> t;
+            if (t == "->") {
+                int x, y;
+                cin >> x >> y;
+                cout << f(x, y, size, 1) << ln;
+            } else if (t == "<-") {
+                int d;
+                cin >> d;
+                auto [x, y] = g(d, size, 1, 0, 0);
+                cout << x+1 << " " << y+1 << ln;
+            }
         }
-   }
-
-   if(s.back() == 'L')L++;
-   else if(s.back() == 'T')T++;
-   else I++;
-
-   for(int i = n-1; i >= 0; --i){
-        if(s[i] != s[i-1]){
-            performLastOperation(i-1);
-            break;
-        }
-   }
-
-//    debug(s)
-   cout << cnt << ln;
-   for(auto e : ops)cout << e << ln;
+   
 }
 
 signed main()

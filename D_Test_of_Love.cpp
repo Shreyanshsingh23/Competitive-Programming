@@ -57,88 +57,46 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
-int n,L = 0, I = 0, T = 0, cnt = 0;
-vi ops;string s;
 
-char get(char a, char b)
+bool solve()
 {
-    if(a > b)swap(a,b);
-    if(a == 'I'){
-        if(b == 'L')return 'T';
-        return 'L';
-    }
-    if(a == 'L'){
-        if(b == 'I')return 'T';
-        return 'I';
-    }
-    if(a == 'T'){
-        if(b == 'I')return 'L';
-        return 'I';
-    }
-}
-
-
-void performOperationHere(int i)
-{
-    char a = get(s[i],s[i+1]);
-    char b = get(s[i],a);
-
-    int f = i+1+cnt;
-    FOR(i,2*(max({L,T,I}))){
-        ops.pb(f);
-    }
-    cnt += 2*max({L,I,T});
-
-    L = 0, T = 0, I = 0;
-}
-void performLastOperation(int i)
-{
-    char a = get(s[i],s[i-1]);
-    char b = get(s[i],a);
-    FOR(j,2*max({L,I,T})){
-        ops.pb(i+j+cnt+1);
-    }
-    cnt += 2*max({L,I,T});
-    // L = 0, I = 0, T = 0, cnt = 0;
-}
-
-
-void solve()
-{
-   cin >> n >> s;
-   L = count(all(s),'L'), T = count(all(s),'T'), I = count(all(s),'I');
-   if(n == 1 or (L == n or I == n or T == n)){
-        cout << -1 << ln;
-        L = 0, T = 0, I = 0;
-        return;
+   int n,m,k;
+   string s;
+   cin >> n >> m >> k >> s;
+   string ns = "L";
+   if(m > n)return 1;
+   ns += s;
+   s = ns;
+   n++;
+   vi logs,water;
+   FOR(i,n){
+        if(s[i] == 'L')logs.pb(i);
+        if(s[i] == 'W')water.pb(i);
    }
-
-   L = 0, T = 0, I = 0;
-   ops = {};
-   cnt = 0;
-   FOR(i,n-1){
-        if(s[i] == 'L')L++;
-        else if(s[i] == 'I')I++;
-        else T++;
-        if(s[i] != s[i+1]){
-            performOperationHere(i);
+   logs.pb(n+1);
+   int cur = 0;
+   while(cur < n)
+   {
+        if(s[cur] == 'W'){
+            if(k == 0)return 0;
+            cur++;
+            k--;
+        }
+        else if(s[cur] == 'C')return 0;
+        else{
+            // log
+            if(cur+m >= n)return 1;
+            int nextLog = -1, nextWater = -1;
+            for(int i = cur+1; i < min(n,cur+m+1); ++i){
+                if(s[i] == 'L')nextLog = i;
+                if(s[i] == 'W')nextWater = i;
+            }
+            if(nextLog != -1)cur = nextLog;
+            else if(nextWater != -1)cur = nextWater;
+            else return 0;
         }
    }
-
-   if(s.back() == 'L')L++;
-   else if(s.back() == 'T')T++;
-   else I++;
-
-   for(int i = n-1; i >= 0; --i){
-        if(s[i] != s[i-1]){
-            performLastOperation(i-1);
-            break;
-        }
-   }
-
-//    debug(s)
-   cout << cnt << ln;
-   for(auto e : ops)cout << e << ln;
+   return 1;
 }
 
 signed main()
@@ -151,8 +109,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

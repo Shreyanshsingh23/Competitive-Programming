@@ -32,113 +32,13 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define F first
 #define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
-int log(int num , int base){int ans = 0; while(num){num /= base;ans++;} return ans;}//an extra
-int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
-int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
-int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans =
-poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
-bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n % 2 == 0 || n % 3 == 0) return false; for (int i = 5; i * i <= n; i = i + 6) if (n % i == 0 || n % (i + 2) == 0) return false; return true; }
-int modPow(int a, int b, int m) { int ans = 1; while (b) { if (b & 1) ans = (ans * a) % m; b /= 2; a = (a * a) % m; } return ans; }
-int modInv(int n, int m){return modPow(n, m - 2, m); }
-int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
-int modDiv(int a, int b, int m){return modMul(a, modInv(b, m), m)%m;}
-int modAdd(int a, int b, int m){return (a % m + b % m) % m;}
-int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
-#define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
-typedef pair<int, int> pi;
 
-const int MOD = 1e9 + 7;
-const int mod = 998244353;
-const int N = 1000010;
-int fact [N] ;
-int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
-
-void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
-int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
-int n,L = 0, I = 0, T = 0, cnt = 0;
-vi ops;string s;
-
-char get(char a, char b)
-{
-    if(a > b)swap(a,b);
-    if(a == 'I'){
-        if(b == 'L')return 'T';
-        return 'L';
-    }
-    if(a == 'L'){
-        if(b == 'I')return 'T';
-        return 'I';
-    }
-    if(a == 'T'){
-        if(b == 'I')return 'L';
-        return 'I';
-    }
-}
-
-
-void performOperationHere(int i)
-{
-    char a = get(s[i],s[i+1]);
-    char b = get(s[i],a);
-
-    int f = i+1+cnt;
-    FOR(i,2*(max({L,T,I}))){
-        ops.pb(f);
-    }
-    cnt += 2*max({L,I,T});
-
-    L = 0, T = 0, I = 0;
-}
-void performLastOperation(int i)
-{
-    char a = get(s[i],s[i-1]);
-    char b = get(s[i],a);
-    FOR(j,2*max({L,I,T})){
-        ops.pb(i+j+cnt+1);
-    }
-    cnt += 2*max({L,I,T});
-    // L = 0, I = 0, T = 0, cnt = 0;
-}
-
+const bool testcase = 0;
 
 void solve()
 {
-   cin >> n >> s;
-   L = count(all(s),'L'), T = count(all(s),'T'), I = count(all(s),'I');
-   if(n == 1 or (L == n or I == n or T == n)){
-        cout << -1 << ln;
-        L = 0, T = 0, I = 0;
-        return;
-   }
-
-   L = 0, T = 0, I = 0;
-   ops = {};
-   cnt = 0;
-   FOR(i,n-1){
-        if(s[i] == 'L')L++;
-        else if(s[i] == 'I')I++;
-        else T++;
-        if(s[i] != s[i+1]){
-            performOperationHere(i);
-        }
-   }
-
-   if(s.back() == 'L')L++;
-   else if(s.back() == 'T')T++;
-   else I++;
-
-   for(int i = n-1; i >= 0; --i){
-        if(s[i] != s[i-1]){
-            performLastOperation(i-1);
-            break;
-        }
-   }
-
-//    debug(s)
-   cout << cnt << ln;
-   for(auto e : ops)cout << e << ln;
+   cout << "yes" << ln;
+   
 }
 
 signed main()

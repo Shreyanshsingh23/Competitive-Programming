@@ -57,88 +57,40 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
-int n,L = 0, I = 0, T = 0, cnt = 0;
-vi ops;string s;
 
-char get(char a, char b)
-{
-    if(a > b)swap(a,b);
-    if(a == 'I'){
-        if(b == 'L')return 'T';
-        return 'L';
-    }
-    if(a == 'L'){
-        if(b == 'I')return 'T';
-        return 'I';
-    }
-    if(a == 'T'){
-        if(b == 'I')return 'L';
-        return 'I';
-    }
-}
+/*
+
+    Idea is that if any subsequence comes which starts from 1 like 1.....0 and ends with 0 then we can delete every character from that subsequence except one character and we will prefer to leave 0 because it's smaller than 1
+    so answer will be
+     s.substr(0,i) + '0' + s.substr(j) 
+      s.substr(0,i) -> this part will remain because before 1st 1, we cannot delete any 0
+      s.substr(j) -> this part will remain because after last 0, we cannot delete any 1
+
+    0001111111
+    and if this type of string comes then we cannot delete anything
 
 
-void performOperationHere(int i)
-{
-    char a = get(s[i],s[i+1]);
-    char b = get(s[i],a);
+    OR we can say
+    If the string s is non-decreasing, then the answer is s itself, otherwise the answer is x+1 zeroes and y ones, where x is the number of leading zeroes of the string s
+    , and y is the number of trailing ones of the string s.
 
-    int f = i+1+cnt;
-    FOR(i,2*(max({L,T,I}))){
-        ops.pb(f);
-    }
-    cnt += 2*max({L,I,T});
-
-    L = 0, T = 0, I = 0;
-}
-void performLastOperation(int i)
-{
-    char a = get(s[i],s[i-1]);
-    char b = get(s[i],a);
-    FOR(j,2*max({L,I,T})){
-        ops.pb(i+j+cnt+1);
-    }
-    cnt += 2*max({L,I,T});
-    // L = 0, I = 0, T = 0, cnt = 0;
-}
-
-
+*/
 void solve()
 {
+   int n;
+   string s;
    cin >> n >> s;
-   L = count(all(s),'L'), T = count(all(s),'T'), I = count(all(s),'I');
-   if(n == 1 or (L == n or I == n or T == n)){
-        cout << -1 << ln;
-        L = 0, T = 0, I = 0;
-        return;
+   int i = 0, j = n;
+   while(i < n and s[i] == '0')++i;
+   while(j > 0 and s[j-1] == '1')--j;
+
+   if(i == j){
+     // this means string was of type 00001111
+     cout << s << ln;
    }
-
-   L = 0, T = 0, I = 0;
-   ops = {};
-   cnt = 0;
-   FOR(i,n-1){
-        if(s[i] == 'L')L++;
-        else if(s[i] == 'I')I++;
-        else T++;
-        if(s[i] != s[i+1]){
-            performOperationHere(i);
-        }
+   else{
+     cout << s.substr(0,i) + '0' + s.substr(j) << ln;
    }
-
-   if(s.back() == 'L')L++;
-   else if(s.back() == 'T')T++;
-   else I++;
-
-   for(int i = n-1; i >= 0; --i){
-        if(s[i] != s[i-1]){
-            performLastOperation(i-1);
-            break;
-        }
-   }
-
-//    debug(s)
-   cout << cnt << ln;
-   for(auto e : ops)cout << e << ln;
 }
 
 signed main()

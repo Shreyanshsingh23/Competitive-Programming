@@ -57,88 +57,82 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
-int n,L = 0, I = 0, T = 0, cnt = 0;
-vi ops;string s;
-
-char get(char a, char b)
-{
-    if(a > b)swap(a,b);
-    if(a == 'I'){
-        if(b == 'L')return 'T';
-        return 'L';
-    }
-    if(a == 'L'){
-        if(b == 'I')return 'T';
-        return 'I';
-    }
-    if(a == 'T'){
-        if(b == 'I')return 'L';
-        return 'I';
-    }
-}
 
 
-void performOperationHere(int i)
-{
-    char a = get(s[i],s[i+1]);
-    char b = get(s[i],a);
+void solve() {
+    int n;
+    cin >> n;
+    vi a(n), b(n);
+    cin >> a >> b;
 
-    int f = i+1+cnt;
-    FOR(i,2*(max({L,T,I}))){
-        ops.pb(f);
-    }
-    cnt += 2*max({L,I,T});
-
-    L = 0, T = 0, I = 0;
-}
-void performLastOperation(int i)
-{
-    char a = get(s[i],s[i-1]);
-    char b = get(s[i],a);
-    FOR(j,2*max({L,I,T})){
-        ops.pb(i+j+cnt+1);
-    }
-    cnt += 2*max({L,I,T});
-    // L = 0, I = 0, T = 0, cnt = 0;
-}
-
-
-void solve()
-{
-   cin >> n >> s;
-   L = count(all(s),'L'), T = count(all(s),'T'), I = count(all(s),'I');
-   if(n == 1 or (L == n or I == n or T == n)){
-        cout << -1 << ln;
-        L = 0, T = 0, I = 0;
-        return;
-   }
-
-   L = 0, T = 0, I = 0;
-   ops = {};
-   cnt = 0;
-   FOR(i,n-1){
-        if(s[i] == 'L')L++;
-        else if(s[i] == 'I')I++;
-        else T++;
-        if(s[i] != s[i+1]){
-            performOperationHere(i);
+    bool ok = true;
+    int cnt = 0;
+    int sameIdx = -1;
+    FOR(i,n){
+        if(a[i] == b[i]){
+            cnt++;
+            sameIdx = i;
         }
-   }
-
-   if(s.back() == 'L')L++;
-   else if(s.back() == 'T')T++;
-   else I++;
-
-   for(int i = n-1; i >= 0; --i){
-        if(s[i] != s[i-1]){
-            performLastOperation(i-1);
+    }
+    if((!(n&1) and sameIdx>0) or (n&1 and sameIdx>1)){
+        ok = false;
+    }
+    if(n == 1){
+        cout << 0 << ln;
+        return;
+    }
+    v<pi> ops;
+    map<int,pi> mp;
+    FOR(i,n){
+        mp[a[i]].F = i;
+        mp[b[i]].S = i;
+    }
+    
+    for(auto& [x,y]: mp){
+        auto [c,d] = mp[b[y.F]];
+        if(y.F != d or y.S != c){
+            ok = false;
             break;
         }
-   }
+    }
 
-//    debug(s)
-   cout << cnt << ln;
-   for(auto e : ops)cout << e << ln;
+    if(!ok){
+        cout << -1 << ln;
+        return;
+    }
+
+    if(cnt == 1){
+        if(sameIdx != n/2){
+            ops.pb({sameIdx+1,n/2+1});
+            mp[a[n/2]].F = sameIdx;
+            mp[b[n/2]].S = sameIdx;
+        }
+    }
+
+    set<pi> st;
+    for(auto& [x,y]: mp)
+    {
+       int f = y.F;
+       int s = n-1-f;
+       int d = y.S;
+       if(d != s){
+         ops.pb({s+1,d+1});
+         swap(a[d],a[s]);
+         swap(b[d],b[s]);
+         mp[a[d]].F = d;
+         mp[a[s]].F = s;
+         mp[b[d]].S = d;
+         mp[b[s]].S = s;
+       }
+    }
+    
+
+    cout << sz(ops) << ln;
+    for(auto& e : ops){
+        cout << e << ln;
+    }
+    
+
 }
 
 signed main()

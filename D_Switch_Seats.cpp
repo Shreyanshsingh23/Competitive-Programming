@@ -47,12 +47,6 @@ int modSub(int a, int b, int m){return ((a % m) - (b % m) + m) % m;}
 #define deb(...)  __f (#__VA_ARGS__, __VA_ARGS__)
 typedef pair<int, int> pi;
 
-const int MOD = 1e9 + 7;
-const int mod = 998244353;
-const int N = 1000010;
-int fact [N] ;
-int invFact[N] ;
-void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
@@ -60,29 +54,27 @@ const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
-   vi a (2*n);
-   FOR(i,2*n) cin >> a[i];
+   int1(N)
+   vi A (2*N);
+   FOR(i,2*N) cin >> A[i];
    
-    mpii mp;
-    FOR(i,2*n){
-        if(mp[a[i]] == -1){
-            mp[a[i]] = i;
-        }
-        else mp[a[i]] = -1;
-    }
-
-    int ans = 0;
-    FOR(i,2*n){
-        if((mp[a[i]] - i) > 1){
-            if(i+1 < 2*n){
-                if(abs(mp[a[i+1]] - mp[a[i]]) < 2 and abs(mp[a[i+1]]-(i+1)) > 1){ans++;
-                    // debug(i)
-                }
-            }
-        }
-    }
-    cout << ans << ln;
+   vector<vector<int>> position(N + 1);
+   for (int i = 0; i < 2 * N; i++) position[A[i]].push_back(i);
+   debug(position)
+   set<pair<int, int>> answers;
+   for (int i = 0; i + 1 < 2 * N; i++) {
+     int a = A[i], b = A[i + 1];
+     debug(i,a,b)
+     if (position[a][0] + 1 == position[a][1]) continue;
+     if (position[b][0] + 1 == position[b][1]) continue;
+     vector<int> v{position[a][0], position[a][1], position[b][0],
+                   position[b][1]};
+     sort(begin(v), end(v));
+     if (v[0] + 1 == v[1] and v[2] + 1 == v[3]) {
+       answers.emplace(minmax(a, b));
+     }
+   }
+   cout << answers.size() << "\n";
 }
 
 signed main()
