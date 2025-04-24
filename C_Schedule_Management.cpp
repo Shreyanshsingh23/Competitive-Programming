@@ -49,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 200010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,74 +58,59 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-bool check(const vi& a, int k, int mid) {
-    int n = sz(a);
-    int cnt = 0;  
-    
-    v<bool> c(mid, false);
-    int missing = mid;  
-    
-    for (int i = 0; i < n; i++) {
-        if (a[i] < mid and !c[a[i]]) {
-            c[a[i]] = true;
-            missing--;
-        }
-        
-        if (missing == 0) {
-            cnt++;
-            if(cnt == k)return 1;
-           for(auto e: c)e = false;
-            missing = mid;
+int n,m;
+int a[N];
+int b[N];
+
+bool check(int mid)
+{
+    FOR(i,n)b[i] = 0;
+
+    FOR(i,m)
+    {
+        b[a[i]-1] ++;
+    }
+
+    set<int> st;
+    FOR(i,n)
+    {
+        if(b[i]+2 <= mid)st.insert(i);
+    }
+    // debug(mid,st)
+
+    FOR(i,n)
+    {
+        while(b[i] > mid)
+        {
+            if(st.empty())return 0;
+            auto e = *st.begin();
+            b[e] += 2;
+            b[i]--;
+            if(b[e]+2 > mid)st.erase(e);
         }
     }
-    
-    return 0;
+    return 1;
 }
 
 void solve()
 {
-   int1(n)
-   int k;cin >> k;
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-    
-    if (k == n) {
-        int ans = MAX;
-        for (int num : a) {
-            ans = min(ans, (num == 0) ? 1ll : 0ll);
-        }
-        cout<<  ans << ln;
-        return;
-    }
-    
-    if (k == 1) {
-        set<int> st;
-        for (int num : a) {
-            st.insert(num);
-        }
-        
-        int mex = 0;
-        while (st.find(mex) != st.end()) {
-            mex++;
-        }
-        cout << mex << ln;
-        return;
-    }
-    int l = 0, r = n + 1, mid, ans = 0;
-    
-    while (l <= r) {
-         mid = (l + r) >> 1;
-        
-        if (check(a,k,mid)) {
+    cin >> n >> m;
+    FOR(i,m)cin >> a[i];
+
+    int l = 1, r = 1e9, mid, ans = 0;
+
+    while(l <= r)
+    {
+        mid = (l+r) >> 1;
+        if(check(mid))
+        {
             ans = mid;
-            l = mid + 1;
-        } 
-        else {
             r = mid - 1;
         }
+        else l = mid + 1;
     }
     
-    cout <<  ans << ln; 
+    cout << ans << ln;
 }
 
 signed main()

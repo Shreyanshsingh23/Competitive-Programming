@@ -58,74 +58,50 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-bool check(const vi& a, int k, int mid) {
-    int n = sz(a);
-    int cnt = 0;  
-    
-    v<bool> c(mid, false);
-    int missing = mid;  
-    
-    for (int i = 0; i < n; i++) {
-        if (a[i] < mid and !c[a[i]]) {
-            c[a[i]] = true;
-            missing--;
-        }
-        
-        if (missing == 0) {
-            cnt++;
-            if(cnt == k)return 1;
-           for(auto e: c)e = false;
-            missing = mid;
-        }
+int count(string& s)
+{
+    int cnt = 0;
+    int i = sz(s)-1;
+    while(i >= 0 and s[i] == '0')
+    {
+        cnt++;
+        --i;
     }
-    
-    return 0;
+    return cnt;
 }
 
-void solve()
+bool solve()
 {
    int1(n)
-   int k;cin >> k;
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-    
-    if (k == n) {
-        int ans = MAX;
-        for (int num : a) {
-            ans = min(ans, (num == 0) ? 1ll : 0ll);
-        }
-        cout<<  ans << ln;
-        return;
-    }
-    
-    if (k == 1) {
-        set<int> st;
-        for (int num : a) {
-            st.insert(num);
-        }
-        
-        int mex = 0;
-        while (st.find(mex) != st.end()) {
-            mex++;
-        }
-        cout << mex << ln;
-        return;
-    }
-    int l = 0, r = n + 1, mid, ans = 0;
-    
-    while (l <= r) {
-         mid = (l + r) >> 1;
-        
-        if (check(a,k,mid)) {
-            ans = mid;
-            l = mid + 1;
-        } 
-        else {
-            r = mid - 1;
-        }
-    }
-    
-    cout <<  ans << ln; 
+   int m;cin >> m;
+   int total = 0;
+   v<string> a (n);
+   FOR(i,n)
+   {
+        cin >> a[i];
+        total += sz(a[i]);
+   } 
+   
+   vi b;
+   FOR(i,n)
+   {
+       int z = count(a[i]);
+       if(z)b.pb(z);
+   }
+   
+   int removal = 0;
+   sort(all(b),greater<int>());
+   int cnt = 0;
+   FOR(i,sz(b))
+   {
+        if(!(i&1))
+        {
+            removal += b[i];
+        }else cnt++;
+   }
+   total -= removal;
+   return(total >= m+1);
+
 }
 
 signed main()
@@ -138,8 +114,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "Sasha": "Anna") << ln;
+        // solve();
     }
     return 0;
 }

@@ -58,74 +58,33 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-bool check(const vi& a, int k, int mid) {
-    int n = sz(a);
-    int cnt = 0;  
-    
-    v<bool> c(mid, false);
-    int missing = mid;  
-    
-    for (int i = 0; i < n; i++) {
-        if (a[i] < mid and !c[a[i]]) {
-            c[a[i]] = true;
-            missing--;
-        }
-        
-        if (missing == 0) {
-            cnt++;
-            if(cnt == k)return 1;
-           for(auto e: c)e = false;
-            missing = mid;
-        }
-    }
-    
-    return 0;
-}
-
 void solve()
 {
    int1(n)
-   int k;cin >> k;
    vi a (n);
    FOR(i,n) cin >> a[i];
-    
-    if (k == n) {
-        int ans = MAX;
-        for (int num : a) {
-            ans = min(ans, (num == 0) ? 1ll : 0ll);
+   int odd = 0, even = 0;
+   int sum = accumulate(all(a),0ll);
+   FOR(i,n){
+    if(i&1)odd += a[i];
+    else even += a[i];
+   }
+   vi ans(n,1);
+   if(odd <= sum/2){
+     FOR(i,n){
+        if(!(i&1)){
+            ans[i] = a[i];
         }
-        cout<<  ans << ln;
-        return;
-    }
-    
-    if (k == 1) {
-        set<int> st;
-        for (int num : a) {
-            st.insert(num);
+     }
+   }else{
+    FOR(i,n){
+        if(i&1){
+            ans[i] = a[i];
         }
-        
-        int mex = 0;
-        while (st.find(mex) != st.end()) {
-            mex++;
-        }
-        cout << mex << ln;
-        return;
-    }
-    int l = 0, r = n + 1, mid, ans = 0;
-    
-    while (l <= r) {
-         mid = (l + r) >> 1;
-        
-        if (check(a,k,mid)) {
-            ans = mid;
-            l = mid + 1;
-        } 
-        else {
-            r = mid - 1;
-        }
-    }
-    
-    cout <<  ans << ln; 
+     }
+   }
+
+   cout << ans << ln;
 }
 
 signed main()

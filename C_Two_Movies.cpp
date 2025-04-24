@@ -26,7 +26,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
-#define pb push_back
+// #define pb push_back
 #define FOR(i, n) for (int i = 0; i < n; i++)
 #define FORa(i, a, n) for (int i = a; i < n; i++)
 #define F first
@@ -58,74 +58,49 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-bool check(const vi& a, int k, int mid) {
-    int n = sz(a);
-    int cnt = 0;  
-    
-    v<bool> c(mid, false);
-    int missing = mid;  
-    
-    for (int i = 0; i < n; i++) {
-        if (a[i] < mid and !c[a[i]]) {
-            c[a[i]] = true;
-            missing--;
-        }
-        
-        if (missing == 0) {
-            cnt++;
-            if(cnt == k)return 1;
-           for(auto e: c)e = false;
-            missing = mid;
-        }
-    }
-    
-    return 0;
-}
-
 void solve()
 {
    int1(n)
-   int k;cin >> k;
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-    
-    if (k == n) {
-        int ans = MAX;
-        for (int num : a) {
-            ans = min(ans, (num == 0) ? 1ll : 0ll);
-        }
-        cout<<  ans << ln;
-        return;
-    }
-    
-    if (k == 1) {
-        set<int> st;
-        for (int num : a) {
-            st.insert(num);
-        }
-        
-        int mex = 0;
-        while (st.find(mex) != st.end()) {
-            mex++;
-        }
-        cout << mex << ln;
-        return;
-    }
-    int l = 0, r = n + 1, mid, ans = 0;
-    
-    while (l <= r) {
-         mid = (l + r) >> 1;
-        
-        if (check(a,k,mid)) {
-            ans = mid;
-            l = mid + 1;
-        } 
-        else {
-            r = mid - 1;
+   vi a (n), b(n);
+   cin >> a >> b;
+   vi pa(n), pb(n);
+   int neg = 0, pos = 0;
+
+   for(int i = n-2; i >= 0; --i)
+   {
+        pa[i] = pa[i+1] + a[i+1];
+        pb[i] = pb[i+1] + b[i+1];
+   }
+   int scr1 = 0, scr2 = 0;
+   FOR(i,n){
+    if(a[i] != b[i]){
+        if(a[i] > b[i])scr1 += a[i];
+        else scr2 += b[i];
+    }else{
+        if(a[i] == 0)continue;
+        if(a[i] == -1)
+        {
+            neg++;
+        }else{
+            pos++;
         }
     }
-    
-    cout <<  ans << ln; 
+   }
+   while(neg or pos)
+   {
+        if(pos){
+            if(scr1 < scr2)scr1++;
+            else scr2++;
+            pos--;
+        }
+        if(neg){
+            if(scr1 > scr2)scr1--;
+            else scr2--;
+            neg--;
+        }
+   }
+\
+   cout << min(scr1,scr2) << ln;
 }
 
 signed main()

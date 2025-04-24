@@ -49,83 +49,56 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-bool check(const vi& a, int k, int mid) {
-    int n = sz(a);
-    int cnt = 0;  
-    
-    v<bool> c(mid, false);
-    int missing = mid;  
-    
-    for (int i = 0; i < n; i++) {
-        if (a[i] < mid and !c[a[i]]) {
-            c[a[i]] = true;
-            missing--;
-        }
-        
-        if (missing == 0) {
-            cnt++;
-            if(cnt == k)return 1;
-           for(auto e: c)e = false;
-            missing = mid;
-        }
+int n,m;
+int a[N];
+vi adj[N];
+bool b[N];
+
+int f(int i)
+{
+    int res = a[i];
+    b[i] = true;
+    for(auto e: adj[i])
+    {
+        if(b[e] == false){
+        res = min(res,f(e)); 
     }
-    
-    return 0;
+    }
+    return res;
 }
 
 void solve()
 {
-   int1(n)
-   int k;cin >> k;
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-    
-    if (k == n) {
-        int ans = MAX;
-        for (int num : a) {
-            ans = min(ans, (num == 0) ? 1ll : 0ll);
-        }
-        cout<<  ans << ln;
-        return;
-    }
-    
-    if (k == 1) {
-        set<int> st;
-        for (int num : a) {
-            st.insert(num);
-        }
-        
-        int mex = 0;
-        while (st.find(mex) != st.end()) {
-            mex++;
-        }
-        cout << mex << ln;
-        return;
-    }
-    int l = 0, r = n + 1, mid, ans = 0;
-    
-    while (l <= r) {
-         mid = (l + r) >> 1;
-        
-        if (check(a,k,mid)) {
-            ans = mid;
-            l = mid + 1;
-        } 
-        else {
-            r = mid - 1;
-        }
-    }
-    
-    cout <<  ans << ln; 
+   cin >> n >> m;
+   FOR(i,n)cin >> a[i+1];
+   FOR(i,m)
+   {
+        int u,v;
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+   }
+   FOR(i,N)b[i] = false;
+
+   int ans = 0;
+   for(int i = 1; i <= n; ++i)
+   {
+       if(b[i] == false)
+       {
+            ans += f(i);
+       }
+   }
+   
+   cout << ans << ln;
 }
 
 signed main()
