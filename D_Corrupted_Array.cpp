@@ -61,26 +61,10 @@ const bool testcase = 1;
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-//    vi b = a;
-//    int ans = unique(all(b)) - b.begin();
-//    debug(a)
-//    FOR(i,n-2)
-//    {
-//         ans -= (a[i] < a[i+1] and a[i+1] < a[i+2]);
-//         ans -= (a[i] > a[i+1] and a[i+1] > a[i+2]);
-//    }
-//    cout << ans << ln;
-
-n = unique(a.begin(), a.end()) - a.begin();
-    int ans = n;
-    for (int i = 0; i + 2 < n; ++i) {
-      ans -= (a[i] < a[i + 1] && a[i + 1] < a[i + 2]);
-      ans -= (a[i] > a[i + 1] && a[i + 1] > a[i + 2]);
-    }
-    debug(a)
-    cout << ans << '\n';
+   vi a (n+2);
+   FOR(i,n+2) cin >> a[i];
+   sort(all(a));
+   debug(a)
 }
 
 signed main()

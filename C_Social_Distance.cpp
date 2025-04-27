@@ -60,27 +60,37 @@ const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-//    vi b = a;
-//    int ans = unique(all(b)) - b.begin();
-//    debug(a)
-//    FOR(i,n-2)
-//    {
-//         ans -= (a[i] < a[i+1] and a[i+1] < a[i+2]);
-//         ans -= (a[i] > a[i+1] and a[i+1] > a[i+2]);
-//    }
-//    cout << ans << ln;
+   int n,k;
+   string s;
+   cin >> n >> k >> s;
 
-n = unique(a.begin(), a.end()) - a.begin();
-    int ans = n;
-    for (int i = 0; i + 2 < n; ++i) {
-      ans -= (a[i] < a[i + 1] && a[i + 1] < a[i + 2]);
-      ans -= (a[i] > a[i + 1] && a[i + 1] > a[i + 2]);
-    }
-    debug(a)
-    cout << ans << '\n';
+   vi ones;
+   int ans = 0;
+   FOR(i,n)
+   {
+       if(s[i] == '1')ones.pb(i);
+   }
+   ones.pb(n);
+//    debug(ones)
+   for(int i = 0; i < n; ++i)
+   {
+        if(s[i] == '1')
+        {
+            i += k;
+            continue;
+        }
+        int next = *lower_bound(all(ones),i);
+        if(next - i > k or next == n)
+        {
+            ans++;
+            // debug("uuh",i)
+            i += k;
+        }
+        // debug(next,i)
+   }
+
+   cout << ans << ln;
+   
 }
 
 signed main()

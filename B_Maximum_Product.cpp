@@ -63,26 +63,42 @@ void solve()
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-//    vi b = a;
-//    int ans = unique(all(b)) - b.begin();
+
+   bool pos = false;
+   FOR(i,n)if(a[i] >= 0){pos = true;break;}
+   sort(all(a));
 //    debug(a)
-//    FOR(i,n-2)
-//    {
-//         ans -= (a[i] < a[i+1] and a[i+1] < a[i+2]);
-//         ans -= (a[i] > a[i+1] and a[i+1] > a[i+2]);
-//    }
-//    cout << ans << ln;
+   if(pos)
+   {
+      vi l(5), r(5);
+      l[0] = a[0];
+      for(int i = 1; i < 5; ++i)l[i] = l[i-1]*a[i];
+      int idx = 3;
+      r[4] = a[n-1];
+      for(int i = n-2; i > n-6; --i)r[idx--] = r[idx+1]*a[i];
 
-n = unique(a.begin(), a.end()) - a.begin();
-    int ans = n;
-    for (int i = 0; i + 2 < n; ++i) {
-      ans -= (a[i] < a[i + 1] && a[i + 1] < a[i + 2]);
-      ans -= (a[i] > a[i + 1] && a[i + 1] > a[i + 2]);
+    int ans = MIN;
+    l.insert(l.begin(),1ll);
+    r.pb(1ll);
+    // debug(l,r)
+    for(int i = 0; i <= 5; ++i)
+    {
+        ans = max(ans,l[i]*r[i]);
     }
-    debug(a)
-    cout << ans << '\n';
-}
+    cout << ans << ln;
 
+   }
+   else 
+   {
+        int ans = 1;
+        reverse(all(a));
+        // debug(a)
+        FOR(i,5)ans *= a[i];
+        cout << ans << ln;
+   }
+   
+}
+ 
 signed main()
 {
     ShreyanshSinghGautam

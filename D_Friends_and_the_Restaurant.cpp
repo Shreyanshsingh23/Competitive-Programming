@@ -58,29 +58,55 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
+bool cmp(pi& a, pi& b)
+{
+    return (abs(a.F-a.S) < abs(b.F-b.S));
+}
+
 void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-//    vi b = a;
-//    int ans = unique(all(b)) - b.begin();
-//    debug(a)
-//    FOR(i,n-2)
-//    {
-//         ans -= (a[i] < a[i+1] and a[i+1] < a[i+2]);
-//         ans -= (a[i] > a[i+1] and a[i+1] > a[i+2]);
-//    }
-//    cout << ans << ln;
+   vi a(n);
 
-n = unique(a.begin(), a.end()) - a.begin();
-    int ans = n;
-    for (int i = 0; i + 2 < n; ++i) {
-      ans -= (a[i] < a[i + 1] && a[i + 1] < a[i + 2]);
-      ans -= (a[i] > a[i + 1] && a[i + 1] > a[i + 2]);
-    }
-    debug(a)
-    cout << ans << '\n';
+   FOR(i,n)
+   {
+        int x;cin >> x;
+        a[i] -= x;
+   }
+   FOR(i,n)
+   {
+        int x;cin >> x;
+        a[i] += x;
+   }
+   sort(all(a), greater<int>());
+   debug(a)
+   auto check = [&](int mid)
+   {
+        debug(mid)
+        int s = 0, e = 2*mid - 1;
+        while(s < e)
+        {
+            if(a[s] + a[e] < 0)return false;
+            debug(s,e)
+            ++s;--e;
+        }
+        return true;
+   };
+
+   int l = 0, r = n/2 + 1, mid, ans = 0;
+
+   while(l+1 < r)
+   {
+        mid = (l+r) >> 1;
+        if(check(mid))
+        {
+            ans = mid;
+            l = mid ;
+        }
+        else r = mid ;
+   }
+
+   cout << ans << ln;
 }
 
 signed main()

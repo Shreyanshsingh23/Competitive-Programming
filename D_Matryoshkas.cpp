@@ -63,24 +63,20 @@ void solve()
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-//    vi b = a;
-//    int ans = unique(all(b)) - b.begin();
-//    debug(a)
-//    FOR(i,n-2)
-//    {
-//         ans -= (a[i] < a[i+1] and a[i+1] < a[i+2]);
-//         ans -= (a[i] > a[i+1] and a[i+1] > a[i+2]);
-//    }
-//    cout << ans << ln;
-
-n = unique(a.begin(), a.end()) - a.begin();
-    int ans = n;
-    for (int i = 0; i + 2 < n; ++i) {
-      ans -= (a[i] < a[i + 1] && a[i + 1] < a[i + 2]);
-      ans -= (a[i] > a[i + 1] && a[i + 1] > a[i + 2]);
-    }
-    debug(a)
-    cout << ans << '\n';
+   sort(all(a));
+   mpii mp;
+   FOR(i,n)mp[a[i]]++;
+   int ans = 0;
+   set<int> st;
+   FOR(i,n)
+   {
+        if(!st.count(a[i]) and mp[a[i]-1] < mp[a[i]]){
+            ans += mp[a[i]] - mp[a[i]-1];
+        }
+        st.insert(a[i]);
+   }
+   cout << ans << ln;
+   
 }
 
 signed main()
