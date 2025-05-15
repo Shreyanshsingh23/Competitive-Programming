@@ -58,141 +58,66 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-struct Pair
+void f(int node,  int prev, v<v<pi>>& a, bool& poss, int c)
 {
-    int row, col;
-};
+    c++;
+    if(node == 0)
+    {
+        poss = true;
+        return;
+    }
+    for(auto [e,wt]: a[node])
+    {
+        if(e != prev)
+        {
+            if(c > sz(a) + 10)return;
+            f(e,node,a,poss,c);
+        }
+    }
+    c--;
+}
 
 void solve()
 {
    int n,m;
    cin >> n >> m;
-   string a[n];
-   for(int i = 0; i < n; ++i)cin >> a[i];
+   v<v<pi>> a(n);
+   for(int i = 0; i < m; ++i)
+   {
+        int u,v,wt;
+        cin >> u >> v >> wt;
+        u--; v--;
+        a[u].pb({v,wt});
+   }
+   vi dist(n,MIN);
+   int c = 0;
 
-    int sr = 0, sc = 0;
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
-        {
-            if(a[i][j] == 'A')
-            {
-                sr = i;
-                sc = j;
-                break;
-            }
-        }
-    }
-
-    queue<pi> q;
-    q.push({sr,sc});
-
-    vii ans(n,vi(m,N));
-    ans[sr][sc] = 0;
-
-    while(!q.empty())
-    {
-        auto [curRow, curCol] = q.front();
-        q.pop();
-        // debug(curRow,curCol,ans[curRow][curCol])
-        
-        if(curRow + 1 < n and a[curRow + 1][curCol] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow + 1][curCol])
-            {
-                q.push({curRow+1,curCol});
-                ans[curRow + 1][curCol] = ans[curRow][curCol] + 1;
-            }
-        }
-
-        if(curRow - 1 >= 0 and a[curRow - 1][curCol] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow - 1][curCol])
-            {
-                q.push({curRow-1,curCol});
-                ans[curRow - 1][curCol] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol + 1 < m and a[curRow][curCol + 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol + 1])
-            {
-                q.push({curRow,curCol+1});
-                ans[curRow][curCol+1] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol - 1 >= 0 and a[curRow][curCol - 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol - 1])
-            {
-                q.push({curRow,curCol-1});
-                ans[curRow][curCol - 1] = ans[curRow][curCol] + 1;
-            }
-        }
-
-    }
-
-    int dr = 0, dc = 0;
-
-
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
-        {
-            if(a[i][j] == 'B') 
-            {
-                dr = i;
-                dc = j;
-                break;
-            }
-        }
-    }
-
-    if(ans[dr][dc] == N)
-    {
-        cout << "NO" << ln;
-        return;
-    }
-    int r = dr, c = dc;
-    string res = "";
-
-    int k = ans[dr][dc];
-
-    while(k)
-    {
-        if(dr - 1 >= 0 and ans[dr-1][dc] == k-1)
-        {
-            res += 'D';
-            dr--;
-        }
-        else if(dr + 1 < n and ans[dr + 1][dc] == k-1)
-        {
-            res += 'U';
-            dr++;
-        }
-        else if(dc - 1 >= 0 and ans[dr][dc - 1] == k-1)
-        {
-            res += 'R';
-            dc--;
-        }
-        else 
-        {
-            res += 'L';
-            dc++;
-        }
-        k -= 1;
-
-    }
-
-    reverse(all(res));
-
-    cout << "YES" << ln;
-    cout << ans[r][c] << ln;
-    cout << res << ln;
-
-
-    
+   bool poss = false;
+   f(n-1,-1,a,poss,0);
    
+   debug(poss)
+
+   function<int(int,int)> dfs = [&] (int node, int prev)
+   {
+        // debug(node,prev)
+        c++;
+        
+
+        int ans = MIN;
+        for(auto [e,wt]: a[node])
+        {
+            if(e != prev)
+            {
+                if(c > n+10)return ans;
+                int temp = dfs(e,node);
+                ans = max(ans, temp + wt);
+            }
+        }
+        c--;
+        return ans;
+   };
+
+   cout << dfs(0,-1) << ln;
 }
 
 signed main()

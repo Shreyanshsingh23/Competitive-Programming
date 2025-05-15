@@ -49,7 +49,8 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int inf = 1000010;
+const int N = 100;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -58,140 +59,66 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-struct Pair
-{
-    int row, col;
-};
-
 void solve()
 {
    int n,m;
    cin >> n >> m;
-   string a[n];
-   for(int i = 0; i < n; ++i)cin >> a[i];
 
-    int sr = 0, sc = 0;
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
-        {
-            if(a[i][j] == 'A')
-            {
-                sr = i;
-                sc = j;
-                break;
-            }
-        }
-    }
+   vi a [n+1];
+   for(int i = 0; i < m; ++i)
+   {
+        int u,v;
+        cin >> u >> v;
+        a[u].pb(v);
+        a[v].pb(u);
+   }
 
-    queue<pi> q;
-    q.push({sr,sc});
+   vi ans(n+1,inf);
 
-    vii ans(n,vi(m,N));
-    ans[sr][sc] = 0;
+   queue<int> q;
+   q.push(1);
+   ans[1] = 1;
 
-    while(!q.empty())
-    {
-        auto [curRow, curCol] = q.front();
+   while(!q.empty())
+   {
+        auto cur = q.front();
         q.pop();
-        // debug(curRow,curCol,ans[curRow][curCol])
-        
-        if(curRow + 1 < n and a[curRow + 1][curCol] != '#')
+        for(auto e: a[cur])
         {
-            if(ans[curRow][curCol] + 1 < ans[curRow + 1][curCol])
+            if(ans[cur] + 1 < ans[e])
             {
-                q.push({curRow+1,curCol});
-                ans[curRow + 1][curCol] = ans[curRow][curCol] + 1;
+                ans[e] = ans[cur] + 1;
+                q.push(e);
             }
         }
+   }
 
-        if(curRow - 1 >= 0 and a[curRow - 1][curCol] != '#')
+   if(ans[n] == inf)
+   {
+        cout << "IMPOSSIBLE" << ln;
+        return;
+   }
+
+   vi res;
+   res.pb(n);
+   int k = ans[n];
+   int cur = n;
+   while(k != 1)
+   {
+        for(auto e: a[cur])
         {
-            if(ans[curRow][curCol] + 1 < ans[curRow - 1][curCol])
+            if(ans[e] == k-1)
             {
-                q.push({curRow-1,curCol});
-                ans[curRow - 1][curCol] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol + 1 < m and a[curRow][curCol + 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol + 1])
-            {
-                q.push({curRow,curCol+1});
-                ans[curRow][curCol+1] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol - 1 >= 0 and a[curRow][curCol - 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol - 1])
-            {
-                q.push({curRow,curCol-1});
-                ans[curRow][curCol - 1] = ans[curRow][curCol] + 1;
-            }
-        }
-
-    }
-
-    int dr = 0, dc = 0;
-
-
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
-        {
-            if(a[i][j] == 'B') 
-            {
-                dr = i;
-                dc = j;
+                res.pb(e);
+                k--;
+                cur = e;
                 break;
             }
         }
-    }
-
-    if(ans[dr][dc] == N)
-    {
-        cout << "NO" << ln;
-        return;
-    }
-    int r = dr, c = dc;
-    string res = "";
-
-    int k = ans[dr][dc];
-
-    while(k)
-    {
-        if(dr - 1 >= 0 and ans[dr-1][dc] == k-1)
-        {
-            res += 'D';
-            dr--;
-        }
-        else if(dr + 1 < n and ans[dr + 1][dc] == k-1)
-        {
-            res += 'U';
-            dr++;
-        }
-        else if(dc - 1 >= 0 and ans[dr][dc - 1] == k-1)
-        {
-            res += 'R';
-            dc--;
-        }
-        else 
-        {
-            res += 'L';
-            dc++;
-        }
-        k -= 1;
-
-    }
-
-    reverse(all(res));
-
-    cout << "YES" << ln;
-    cout << ans[r][c] << ln;
-    cout << res << ln;
-
-
-    
+   }
+   reverse(all(res));
+   cout << ans[n] << ln;
+   cout << res << ln;
    
 }
 

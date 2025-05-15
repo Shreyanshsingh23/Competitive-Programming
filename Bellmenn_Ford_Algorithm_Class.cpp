@@ -56,142 +56,39 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-struct Pair
+struct Edge
 {
-    int row, col;
+    char u,v;
+    int wt;
 };
+
 
 void solve()
 {
-   int n,m;
-   cin >> n >> m;
-   string a[n];
-   for(int i = 0; i < n; ++i)cin >> a[i];
+   int1(e);
+   int1(V);
+   vector<Edge> edgeList;
+   int dist[] = new int[e];
+   for(int i = 0; i < e; ++i)dist[i] = N;
+    char src;
+   dist[src] = 0;
 
-    int sr = 0, sc = 0;
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
+   bool changed = true;
+   
+   for(int i = 0; i < V-1; ++i)
+   {
+        for(auto[u,v,wt]: edgeList)
         {
-            if(a[i][j] == 'A')
+            if(dist[u] + wt < dist[v])
             {
-                sr = i;
-                sc = j;
-                break;
+                dist[v] = dist[u] + wt;
             }
         }
-    }
-
-    queue<pi> q;
-    q.push({sr,sc});
-
-    vii ans(n,vi(m,N));
-    ans[sr][sc] = 0;
-
-    while(!q.empty())
-    {
-        auto [curRow, curCol] = q.front();
-        q.pop();
-        // debug(curRow,curCol,ans[curRow][curCol])
-        
-        if(curRow + 1 < n and a[curRow + 1][curCol] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow + 1][curCol])
-            {
-                q.push({curRow+1,curCol});
-                ans[curRow + 1][curCol] = ans[curRow][curCol] + 1;
-            }
-        }
-
-        if(curRow - 1 >= 0 and a[curRow - 1][curCol] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow - 1][curCol])
-            {
-                q.push({curRow-1,curCol});
-                ans[curRow - 1][curCol] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol + 1 < m and a[curRow][curCol + 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol + 1])
-            {
-                q.push({curRow,curCol+1});
-                ans[curRow][curCol+1] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol - 1 >= 0 and a[curRow][curCol - 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol - 1])
-            {
-                q.push({curRow,curCol-1});
-                ans[curRow][curCol - 1] = ans[curRow][curCol] + 1;
-            }
-        }
-
-    }
-
-    int dr = 0, dc = 0;
+   }
 
 
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
-        {
-            if(a[i][j] == 'B') 
-            {
-                dr = i;
-                dc = j;
-                break;
-            }
-        }
-    }
-
-    if(ans[dr][dc] == N)
-    {
-        cout << "NO" << ln;
-        return;
-    }
-    int r = dr, c = dc;
-    string res = "";
-
-    int k = ans[dr][dc];
-
-    while(k)
-    {
-        if(dr - 1 >= 0 and ans[dr-1][dc] == k-1)
-        {
-            res += 'D';
-            dr--;
-        }
-        else if(dr + 1 < n and ans[dr + 1][dc] == k-1)
-        {
-            res += 'U';
-            dr++;
-        }
-        else if(dc - 1 >= 0 and ans[dr][dc - 1] == k-1)
-        {
-            res += 'R';
-            dc--;
-        }
-        else 
-        {
-            res += 'L';
-            dc++;
-        }
-        k -= 1;
-
-    }
-
-    reverse(all(res));
-
-    cout << "YES" << ln;
-    cout << ans[r][c] << ln;
-    cout << res << ln;
-
-
-    
    
 }
 

@@ -58,141 +58,65 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-struct Pair
-{
-    int row, col;
-};
-
 void solve()
 {
    int n,m;
    cin >> n >> m;
-   string a[n];
-   for(int i = 0; i < n; ++i)cin >> a[i];
 
-    int sr = 0, sc = 0;
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
+   v<tuple<int,int,int>>a(m);
+   for(int i = 0;i < m; ++i)
+   {
+        int u,v,wt;
+        cin >> u >> v >> wt;
+        a[i] = {u-1,v-1,wt};
+   }
+   v<pi> adj[n];
+   for(auto [u,v,wt]: a)
+   {
+        adj[u].pb({v,wt});
+   }
+   vi dist(n,MAX);
+   int src = 0;
+   dist[src] = 0;
+
+   int repNode = -1;
+   debug(a)
+
+   for(int i = 0; i < n; ++i)
+   {
+        for(auto [u,v,wt]: a)
         {
-            if(a[i][j] == 'A')
+            if(dist[u] != MAX and dist[u] + wt < dist[v])
             {
-                sr = i;
-                sc = j;
-                break;
+                if(i == n-1)
+                {
+                    repNode = v;
+                    break;
+                }
+                dist[v] = dist[u] + wt;
             }
         }
     }
+    vi cost = dist;
+    // debug(cost)
+    vi parent(n,-1);
 
-    queue<pi> q;
-    q.push({sr,sc});
-
-    vii ans(n,vi(m,N));
-    ans[sr][sc] = 0;
-
-    while(!q.empty())
+   for(auto [u,v,wt]: a)
     {
-        auto [curRow, curCol] = q.front();
-        q.pop();
-        // debug(curRow,curCol,ans[curRow][curCol])
-        
-        if(curRow + 1 < n and a[curRow + 1][curCol] != '#')
+        if(dist[u] != MAX and dist[u] + wt < dist[v] and parent[v] == -1)
         {
-            if(ans[curRow][curCol] + 1 < ans[curRow + 1][curCol])
-            {
-                q.push({curRow+1,curCol});
-                ans[curRow + 1][curCol] = ans[curRow][curCol] + 1;
-            }
-        }
-
-        if(curRow - 1 >= 0 and a[curRow - 1][curCol] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow - 1][curCol])
-            {
-                q.push({curRow-1,curCol});
-                ans[curRow - 1][curCol] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol + 1 < m and a[curRow][curCol + 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol + 1])
-            {
-                q.push({curRow,curCol+1});
-                ans[curRow][curCol+1] = ans[curRow][curCol] + 1;
-            }
-        }
-        if(curCol - 1 >= 0 and a[curRow][curCol - 1] != '#')
-        {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol - 1])
-            {
-                q.push({curRow,curCol-1});
-                ans[curRow][curCol - 1] = ans[curRow][curCol] + 1;
-            }
-        }
-
-    }
-
-    int dr = 0, dc = 0;
-
-
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
-        {
-            if(a[i][j] == 'B') 
-            {
-                dr = i;
-                dc = j;
-                break;
-            }
+            debug(parent[v], u,v)
+            parent[v] = u;
+            dist[v] = dist[u] + wt;
         }
     }
-
-    if(ans[dr][dc] == N)
-    {
-        cout << "NO" << ln;
-        return;
-    }
-    int r = dr, c = dc;
-    string res = "";
-
-    int k = ans[dr][dc];
-
-    while(k)
-    {
-        if(dr - 1 >= 0 and ans[dr-1][dc] == k-1)
-        {
-            res += 'D';
-            dr--;
-        }
-        else if(dr + 1 < n and ans[dr + 1][dc] == k-1)
-        {
-            res += 'U';
-            dr++;
-        }
-        else if(dc - 1 >= 0 and ans[dr][dc - 1] == k-1)
-        {
-            res += 'R';
-            dc--;
-        }
-        else 
-        {
-            res += 'L';
-            dc++;
-        }
-        k -= 1;
-
-    }
-
-    reverse(all(res));
-
-    cout << "YES" << ln;
-    cout << ans[r][c] << ln;
-    cout << res << ln;
-
-
-    
+    vi ans;
+    set<int> st = {repNode};
+    set<int> vis;
    
+
+  
+        
 }
 
 signed main()

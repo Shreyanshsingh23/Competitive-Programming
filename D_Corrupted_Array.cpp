@@ -64,7 +64,39 @@ void solve()
    vi a (n+2);
    FOR(i,n+2) cin >> a[i];
    sort(all(a));
-   debug(a)
+   int pref = 0;
+   FOR(i,n)pref += a[i];
+//    debug(pref)
+   if(a[n] == pref or a[n+1] == pref)
+   {
+        FOR(i,n)cout << a[i] << ' ';
+        cout << ln;
+        return;
+   }
+   int d = a[n+1] - pref;
+   int req = a[n] - d;
+   debug(d,req)
+   auto it = lower_bound(all(a),req);
+   if(it == a.end() or *it != req or d <= 0)
+   {
+        cout  << -1 << ln;
+        return;
+   }
+  
+        bool ok = true;
+        FOR(i,n)
+        {
+            if(ok and a[i] == req)
+            {
+                ok = false;
+                continue;
+            }
+            cout << a[i] << ' ';
+        }
+        cout << a[n] << ln;
+        return;
+   
+   
 }
 
 signed main()

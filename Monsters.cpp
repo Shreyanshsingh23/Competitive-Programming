@@ -58,141 +58,165 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-struct Pair
-{
-    int row, col;
-};
 
 void solve()
 {
    int n,m;
    cin >> n >> m;
-   string a[n];
-   for(int i = 0; i < n; ++i)cin >> a[i];
-
-    int sr = 0, sc = 0;
-    for(int i = 0; i < n; ++i)
-    {
+   v<string> a(n);
+   for(int i = 0; i < n; ++i)
+   {
+        cin >> a[i];
+   }
+   int sr = 0, sc = 0;
+   v<pi> st;
+   v<pi> monsters;
+   vii ans(n,vi (m,-1));
+   vii res(n,vi (m,-1));
+   for(int i = 0; i < n; ++i)
+   {
         for(int j = 0; j < m; ++j)
         {
+            if(i == 0 or i == n-1)
+            {  
+                if(a[i][j] == '.')st.pb({i,j});
+            }
+            if(j == 0 or j == m-1)
+            {
+                if(a[i][j] == '.' and (i != 0 and i != n-1))st.pb({i,j});
+            }
+            if(a[i][j] == 'M')
+            {
+                monsters.pb({i,j});
+                ans[i][j] = 0;
+            }
             if(a[i][j] == 'A')
             {
-                sr = i;
-                sc = j;
-                break;
+                sr = i, sc = j;
+                if(i == 0 or i == n-1 or j == 0 or j == m-1)
+                {
+                    cout << "YES" << ln;
+                    cout << 0 << ln;
+                    return;
+                }
             }
         }
-    }
+   }
 
-    queue<pi> q;
-    q.push({sr,sc});
+   res[sr][sc] = 0;
+   queue<pi> q;
+   for(auto [x,y]: monsters)
+   {
+        q.push({x,y});
+   }
 
-    vii ans(n,vi(m,N));
-    ans[sr][sc] = 0;
-
-    while(!q.empty())
-    {
-        auto [curRow, curCol] = q.front();
+   while(!q.empty())
+   {
+        auto [r,c] = q.front();
         q.pop();
-        // debug(curRow,curCol,ans[curRow][curCol])
-        
-        if(curRow + 1 < n and a[curRow + 1][curCol] != '#')
+
+        if(r-1 >= 0 and a[r-1][c] == '.' and ans[r-1][c] == -1)
         {
-            if(ans[curRow][curCol] + 1 < ans[curRow + 1][curCol])
-            {
-                q.push({curRow+1,curCol});
-                ans[curRow + 1][curCol] = ans[curRow][curCol] + 1;
-            }
+            q.push({r-1,c});
+            ans[r-1][c] = ans[r][c] + 1;
         }
-
-        if(curRow - 1 >= 0 and a[curRow - 1][curCol] != '#')
+        if(r+1 < n and a[r+1][c] == '.' and ans[r+1][c] == -1)
         {
-            if(ans[curRow][curCol] + 1 < ans[curRow - 1][curCol])
-            {
-                q.push({curRow-1,curCol});
-                ans[curRow - 1][curCol] = ans[curRow][curCol] + 1;
-            }
+            q.push({r+1,c});
+            ans[r+1][c] = ans[r][c] + 1;
         }
-        if(curCol + 1 < m and a[curRow][curCol + 1] != '#')
+        if(c-1 >= 0 and a[r][c-1] == '.' and ans[r][c-1] == -1)
         {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol + 1])
-            {
-                q.push({curRow,curCol+1});
-                ans[curRow][curCol+1] = ans[curRow][curCol] + 1;
-            }
+            q.push({r,c-1});
+            ans[r][c-1] = ans[r][c] + 1;
         }
-        if(curCol - 1 >= 0 and a[curRow][curCol - 1] != '#')
+        if(c+1 < m and a[r][c+1] == '.' and ans[r][c+1] == -1)
         {
-            if(ans[curRow][curCol] + 1 < ans[curRow][curCol - 1])
-            {
-                q.push({curRow,curCol-1});
-                ans[curRow][curCol - 1] = ans[curRow][curCol] + 1;
-            }
+            q.push({r,c+1});
+            ans[r][c+1] = ans[r][c] + 1;
         }
+   }
 
-    }
+   q.push({sr,sc});
+   while(!q.empty())
+   {
+        auto [r,c] = q.front();
+        q.pop();
 
-    int dr = 0, dc = 0;
-
-
-    for(int i = 0; i < n; ++i)
-    {
-        for(int j = 0; j < m; ++j)
+        if(r-1 >= 0 and a[r-1][c] == '.' and res[r-1][c] == -1)
         {
-            if(a[i][j] == 'B') 
-            {
-                dr = i;
-                dc = j;
-                break;
-            }
+            q.push({r-1,c});
+            res[r-1][c] = res[r][c] + 1;
         }
-    }
+        if(r+1 < n and a[r+1][c] == '.' and res[r+1][c] == -1)
+        {
+            q.push({r+1,c});
+            res[r+1][c] = res[r][c] + 1;
+        }
+        if(c-1 >= 0 and a[r][c-1] == '.' and res[r][c-1] == -1)
+        {
+            q.push({r,c-1});
+            res[r][c-1] = res[r][c] + 1;
+        }
+        if(c+1 < m and a[r][c+1] == '.' and res[r][c+1] == -1)
+        {
+            q.push({r,c+1});
+            res[r][c+1] = res[r][c] + 1;
+        }
+   }
 
-    if(ans[dr][dc] == N)
-    {
+   int dr = -1, dc = -1;
+   bool poss = false;
+   for(auto [r,c]: st)
+   {
+        if((ans[r][c] == -1 and res[r][c] != -1) or (res[r][c] != -1 and res[r][c] < ans[r][c]))
+        {
+            cout << "YES" << ln;
+            cout << res[r][c] << ln;
+            dr = r; dc = c;
+            break;
+        }
+   }
+ 
+   if(dr == -1)
+   {
         cout << "NO" << ln;
         return;
-    }
-    int r = dr, c = dc;
-    string res = "";
+   }
+   debug(res)
+   string s = "";
+   int k = res[dr][dc];
 
-    int k = ans[dr][dc];
-
-    while(k)
+   while(k)
     {
-        if(dr - 1 >= 0 and ans[dr-1][dc] == k-1)
+        if(dr - 1 >= 0 and (a[dr-1][dc] == '.' or a[dr-1][dc] == 'A') and  res[dr-1][dc] == k-1)
         {
-            res += 'D';
+            s += 'D';
             dr--;
         }
-        else if(dr + 1 < n and ans[dr + 1][dc] == k-1)
+        else if(dr + 1 < n and (a[dr+1][dc] == '.' or a[dr+1][dc] == 'A') and  res[dr + 1][dc] == k-1)
         {
-            res += 'U';
+            s += 'U';
             dr++;
         }
-        else if(dc - 1 >= 0 and ans[dr][dc - 1] == k-1)
+        else if(dc - 1 >= 0 and (a[dr][dc-1] == '.' or a[dr][dc-1] == 'A') and  res[dr][dc - 1] == k-1)
         {
-            res += 'R';
+            s += 'R';
             dc--;
         }
         else 
         {
-            res += 'L';
+            s += 'L';
             dc++;
         }
         k -= 1;
 
     }
-
-    reverse(all(res));
-
-    cout << "YES" << ln;
-    cout << ans[r][c] << ln;
-    cout << res << ln;
-
-
     
+    reverse(all(s));
+    cout << s << ln;
    
+
 }
 
 signed main()
