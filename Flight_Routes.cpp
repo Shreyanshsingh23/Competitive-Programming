@@ -14,7 +14,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
-#define MAX 1e10
+#define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
 #define vi vector<int>
@@ -58,154 +58,71 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-// void solve()
-// {
-//    int n,m;
-//    cin >> n >> m;
+void solve()
+{
+   int n,m,k;
+   cin >> n >> m >> k;
+   v<v<pi>> a(n+5);
+   for(int i = 0; i < m; ++i)
+   {
+        int u,v,wt;
+        cin >> u >> v >> wt;
+        a[u].pb({v,wt});
+   }
 
-//    v<tuple<int,int,int>>a(m);
-//    for(int i = 0;i < m; ++i)
-//    {
-//         int u,v,wt;
-//         cin >> u >> v >> wt;
-//         a[i] = {u-1,v-1,wt};
-//    }
-//    v<v<pi>> adj(n);
-//    for(auto [u,v,wt]: a)
-//    {
-//         adj[u].pb({v,wt});
-//    }
-//    vi dist(n,0);
-//    int src = 0;
-//    dist[src] = 0;
+   vi dist(n+1,MAX);
+   v<bool> vis(n+1, false);
+   priority_queue<pi, v<pi>,  greater<pi>> pq;
+   pq.push({0,1}); // wt,node
+   dist[1] = 0;
 
-//    int repNode = -1;
+   while(!pq.empty())
+   {
+        auto [curDist, cur] = pq.top();
+        pq.pop();
 
-//    for(int i = 0; i < n; ++i)
-//    {
-//         for(auto [u,v,wt]: a)
-//         {
-//             if(dist[u] != MAX and dist[u] + wt < dist[v])
-//             {
-//                 if(i == n-1)
-//                 {
-//                     break;
-//                 }
-//                 dist[v] = dist[u] + wt;
-//             }
-//         }
-//     }
+        if(vis[cur])continue;
+        vis[cur] = true;
 
-//     vi parent(n,-1);
-//     vi cost = dist;
-//     bool notFound = true;
-//     for(int i = 0; i < n; ++i)
-//     {
-//         for(auto [u,v,wt]: a)
-//         {
-//             if(dist[u] != LLONG_MAX and dist[u] + wt < dist[v])
-//             {
-//                 dist[v] = dist[u] + wt;
-//                 if(dist[v] != cost[v]){
-//                     parent[v] = u;
-//                     notFound = false;
-//                 }
-//             }
-//         }
-//     }
-    
-//     if(notFound)
-//     {
-//         cout << "NO" << ln;
-//         return;
-//     }
-    
-//     for(int i = 0;i < n; ++i)
-//     {
-//         if(parent[i] != -1)
-//         {
-//             repNode = i;
-//             break;
-//         }
-//     }
-
-//     vi ans;
-//     set<int> st;
-//     int temp = repNode;
-//     while(st.find(temp) == st.end())
-//     {
-//         ans.pb(temp);
-//         st.insert(temp);
-//         temp = parent[temp];
-//     }
-  
-//     ans.pb(temp);
-//     reverse(all(ans));
-//     cout << "YES" << ln;
-//     set<int> fst;
-//     for(auto e: ans)
-//     {
-//         cout << e+1 << ' ';
-//         if(fst.find(e) != fst.end())break;
-//         fst.insert(e);
-//     }
-        
-// }
-
-void solve() {
-    int n, m;
-    cin >> n >> m;
-
-    using T = tuple<int, int, int>;
-    vector<T> edges(m);
-    for (int i = 0; i < m; ++i) {
-        int u, v, w;
-        cin >> u >> v >> w;
-        edges[i] = {u - 1, v - 1, w};
-    }
-
-    vi dist(n, 0ll); // initialized with zero because we only have to deal with negative cycle otherwise would have intialized with positive infinity
-    vi parent(n, -1);
-    int repNode = -1;
-
-    for (int i = 0; i < n; ++i) {
-        for (auto [u, v, w] : edges) {
-            if (dist[u] + w < dist[v]) {
-                dist[v] = dist[u] + w;
-                parent[v] = u;
-                if (i == n - 1) repNode = v; 
+        for(auto [e,wt]: a[cur])
+        {
+            if(vis[e] == false)
+            {
+                if(dist[e] > curDist + wt)
+                {
+                    dist[e] = curDist + wt;
+                    pq.push({dist[e], e});
+                }
             }
         }
-    }
+   }
 
-    if (repNode == -1) {
-        cout << "NO" << ln;
-        return;
-    }
+   vi cnt(n+1, 0);
+   vi ans;
+   pq.push({0,1});
 
-    vi cycle;
-    v<bool> visited(n, false);
-    int cur = repNode;
-    while(true)
-    {
-        cycle.pb(cur);
-        if(visited[cur])break;
-        visited[cur] = true;
-        cur = parent[cur];
-    }
-    reverse(cycle.begin(), cycle.end());
-
-    cout << "YES\n";
-    for (int i = 0; i < sz(cycle); ++i)
-    {
-        cout << cycle[i] + 1 << ' ';
-        if(i > 0 and cycle[i] == cycle[0])break;
-    }
-    
+   while(!pq.empty() and cnt[n] < k)
+   {
+        auto [curDist, cur] = pq.top();
+        pq.pop();
         
-    cout << '\n';
-}
+        cnt[cur]++;
+        if(cur == n)
+        {
+            ans.pb(curDist);
+        }
 
+        if(cnt[cur] <= k)
+        {
+            for(auto [e, wt]: a[cur])
+            {
+                pq.push({curDist + wt, e});
+            }
+        }
+   }
+   sort(all(ans));
+   cout << ans << ln;
+}
 
 signed main()
 {

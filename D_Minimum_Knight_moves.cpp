@@ -14,7 +14,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
-#define MAX 1e10
+#define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
 #define vi vector<int>
@@ -55,157 +55,64 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
-int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+int dx[2] = {-2,2}, dy[2] = {1,-1};
+const bool testcase = 1;
 
-// void solve()
-// {
-//    int n,m;
-//    cin >> n >> m;
-
-//    v<tuple<int,int,int>>a(m);
-//    for(int i = 0;i < m; ++i)
-//    {
-//         int u,v,wt;
-//         cin >> u >> v >> wt;
-//         a[i] = {u-1,v-1,wt};
-//    }
-//    v<v<pi>> adj(n);
-//    for(auto [u,v,wt]: a)
-//    {
-//         adj[u].pb({v,wt});
-//    }
-//    vi dist(n,0);
-//    int src = 0;
-//    dist[src] = 0;
-
-//    int repNode = -1;
-
-//    for(int i = 0; i < n; ++i)
-//    {
-//         for(auto [u,v,wt]: a)
-//         {
-//             if(dist[u] != MAX and dist[u] + wt < dist[v])
-//             {
-//                 if(i == n-1)
-//                 {
-//                     break;
-//                 }
-//                 dist[v] = dist[u] + wt;
-//             }
-//         }
-//     }
-
-//     vi parent(n,-1);
-//     vi cost = dist;
-//     bool notFound = true;
-//     for(int i = 0; i < n; ++i)
-//     {
-//         for(auto [u,v,wt]: a)
-//         {
-//             if(dist[u] != LLONG_MAX and dist[u] + wt < dist[v])
-//             {
-//                 dist[v] = dist[u] + wt;
-//                 if(dist[v] != cost[v]){
-//                     parent[v] = u;
-//                     notFound = false;
-//                 }
-//             }
-//         }
-//     }
-    
-//     if(notFound)
-//     {
-//         cout << "NO" << ln;
-//         return;
-//     }
-    
-//     for(int i = 0;i < n; ++i)
-//     {
-//         if(parent[i] != -1)
-//         {
-//             repNode = i;
-//             break;
-//         }
-//     }
-
-//     vi ans;
-//     set<int> st;
-//     int temp = repNode;
-//     while(st.find(temp) == st.end())
-//     {
-//         ans.pb(temp);
-//         st.insert(temp);
-//         temp = parent[temp];
-//     }
-  
-//     ans.pb(temp);
-//     reverse(all(ans));
-//     cout << "YES" << ln;
-//     set<int> fst;
-//     for(auto e: ans)
-//     {
-//         cout << e+1 << ' ';
-//         if(fst.find(e) != fst.end())break;
-//         fst.insert(e);
-//     }
-        
-// }
-
-void solve() {
-    int n, m;
-    cin >> n >> m;
-
-    using T = tuple<int, int, int>;
-    vector<T> edges(m);
-    for (int i = 0; i < m; ++i) {
-        int u, v, w;
-        cin >> u >> v >> w;
-        edges[i] = {u - 1, v - 1, w};
-    }
-
-    vi dist(n, 0ll); // initialized with zero because we only have to deal with negative cycle otherwise would have intialized with positive infinity
-    vi parent(n, -1);
-    int repNode = -1;
-
-    for (int i = 0; i < n; ++i) {
-        for (auto [u, v, w] : edges) {
-            if (dist[u] + w < dist[v]) {
-                dist[v] = dist[u] + w;
-                parent[v] = u;
-                if (i == n - 1) repNode = v; 
-            }
-        }
-    }
-
-    if (repNode == -1) {
-        cout << "NO" << ln;
-        return;
-    }
-
-    vi cycle;
-    v<bool> visited(n, false);
-    int cur = repNode;
-    while(true)
-    {
-        cycle.pb(cur);
-        if(visited[cur])break;
-        visited[cur] = true;
-        cur = parent[cur];
-    }
-    reverse(cycle.begin(), cycle.end());
-
-    cout << "YES\n";
-    for (int i = 0; i < sz(cycle); ++i)
-    {
-        cout << cycle[i] + 1 << ' ';
-        if(i > 0 and cycle[i] == cycle[0])break;
-    }
-    
-        
-    cout << '\n';
+pi f(char ch, int i)
+{
+    pi p = {ch - 'a', i};
+    return (p);
 }
 
+void solve()
+{
+   string s,t;
+   cin >> s >> t;
+   char sch = s[0], dch = t[0];
+   int sint = (s[1] - '0') - 1, dint = (t[1] - '0') - 1;
+   
+   vii dist(8, vi(8, -1));
+
+   queue<pi> q;
+   pi p = f(sch, sint);
+   q.push(p);
+   dist[p.F][p.S] = 0;
+   pi dp = f(dch, dint);
+   
+   while(!q.empty())
+   {
+        if(dist[dp.F][dp.S] != -1)break;
+        auto [x,y] = q.front();
+        q.pop();
+
+        for(auto i : dx)
+        {
+            for(auto j: dy)
+            {
+                if(x+i >= 0 and x+i < 8 and y+j >= 0 and y+j < 8 and dist[x+i][y+j] == -1)
+                {
+                    q.push({x+i, y+j});
+                    dist[x+i][y+j] = dist[x][y] + 1;
+                }
+            }
+        }
+
+        for(auto i : dx)
+        {
+            for(auto j: dy)
+            {
+                if(y+i >= 0 and y+i < 8 and x+j >= 0 and x+j < 8 and dist[x+j][y+i] == -1)
+                {
+                    q.push({x+j, y+i});
+                    dist[x+j][y+i] = dist[x][y] + 1;
+                }
+            }
+        }
+   }
+
+   cout << dist[dp.F][dp.S] << ln;
+
+}
 
 signed main()
 {

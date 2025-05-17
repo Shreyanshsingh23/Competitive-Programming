@@ -14,7 +14,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
-#define MAX 1e10
+#define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
 #define vi vector<int>
@@ -58,154 +58,54 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-// void solve()
-// {
-//    int n,m;
-//    cin >> n >> m;
+bool solve()
+{
+   int1(n)
+   vii a(n+1);
+   for(int i = 1; i < n; ++i)
+   {    
+        int u,v;
+        cin >> u >> v;
+        a[u].pb(v);
+        a[v].pb(u);
+   }
 
-//    v<tuple<int,int,int>>a(m);
-//    for(int i = 0;i < m; ++i)
-//    {
-//         int u,v,wt;
-//         cin >> u >> v >> wt;
-//         a[i] = {u-1,v-1,wt};
-//    }
-//    v<v<pi>> adj(n);
-//    for(auto [u,v,wt]: a)
-//    {
-//         adj[u].pb({v,wt});
-//    }
-//    vi dist(n,0);
-//    int src = 0;
-//    dist[src] = 0;
+   vi b(n);
+   cin >> b;
+   
+   vi idx(n+1);
+   for(int i = 0; i < n; ++i)idx[b[i]] = i;
 
-//    int repNode = -1;
+   for(int i = 1; i <= n; ++i)
+   {
+        sort(all(a[i]), [&](int x, int y){
+            return idx[x] < idx[y];
+        });
+   }
+   v<bool> vis(n+1, false);
+   vi ans;
+   queue<int> q;
+   q.push(1);
+   vis[1] = true;
 
-//    for(int i = 0; i < n; ++i)
-//    {
-//         for(auto [u,v,wt]: a)
-//         {
-//             if(dist[u] != MAX and dist[u] + wt < dist[v])
-//             {
-//                 if(i == n-1)
-//                 {
-//                     break;
-//                 }
-//                 dist[v] = dist[u] + wt;
-//             }
-//         }
-//     }
+   while(!q.empty())
+   {
+        auto cur = q.front();
+        q.pop();
+        ans.pb(cur);
 
-//     vi parent(n,-1);
-//     vi cost = dist;
-//     bool notFound = true;
-//     for(int i = 0; i < n; ++i)
-//     {
-//         for(auto [u,v,wt]: a)
-//         {
-//             if(dist[u] != LLONG_MAX and dist[u] + wt < dist[v])
-//             {
-//                 dist[v] = dist[u] + wt;
-//                 if(dist[v] != cost[v]){
-//                     parent[v] = u;
-//                     notFound = false;
-//                 }
-//             }
-//         }
-//     }
-    
-//     if(notFound)
-//     {
-//         cout << "NO" << ln;
-//         return;
-//     }
-    
-//     for(int i = 0;i < n; ++i)
-//     {
-//         if(parent[i] != -1)
-//         {
-//             repNode = i;
-//             break;
-//         }
-//     }
-
-//     vi ans;
-//     set<int> st;
-//     int temp = repNode;
-//     while(st.find(temp) == st.end())
-//     {
-//         ans.pb(temp);
-//         st.insert(temp);
-//         temp = parent[temp];
-//     }
-  
-//     ans.pb(temp);
-//     reverse(all(ans));
-//     cout << "YES" << ln;
-//     set<int> fst;
-//     for(auto e: ans)
-//     {
-//         cout << e+1 << ' ';
-//         if(fst.find(e) != fst.end())break;
-//         fst.insert(e);
-//     }
-        
-// }
-
-void solve() {
-    int n, m;
-    cin >> n >> m;
-
-    using T = tuple<int, int, int>;
-    vector<T> edges(m);
-    for (int i = 0; i < m; ++i) {
-        int u, v, w;
-        cin >> u >> v >> w;
-        edges[i] = {u - 1, v - 1, w};
-    }
-
-    vi dist(n, 0ll); // initialized with zero because we only have to deal with negative cycle otherwise would have intialized with positive infinity
-    vi parent(n, -1);
-    int repNode = -1;
-
-    for (int i = 0; i < n; ++i) {
-        for (auto [u, v, w] : edges) {
-            if (dist[u] + w < dist[v]) {
-                dist[v] = dist[u] + w;
-                parent[v] = u;
-                if (i == n - 1) repNode = v; 
+        for(auto e: a[cur])
+        {
+            if(!vis[e])
+            {
+                q.push(e);
+                vis[e] = true;
             }
         }
-    }
-
-    if (repNode == -1) {
-        cout << "NO" << ln;
-        return;
-    }
-
-    vi cycle;
-    v<bool> visited(n, false);
-    int cur = repNode;
-    while(true)
-    {
-        cycle.pb(cur);
-        if(visited[cur])break;
-        visited[cur] = true;
-        cur = parent[cur];
-    }
-    reverse(cycle.begin(), cycle.end());
-
-    cout << "YES\n";
-    for (int i = 0; i < sz(cycle); ++i)
-    {
-        cout << cycle[i] + 1 << ' ';
-        if(i > 0 and cycle[i] == cycle[0])break;
-    }
-    
-        
-    cout << '\n';
+   }
+   
+   return ans == b;
 }
-
 
 signed main()
 {
@@ -217,8 +117,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "Yes": "No") << ln;
+        // solve();
     }
     return 0;
 }

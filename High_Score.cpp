@@ -15,7 +15,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
-#define MIN LLONG_MIN
+#define MIN -1e15
 #define sz(x)(int) x.size()
 #define vi vector<int>
 #define v vector
@@ -58,66 +58,136 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-void f(int node,  int prev, v<v<pi>>& a, bool& poss, int c)
+bool dfs(int node, int n, v<v<pi>>& a, v<bool>& vis, v<bool>& poss)
 {
-    c++;
-    if(node == 0)
+    if(node == n)return poss[node] = true;
+    if(vis[node])return poss[node] == true? true: false;
+    vis[node] = true;
+
+    bool ans = poss[node];
+    for(auto [e, wt]: a[node])
     {
-        poss = true;
-        return;
+        if(vis[e] == false)ans |= dfs(e, n, a, vis, poss);
     }
-    for(auto [e,wt]: a[node])
+
+    return poss[node] = ans;
+}
+
+
+bool rdfs(int node, int n, v<v<pi>>& a, v<bool>& vis, v<bool>& poss)
+{
+    if(node == n)return poss[node] = true;
+    if(vis[node])return poss[node] == true? true: false;
+    vis[node] = true;
+
+    bool ans = poss[node];
+    for(auto [e, wt]: a[node])
     {
-        if(e != prev)
-        {
-            if(c > sz(a) + 10)return;
-            f(e,node,a,poss,c);
-        }
+        if(vis[e] == false)ans |= rdfs(e, n, a, vis, poss);
     }
-    c--;
+
+    return poss[node] = ans;
 }
 
 void solve()
 {
    int n,m;
    cin >> n >> m;
-   v<v<pi>> a(n);
+   v<v<pi>> a(n+1);
+   v<tuple<int,int,int>> edge(m);
    for(int i = 0; i < m; ++i)
    {
         int u,v,wt;
         cin >> u >> v >> wt;
-        u--; v--;
         a[u].pb({v,wt});
+        edge[i] = {u,v,wt};
    }
-   vi dist(n,MIN);
-   int c = 0;
 
-   bool poss = false;
-   f(n-1,-1,a,poss,0);
    
-   debug(poss)
+   v<bool> vis(n+1, false);
+   v<bool> poss(n+1, false);
+   v<bool> rposs(n+1, false);
+   for(int i = 1; i < n+1; ++i)vis[i] = false;
+   poss[1] = dfs(1, n, a, vis, poss);
+   for(auto& [x,y]: a[n])if(!rposs[x])rposs[x] = rdfs(x,n,a,vis,rposs);
+//    for(int i = 1; i <= n; ++i)
+//    {
+//         if(poss[i])continue;
+//         bool ans = false;
+//         for(auto [x, y]: a[i])
+//         {
+//             if(poss[x])
+//             {
+//                 ans = true;
+//                 break;
+//             }
+//         }
+//         poss[i] = ans;
+//    }
 
-   function<int(int,int)> dfs = [&] (int node, int prev)
+//    for(int i = 1; i <= n; ++i)
+//    {
+//         if(rposs[i])continue;
+//         bool ans = false;
+//         for(auto [x, y]: a[i])
+//         {
+//             if(rposs[x])
+//             {
+//                 ans = true;
+//                 break;
+//             }
+//         }
+//         rposs[i] = ans;
+//    }
+   
+   vi dist(n+1,MIN);
+   dist[1] = 0;
+//    debug(dist)
+   for(int i = 0; i < n; ++i)
    {
-        // debug(node,prev)
-        c++;
-        
-
-        int ans = MIN;
-        for(auto [e,wt]: a[node])
+        for(auto [u,v,wt]: edge)
         {
-            if(e != prev)
+            // if(u == 9 and v == 10)debug("agaya",dist[u], dist[v], wt, dist[u]+wt > dist[v])
+            if(dist[v] == MIN or dist[u] + wt > dist[v])
             {
-                if(c > n+10)return ans;
-                int temp = dfs(e,node);
-                ans = max(ans, temp + wt);
+                // if(u == 9 and v == 10)debug(dist[u], dist[v], wt, dist[u]+wt > dist[v])
+                dist[v] = dist[u] + wt;
+                // if(u == 9 and v == 10)debug(dist[v])
             }
         }
-        c--;
-        return ans;
-   };
+        // debug(dist)
+   }
 
-   cout << dfs(0,-1) << ln;
+   vi cost = dist;
+   bool impossible = false;
+//    debug(cost)
+
+   for(int i = 0; i < n; ++i)
+   {
+        for(auto [u,v,wt]: edge)
+        {
+            if(dist[u] + wt > dist[v])
+            {   
+                dist[v] = dist[u] + wt;
+                if(poss[v] and rposs[v])
+                {
+                    impossible = true;
+                }
+            }
+        }
+   }
+// debug(dist)
+debug(poss)
+// for(int i = 1; i <= n; ++i)
+// {cout<< make_pair(i,poss[i]) << ln;}
+// debug(rposs)
+   if(impossible)
+   {
+        cout << -1 << ln;
+        return;
+   }
+
+   cout << dist[n] << ln;
 }
 
 signed main()
