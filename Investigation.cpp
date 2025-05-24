@@ -72,6 +72,41 @@ void solve()
 
    v<bool> vis(n+1);
    vi dist(n+1);
+   v<mpii> ways(n+1); // {dist,ways}
+   ways[n][0] = 1;
+   vis[n] = true;
+
+   function<void(int,int)> dfs = [&] (int node, int weight)
+   {
+        
+        if(vis[node])
+        {
+            for(auto [wt, ways]: ways[node])
+            {
+                debug(wt,ways)
+            }
+            return;
+        }
+
+        vis[node] = true;
+        for(auto [x,wt]: a[node])
+        {
+            if(!vis[x])
+            {
+                dfs(x,wt);
+            }
+        }
+   };
+   int cnt = 0;
+   for(auto [x,wt]: a[1])
+   {
+        if(!vis[x])
+        {
+            dfs(x,wt);
+        }
+   }
+   debug(ways)
+
    using t = tuple<int,int,int>; // {dist, node, flight count}
    priority_queue<t, v<t>, greater<t>> q;
    q.push({0,1,0});

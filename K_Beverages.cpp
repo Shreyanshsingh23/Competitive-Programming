@@ -58,53 +58,70 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-bool solve()
+void solve()
 {
-   int1(n)
-   vii a(n+1);
-   for(int i = 1; i < n; ++i)
-   {    
-        int u,v;
-        cin >> u >> v;
-        a[u].pb(v);
-        a[v].pb(u);
-   }
+   int n;
+   cin >> n;
 
-   vi b(n);
-   cin >> b;
+   map<int,string> mp;
+   map<string, int> np;
+   for(int i = 0; i < n; ++i)
+   {
+        string s;
+        cin >> s;
+        mp[i] = s;
+        np[s] = i;
+   }
    
-   vi idx(n+1);
-   for(int i = 0; i < n; ++i)idx[b[i]] = i;
+   int m;cin >> m;
+   vii a(n);
+   v<bool> vis(n, false);
+   v<bool> tgt(n, false);
 
-   for(int i = 1; i <= n; ++i)
+   for(int i = 0; i < m; ++i)
    {
-        sort(all(a[i]), [&](int x, int y){
-            return idx[x] < idx[y];
-        });
+        string s,t;
+        cin >> s >> t;
+        int f = np[s], g = np[t];
+        a[f].pb(g);
    }
-   v<bool> vis(n+1, false);
-   vi ans;
-   queue<int> q;
-   q.push(1);
-   vis[1] = true;
 
-   while(!q.empty())
+   stack<int> st;
+   function<void(int)> dfs = [&] (int node)
    {
-        auto cur = q.front();
-        q.pop();
-        ans.pb(cur);
-
-        for(auto e: a[cur])
+        vis[node] = true;
+        for(auto e: a[node])
         {
-            if(!vis[e])
+            if(vis[e] == false)
             {
-                q.push(e);
-                vis[e] = true;
+                dfs(e);
             }
         }
+        st.push(node);
+   };
+
+   for(int i = 0; i < n; ++i)
+   {
+        if(!vis[n-i-1])dfs(n-i-1);
    }
-   debug(a)
-   return ans == b;
+
+   vi ans;
+   while(!st.empty())
+   {
+        int x = st.top();
+        st.pop();
+        ans.pb(x);
+   }
+   cout << "Dilbert should drink beverages in this order:";
+   for(auto e: ans)
+   {
+        cout << ' ' << mp[e] ;
+   }
+   cout << ".\n";
+
+
+   
+   
 }
 
 signed main()
@@ -116,9 +133,9 @@ signed main()
     // compFact();
     for(int i = 1; i <= t; ++i)
     {
-      //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "Yes": "No") << ln;
-        // solve();
+       cout << "Case #" << i << ": "; 
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

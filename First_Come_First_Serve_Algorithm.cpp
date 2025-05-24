@@ -57,54 +57,90 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
-
-bool solve()
+struct process
 {
-   int1(n)
-   vii a(n+1);
-   for(int i = 1; i < n; ++i)
-   {    
-        int u,v;
-        cin >> u >> v;
-        a[u].pb(v);
-        a[v].pb(u);
-   }
-
-   vi b(n);
-   cin >> b;
-   
-   vi idx(n+1);
-   for(int i = 0; i < n; ++i)idx[b[i]] = i;
-
-   for(int i = 1; i <= n; ++i)
+    int arr, burst, end, waiting, tat;
+};
+void solve()
+{
+   int x;
+   string line;
+   vector<int> t;
+   while(getline(cin,line))
    {
-        sort(all(a[i]), [&](int x, int y){
-            return idx[x] < idx[y];
-        });
-   }
-   v<bool> vis(n+1, false);
-   vi ans;
-   queue<int> q;
-   q.push(1);
-   vis[1] = true;
-
-   while(!q.empty())
-   {
-        auto cur = q.front();
-        q.pop();
-        ans.pb(cur);
-
-        for(auto e: a[cur])
+        istringstream iss (line);
+        while(iss >> x)
         {
-            if(!vis[e])
-            {
-                q.push(e);
-                vis[e] = true;
-            }
+            t.push_back(x);
         }
    }
-   debug(a)
-   return ans == b;
+   
+   int n = t.size() / 2;
+   vector<process> a(n);
+   for(int i = 0;i < n; ++i)
+   {
+        a[i].arr = t[i];
+   }
+   for(int i = 0; i < n; ++i)
+   {
+        a[i].burst = t[i+n];
+   }
+    
+   int time = a[0].arr;
+   queue<pair<int,int>> q;
+   int k = 0;
+   while(k < n and a[k].arr == a[0].arr)
+   {
+        q.push({a[k].burst, k});
+        ++k;
+   }    
+
+   int completed = 0;
+
+   while(completed < n)
+   {
+        if(q.empty())
+        {
+            time++;
+            while(k < n and a[k].arr <= time)
+            {
+                q.push({a[k].burst, k});
+                ++k;
+            }
+            continue;
+        }
+        while(!q.empty())
+        {
+            auto [b, idx] = q.front();
+            q.pop();
+
+            time += b;
+            a[idx].end = time;
+            ++completed;
+
+            while(k < n and a[k].arr <= time)
+            {
+                q.push({a[k].burst, k});
+                ++k;
+            }
+
+         }
+   }
+
+   int wAvg = 0, tatAvg = 0;
+   for(int i = 0; i < n; ++i)
+   {
+        a[i].tat = a[i].end - a[i].arr;
+        a[i].waiting = a[i].tat - a[i].burst;
+        wAvg += a[i].waiting;
+        tatAvg += a[i].tat;
+   }
+
+   wAvg /= n;
+   tatAvg /= n;
+
+   cout << wAvg << '\n' << tatAvg << endl;
+
 }
 
 signed main()
@@ -117,8 +153,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "Yes": "No") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }
