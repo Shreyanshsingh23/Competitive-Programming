@@ -56,77 +56,50 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-int t = 1;
 void solve()
 {
-    int n;
+   int2(n,k)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
 
-    while(cin >> n)
-   {
-
-   v<string> bev(n);
-   map<string,int> mp;
+   int cnt = 0, mn = * min_element(all(a));
+   bool greaterThanOne = false;
    for(int i = 0; i < n; ++i)
    {
-        cin >> bev[i];
-        mp[bev[i]] = i;
-   }
-
-   int m;
-   cin >> m;
-   vi indegree(n,0);
-   vii a(n);
-
-   for(int i = 0; i < m; ++i)
-   {
-        string s,t;
-        cin >> s >> t;
-        int f = mp[s], g = mp[t];
-        indegree[g]++;
-        a[f].pb(g);
-   }
-
-   priority_queue<int, vi, greater<int>> pq;
-
-   for(int i = 0; i < n; ++i)
-   {
-        if(indegree[i] == 0)pq.push(i);
-   }
-
-   vi ans;
-   while(!pq.empty())
-   {
-        auto node = pq.top();
-        pq.pop();
-        ans.pb(node);
-
-        for(auto e: a[node]){
-            indegree[e]--;
-            if(indegree[e] == 0)pq.push(e);
+        if(a[i] > mn+k+1)
+        {
+            cout << "Jerry" << ln; //win
+            return;
+        }
+        if(a[i] == mn+k+1)
+        {
+            cnt++;
+            if(cnt > 1)
+            {
+                cout << "Jerry" << ln;
+                return;
+            }
         }
    }
 
-   cout << "Case #" << t++ << ": ";
-   cout << "Dilbert should drink beverages in this order:";
-   for(auto e: ans)
-   {
-        cout << ' ' << bev[e] ;
-   }
-   cout << ".\n\n";
-
-
-   
-   
-}
+   int total = accumulate(all(a),0ll);
+   cout << ((total&1) ? "Tom": "Jerry") << ln;
 }
 
 signed main()
 {
     ShreyanshSinghGautam
 
-   solve();
-    
+    int t = 1;
+    testcase and cin >> t;
+    // compFact();
+    for(int i = 1; i <= t; ++i)
+    {
+      //  cout << "Case #" << i << ": "; 
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
+    }
     return 0;
 }

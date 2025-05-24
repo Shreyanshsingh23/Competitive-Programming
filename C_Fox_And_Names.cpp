@@ -58,75 +58,75 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int t = 1;
 void solve()
 {
-    int n;
-
-    while(cin >> n)
+   int1(n)
+   v<string> a (n);
+   FOR(i,n) cin >> a[i];
+   vii adj(26);
+    vi indegree(26,0);
+   for(int i = 0; i < n-1; ++i)
    {
-
-   v<string> bev(n);
-   map<string,int> mp;
-   for(int i = 0; i < n; ++i)
-   {
-        cin >> bev[i];
-        mp[bev[i]] = i;
-   }
-
-   int m;
-   cin >> m;
-   vi indegree(n,0);
-   vii a(n);
-
-   for(int i = 0; i < m; ++i)
-   {
-        string s,t;
-        cin >> s >> t;
-        int f = mp[s], g = mp[t];
-        indegree[g]++;
-        a[f].pb(g);
-   }
-
-   priority_queue<int, vi, greater<int>> pq;
-
-   for(int i = 0; i < n; ++i)
-   {
-        if(indegree[i] == 0)pq.push(i);
-   }
-
-   vi ans;
-   while(!pq.empty())
-   {
-        auto node = pq.top();
-        pq.pop();
-        ans.pb(node);
-
-        for(auto e: a[node]){
-            indegree[e]--;
-            if(indegree[e] == 0)pq.push(e);
+        string s = a[i], t = a[i+1];
+        for(int j = 0; j < min(sz(s), sz(t)); ++j)
+        {
+            if(s[j] != t[j])
+            {   
+                adj[(s[j]-'a')].pb((t[j]-'a'));
+                indegree[(t[j]-'a')]++;
+                break;
+            }
+            if(j+1 == sz(t))
+            {
+                cout << "Impossible\n";
+                return;
+            }
         }
    }
 
-   cout << "Case #" << t++ << ": ";
-   cout << "Dilbert should drink beverages in this order:";
-   for(auto e: ans)
+   queue<int> q;
+   vi ans;
+   for(int i = 0; i < 26; ++i)
    {
-        cout << ' ' << bev[e] ;
+        if(indegree[i] == 0)q.push(i);
    }
-   cout << ".\n\n";
-
 
    
+   while(!q.empty())
+   {
+        auto node = q.front();
+        q.pop();
+        ans.pb(node);
+
+        for(auto e: adj[node])
+        {
+            indegree[e]--;
+            if(indegree[e] == 0)q.push(e);
+        }
+   }
+
+   if(sz(ans) < 26)
+   {
+        cout << "Impossible\n";
+        return;
+   }
    
-}
+   for(auto e: ans)cout << char(e+'a');
+
 }
 
 signed main()
 {
     ShreyanshSinghGautam
 
-   solve();
-    
+    int t = 1;
+    testcase and cin >> t;
+    // compFact();
+    for(int i = 1; i <= t; ++i)
+    {
+      //  cout << "Case #" << i << ": "; 
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
+    }
     return 0;
 }
