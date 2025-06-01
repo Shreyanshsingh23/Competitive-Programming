@@ -58,20 +58,67 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-bool solve()
+void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
-   {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
-   }
-   return 1;
+   int k; cin >> k;
+   vi A(n),B(n);
+    cin >> A >> B;
+
+   v<pi> a(n);
+    for (int i = 0; i < n; ++i) 
+    {
+        
+        a[i] = {A[i],B[i]};
+    }
+    
+    sort(all(a));
+    
+    vi pref(n+1, 0);
+    priority_queue<int, vi, greater<int>> pq;
+    int sum = 0;
+    for (int i = 0; i < n; ++i) 
+    {
+        int x = (a[i].S);
+        pq.push(x);
+        sum += x;
+        if (pq.size() > k) {
+            sum -= pq.top();
+            pq.pop();
+        }
+        pref[i+1] = sum;
+    }
+    
+    vi ans(n);
+    for (int i = 0; i < n; ++i) {
+        int level = A[i];
+        int lo = 0, hi = n - 1, pos = -1;
+        while (lo <= hi) 
+        {
+            int mid = lo + (hi - lo) / 2;
+            if (a[mid].F < level) 
+            {
+                pos = mid;
+                lo = mid + 1;
+            } 
+            else 
+            {
+                hi = mid - 1;
+            }
+        }
+        
+        if (pos == -1) 
+        {
+            ans[i] = 0;
+        } 
+        else 
+        {
+            int res = pos + 1;
+            ans[i] = pref[res];
+        }
+    }
+    
+    cout<<  ans << ln;
 }
 
 signed main()
@@ -84,8 +131,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

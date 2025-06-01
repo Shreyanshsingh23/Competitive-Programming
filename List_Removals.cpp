@@ -1,5 +1,35 @@
+
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> 
+#include <ext/pb_ds/tree_policy.hpp> 
+using namespace __gnu_pbds; 
 using namespace std;
+template <typename T>
+class OrderedSet {
+private:
+    tree< T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update> st;
+public:
+    int countElementsLessThanX(T x) {
+        return st.order_of_key(x);
+    }
+
+    int countElementsAtleastX(T x) {
+        return st.size() - countElementsLessThanX(x);
+    }
+
+    T getKthElement(int k) {
+        return *st.find_by_order(k);
+    }
+    
+    void insert(T x) {
+        st.insert(x);
+    }
+    
+    void erase(T x) {
+        st.erase(x);
+    }
+};
+
 #ifndef ONLINE_JUDGE
     #define debug(...) cout << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__);
 #else
@@ -56,22 +86,28 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-bool solve()
+void solve()
 {
    int1(n)
+   OrderedSet<pi> st;
    vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
+   FOR(i,n) 
+   {
+        cin >> a[i];
+        st.insert({i,a[i]});
+   }
+
    for(int i = 0; i < n; ++i)
    {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
+        int x; cin >> x;
+        auto ele = st.getKthElement(x-1);
+        cout << (ele.S) << " ";
+        st.erase(ele);
    }
-   return 1;
+
+   
 }
 
 signed main()
@@ -84,8 +120,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

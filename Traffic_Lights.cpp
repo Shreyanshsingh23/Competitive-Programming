@@ -13,6 +13,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
 #define MAX LLONG_MAX
 #define MIN LLONG_MIN
 #define sz(x)(int) x.size()
@@ -53,30 +54,45 @@ int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
+void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
+int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+using t = tuple<int,int,int>;
 
 void solve()
 {
-   int2(m,n)
-   vi a (n);
-   cin >> a;
+   int len, n;
+   cin >> len >> n;
+
    set<int> st;
-    
-   vi ans(n);
    st.insert(0);
-   st.insert(m);
-    
-    FOR(i,n){
-        auto it = st.lower_bound(a[i]);
-        auto it2 = --it;
-        debug(*it,*it2)
-        st.erase()
-    }
+   st.insert(len);
+   
+  set<t> deleted;
+   priority_queue<t> pq;
+   pq.push({len,0,len});
 
-   FOR(i,n)cout << ans[i] << ' ';
+   for(int q = 0; q < n; ++q)
+   {
+        int x; cin >> x;
+        auto it = st.lower_bound(x);
+        if(*it == x)continue;
+        int left, right;
+        left = *(prev(it));
+        right = *it;
 
+        
+        deleted.insert({right-left,left,right});
+        pq.push({x-left,left,x});
+        pq.push({right-x,x,right});
+        st.insert(x);
 
-
+        while(!pq.empty() and deleted.find(pq.top()) != deleted.end())
+        {
+            pq.pop();
+        }
+        cout << get<0>(pq.top()) << ' ';
+   }
 
 }
 
@@ -87,8 +103,9 @@ signed main()
     int t = 1;
     testcase and cin >> t;
     // compFact();
-    while (t--)
+    for(int i = 1; i <= t; ++i)
     {
+      //  cout << "Case #" << i << ": "; 
      //   cout << (solve() ? "YES": "NO") << ln;
         solve();
     }

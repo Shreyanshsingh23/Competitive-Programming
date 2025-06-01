@@ -57,21 +57,42 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
+int k;
 
-bool solve()
+void dfs(int node,vi& ans, vi& path, vii& a)
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
+    if(size(path) >= k)
+    {
+        ans[node] = path[sz(path) - k];
+    }
+    if(a[node].size() == 1) path.pb(node);
+    
+    for(auto e: a[node])
+    {
+        dfs(e,ans,path,a);
+        
+    }
+    if(a[node].size() == 1) path.pop_back();
+}
+
+void solve()
+{
+   int n;
+   cin >> n >> k;
+   vi ans(n+1,-1);
+
+   vii a(n+1);
+   for(int i = 2; i <= n; ++i)
    {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
+        int p;
+        cin >> p;
+        a[p].pb(i);
    }
-   return 1;
+   
+   vi path;
+   dfs(1, ans,path,a);
+   for(int i = 1; i < n+1; ++i)cout << ans[i] << ' ';
+   cout << ln;
 }
 
 signed main()
@@ -84,8 +105,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

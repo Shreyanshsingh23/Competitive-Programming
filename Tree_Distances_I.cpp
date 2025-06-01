@@ -66,7 +66,6 @@ void solve()
 {
    cin >> n;
    a.resize(n+1);
-   parent.resize(n+1);
    FOR(i,n-1)
    {
         int u,v;
@@ -75,14 +74,24 @@ void solve()
         a[v].pb(u);
    }
 
-   for(int i = 1; i <= n; ++i){
-       for(auto e : a[i]){
-         if(parent[e] == 0)parent[e] = i;
-       }
-   }
-   parent[1] = 0;
+   vi dist(n+1, -1);
 
-   for(int j )
+   function<void(int,int)> dfs = [&] (int node, int prev)
+   {
+        int ans = 0;
+        for(auto e: a[node])
+        {
+            if(e != prev)
+            {
+                dfs(e,node);
+                dist[node] = max(dist[node], dist[e]);
+            }
+        }
+        dist[node]++;
+   };
+
+   dfs(1,-1);
+   debug(dist)
    
    
 }

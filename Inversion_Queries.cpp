@@ -1,5 +1,34 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> 
+#include <ext/pb_ds/tree_policy.hpp> 
+using namespace __gnu_pbds; 
 using namespace std;
+template <typename T>
+class OrderedSet {
+private:
+    tree< T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update> st;
+public:
+    int countElementsLessThanX(T x) {
+        return st.order_of_key(x);
+    }
+
+    int countElementsAtleastX(T x) {
+        return st.size() - countElementsLessThanX(x);
+    }
+
+    T getKthElement(int k) {
+        return *st.find_by_order(k);
+    }
+    
+    void insert(T x) {
+        st.insert(x);
+    }
+    
+    void erase(T x) {
+        st.erase(x);
+    }
+};
+
 #ifndef ONLINE_JUDGE
     #define debug(...) cout << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__);
 #else
@@ -58,20 +87,35 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-bool solve()
+void solve()
 {
    int1(n)
+   int q;cin >> q;
    vi a (n);
    FOR(i,n) cin >> a[i];
-   
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
+   vi b(a);
+    while(q--)
    {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
+       int ans = 0;
+       OrderedSet<pi> st;
+       int l,r;
+       cin >> l >> r;
+       for(int i = 0; i< n; ++i)
+       {
+            if(b[i] < l)a[i] = l;
+            else if(b[i] > r)a[i] = r;
+            else a[i] = b[i];
+       }
+
+        for(int i = 0; i< n; ++i)
+        {
+            ans += st.countElementsAtleastX({a[i],1e9});
+            st.insert({a[i],i});
+        }
+
+        cout << ans << ln;
    }
-   return 1;
+   
 }
 
 signed main()
@@ -84,8 +128,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

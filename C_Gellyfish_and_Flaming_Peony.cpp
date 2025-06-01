@@ -10,7 +10,7 @@ using namespace std;
 template <typename T> std::ostream &operator<<(std::ostream &stream, const vector<T> &vec) {for(size_t i = 0; i < vec.size(); i++) { stream << vec[i]; if (i != vec.size() - 1) stream << ' '; }; return stream; } template <typename T> std::istream &operator>>(std::istream &stream, vector<T> &vec) {for (T &x : vec) stream >> x; return stream; } template <typename T, typename U> std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr) {stream << pr.first << ' ' << pr.second; return stream; } template <typename T, typename U> std::istream &operator>>(std::istream &stream, pair<T, U> &pr) {stream >> pr.first >> pr.second; return stream; } template <typename A, typename B> string to_string(pair<A, B> p); template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p); template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p); string to_string(const string &s) { return '"' + s + '"'; } string to_string(char c) {string s; s += c; return s; } string to_string(const char *s) { return to_string((string)s); } string to_string(bool b) { return (b ? "1" : "0"); } string to_string(vector<bool> v) {bool first = true; string res = "{"; for (int i = 0; i < static_cast<int>(v.size()); i++) {if (!first) {res += ", "; } first = false; res += to_string(v[i]); } res += "}"; return res; } template <size_t N> string to_string(bitset<N> v) {string res = ""; for (size_t i = 0; i < N; i++) {res += static_cast<char>('0' + v[i]); } return res; } template <typename A> string to_string(A v) {bool first = true; string res = "{"; for (const auto &x : v) {if (!first) {res += ", "; } first = false; res += to_string(x); } res += "}"; return res; } template <typename A, typename B> string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; } template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; } template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; } void debug_out() { cout << endl; } template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) {cout << " " << to_string(H); debug_out(T...); }
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
-#define int long long
+// #define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
@@ -58,20 +58,67 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
-bool solve()
+int dp[5069][5069];
+
+int f(int i, int cur, int g, vi& a)
+{
+    int n = a.size();
+    if(i == n)
+    {
+        if(cur == g)return 0;
+        return 1e9;
+    }
+
+    int& ans = dp[i][cur];
+    if(ans != -1)return ans;
+
+    // not take
+    ans = f(i+1, cur, g, a);
+
+    // take
+    ans = min(ans,f(i+1, gcd(a[i],cur), g, a) + 1);
+
+    return ans;
+}
+
+void solve()
 {
    int1(n)
    vi a (n);
+   mpii mp;
    FOR(i,n) cin >> a[i];
+//    mp[a[i]]++;
    
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
+   if (n == 1) 
    {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
-   }
-   return 1;
+        cout << 0 << ln;
+        return;
+    }
+    
+    int g = a[0];
+    for (int i = 1; i < n; ++i) 
+    {
+        g = gcd(g, a[i]);
+    }
+    
+    int k = 0;
+    for (int i = 0; i < n; ++i) 
+    {
+        if (a[i] == g) 
+        {
+            ++k;
+        }
+    }
+    
+    if (k >= 1) 
+    {
+        cout << n - k << ln;
+        return;
+    }
+    
+    for(int i = 0; i <= n+1; ++i)for(int j = 0; j <= 5010; ++j)dp[i][j] = -1;
+    
+   cout << n - 2 + f(0,0,g,a) << ln;
 }
 
 signed main()
@@ -84,8 +131,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

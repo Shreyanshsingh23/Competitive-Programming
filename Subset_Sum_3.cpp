@@ -58,20 +58,52 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 1;
 
+
+int a[N];
+int dp[110][10010];
+int n;
+
+bool f(int i, int sum)
+{
+    if(dp[i][sum] != -1)return dp[i][sum];
+        if(i == n)
+        {
+            if(sum != 0 and sum%3 ==0)return 1ll;
+            return 0ll;
+        }
+
+        int ans = 0ll;
+
+        ans |= f(i+1,sum);
+        ans |= f(i+1,sum+a[i]);
+        return dp[i][sum] = ans;   
+}
+
 bool solve()
 {
-   int1(n)
-   vi a (n);
+   cin >> n;
    FOR(i,n) cin >> a[i];
+
+   memset(dp,-1,sizeof(dp));
    
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
-   {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
-   }
-   return 1;
+//    function<int(int,int)> f = [&] (int i, int sum)
+//    {
+//         if(dp[i][sum] != -1)return dp[i][sum];
+//         if(i == n)
+//         {
+//             if(sum != 0 and sum%3 ==0)return 1ll;
+//             return 0ll;
+//         }
+
+//         int ans = 0ll;
+
+//         ans |= f(i+1,sum);
+//         ans |= f(i+1,sum+a[i]);
+//         return dp[i][sum] = ans;
+
+//    };
+
+   return f(0,0);
 }
 
 signed main()

@@ -94,100 +94,18 @@ void solve()
    int n,m;
    cin >> n >> m;
    v<v<pi>> a(n+1);
-   v<tuple<int,int,int>> edge(m);
+   
    for(int i = 0; i < m; ++i)
    {
         int u,v,wt;
         cin >> u >> v >> wt;
         a[u].pb({v,wt});
-        edge[i] = {u,v,wt};
+        a[v].pb({u,wt});
    }
-
    
-   v<bool> vis(n+1, false);
-   v<bool> poss(n+1, false);
-   v<bool> rposs(n+1, false);
-   for(int i = 1; i < n+1; ++i)vis[i] = false;
-   poss[1] = dfs(1, n, a, vis, poss);
-   for(auto& [x,y]: a[n])if(!rposs[x])rposs[x] = rdfs(x,n,a,vis,rposs);
-//    for(int i = 1; i <= n; ++i)
-//    {
-//         if(poss[i])continue;
-//         bool ans = false;
-//         for(auto [x, y]: a[i])
-//         {
-//             if(poss[x])
-//             {
-//                 ans = true;
-//                 break;
-//             }
-//         }
-//         poss[i] = ans;
-//    }
-
-//    for(int i = 1; i <= n; ++i)
-//    {
-//         if(rposs[i])continue;
-//         bool ans = false;
-//         for(auto [x, y]: a[i])
-//         {
-//             if(rposs[x])
-//             {
-//                 ans = true;
-//                 break;
-//             }
-//         }
-//         rposs[i] = ans;
-//    }
    
    vi dist(n+1,MIN);
-   dist[1] = 0;
-//    debug(dist)
-   for(int i = 0; i < n; ++i)
-   {
-        for(auto [u,v,wt]: edge)
-        {
-            // if(u == 9 and v == 10)debug("agaya",dist[u], dist[v], wt, dist[u]+wt > dist[v])
-            if(dist[v] == MIN or dist[u] + wt > dist[v])
-            {
-                // if(u == 9 and v == 10)debug(dist[u], dist[v], wt, dist[u]+wt > dist[v])
-                dist[v] = dist[u] + wt;
-                // if(u == 9 and v == 10)debug(dist[v])
-            }
-        }
-        // debug(dist)
-   }
-
-   vi cost = dist;
-   bool impossible = false;
-//    debug(cost)
-
-   for(int i = 0; i < n; ++i)
-   {
-        for(auto [u,v,wt]: edge)
-        {
-            if(dist[u] + wt > dist[v])
-            {   
-                dist[v] = dist[u] + wt;
-                if(poss[v] and rposs[v])
-                {
-                    impossible = true;
-                }
-            }
-        }
-   }
-// debug(dist)
-debug(poss)
-// for(int i = 1; i <= n; ++i)
-// {cout<< make_pair(i,poss[i]) << ln;}
-// debug(rposs)
-   if(impossible)
-   {
-        cout << -1 << ln;
-        return;
-   }
-
-   cout << dist[n] << ln;
+   
 }
 
 signed main()

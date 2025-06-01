@@ -56,23 +56,45 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
+const bool testcase = 0;
 
-bool solve()
+pi twoSum(int l, int r, int sum, v<pi>& a)
+{
+    while(l < r)
+    {
+        if(a[l].F + a[r].F > sum)r--;
+        else if(a[l].F + a[r].F < sum)l++;
+        else return {a[l].S, a[r].S};
+    }
+    return {-1,-1};
+}
+
+void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
+   int k;cin >> k;
+   v<pi> a (n);
+   FOR(i,n) 
    {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
+        cin >> a[i].F;
+        a[i].S = i+1;
    }
-   return 1;
+   sort(all(a));
+   for(int i = 0;i<n-2; ++i)
+   {
+        pi p = twoSum(i+1, n-1, k - a[i].F, a);
+        if(p.F != -1)
+        {
+            cout << a[i].S << ' ' <<  p.F << ' ' << p.S << ln;
+            return;
+        }
+   }
+
+   cout << "IMPOSSIBLE" << ln;
+   
 }
+
+// 1 2 5 7
 
 signed main()
 {
@@ -84,8 +106,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

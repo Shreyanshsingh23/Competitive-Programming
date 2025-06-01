@@ -61,17 +61,33 @@ const bool testcase = 1;
 bool solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
+   vi a;
+   vi freq(10,0);
+   FOR(i,n)
    {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
+        int x;
+        cin >> x;
+        x %= 10;
+        if(freq[x] < 3){
+            a.pb(x);
+            freq[x]++;
+        }
    }
-   return 1;
+    n = sz(a);
+    for(int i = 0; i < n-2; ++i)
+    {
+        for(int j = i+1; j < n-1; ++j)
+        {
+            for(int k = j+1; k < n; ++k)
+            {
+                if((a[i] + a[j] +a[k])%10 == 3)return 1;
+            }
+        }
+    }
+
+
+   return 0;
+   
 }
 
 signed main()
@@ -89,3 +105,34 @@ signed main()
     }
     return 0;
 }
+
+
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> 
+#include <ext/pb_ds/tree_policy.hpp> 
+using namespace __gnu_pbds; 
+template <typename T>
+class OrderedSet {
+private:
+    tree< T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update> st;
+public:
+    int countElementsLessThanX(T x) {
+        return st.order_of_key(x);
+    }
+
+    int countElementsAtleastX(T x) {
+        return st.size() - countElementsLessThanX(x);
+    }
+
+    T getKthElement(int k) {
+        return *st.find_by_order(k);
+    }
+    
+    void insert(T x) {
+        st.insert(x);
+    }
+    
+    void erase(T x) {
+        st.erase(x);
+    }
+};

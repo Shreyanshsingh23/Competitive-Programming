@@ -56,22 +56,41 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 1;
-
-bool solve()
+const bool testcase = 0;
+using t = tuple<int,int,int>;
+void solve()
 {
    int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   
-   vi t(a);
-   sort(all(t));
-   int mn = t[0];
-   for(int i = 0; i < n; ++i)
+   v<t> a (n);
+   FOR(i,n) 
    {
-        if(a[i]!= t[i] and a[i]%mn != 0)return 0;
+       cin >> get<0>(a[i]) >> get<1>(a[i]);
+        get<2>(a[i]) = i;
+   }    
+   vi ans(n);
+   sort(all(a));
+   priority_queue<pi, v<pi>, greater<pi>> pq;
+   pq.push({get<1>(a[0]), get<2>(a[0])});
+   ans[get<2>(a[0])] = 1;
+   int mx = 1;
+   
+
+   for(int i = 1; i < n; ++i)
+   {
+        if(pq.top().F < get<0>(a[i]))
+        {
+            ans[ get<2>(a[i]) ] = ans[pq.top().S];
+            pq.pop();
+        }
+        else
+        {
+            ans[ get<2>(a[i]) ] =  mx+1;
+            mx++;
+        }
+        pq.push({get<1>(a[i]), get<2>(a[i])});
    }
-   return 1;
+
+   cout << mx << '\n' << ans << ln;
 }
 
 signed main()
@@ -84,8 +103,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }
