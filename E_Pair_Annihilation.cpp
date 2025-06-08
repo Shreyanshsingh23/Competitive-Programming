@@ -58,83 +58,49 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int n;
-vii a;
-vi parent;
-
+int result = 0;
+void f(int node, int prev, v<v<pi>>& adj, vi& a)
+{
+    int weight = 0;
+    for(auto& [e,wt]: adj[node])
+    {
+        if(e != prev)
+        {
+            f(e,node, adj, a);
+            result += abs(a[e]) * wt;
+        }
+    }
+    a[prev] += a[node];
+}
 void solve()
 {
-   cin >> n;
-   a.resize(n+1);
-   FOR(i,n-1)
+   int1(n)
+   result = 0;
+   vi a (n + 1);
+   FOR(i,n) cin >> a[i + 1];
+//    debug(a)
+   v<v<pi>> adj (n+2);
+   for(int i = 1; i < n; ++i)
    {
-        int u,v;
-        cin >> u >> v;
-        a[u].pb(v);
-        a[v].pb(u);
+        int u,v,wt;
+        cin >> u >> v >> wt;
+        adj[u].pb({v,wt});
+        adj[v].pb({u,wt});
    }
 
-   vi dist(n+1,-1);
-   vii topTwo(n+1, vi(2, -1));
-
-   function<void(int,int)> dfs = [&] (int node, int prev)
+   int src, mxx = 0;
+   for(int i = 1; i <= n; ++i)
    {
-        int ans = -1;
-        priority_queue<int> pq;
-        for(auto e: a[node])
+        if(adj[i].size() > mxx)
         {
-            if(e != prev)
-            {
-                dfs(e,node);
-                pq.push(dist[e]);
-                dist[node] = max(dist[node], dist[e]);
-            }
+            src = i;
+            mxx = sz(adj[i]);
         }
-        dist[node]++;
-        if(pq.size()) topTwo[node][0] = pq.top();
-        if(pq.size())pq.pop();
-        if(pq.size()) topTwo[node][1] = pq.top();
-   };
-
-   function<void(int,int)> f = [&] (int node, int prev)
-   {
-
-        if(prev == -1)
-        {
-
-        }
-        else
-        {
-            if(dist[node] == topTwo[prev][0])
-            {
-                dist[node] = max(dist[node], topTwo[prev][1] + 1);
-                debug(node,topTwo[1])
-            }
-            else
-            {
-                dist[node] = max(dist[node], topTwo[prev][0] + 1);
-            }
-        }
-        
-        debug(node, dist[node])
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                f(e,node);
-            }
-        }
-
-   };
-
-   dfs(1,-1);
-//    for(auto& e: dist)e--;
-   debug(dist)
-   f(1,-1);
-   debug(dist)
-   debug(topTwo)
+   }
    
-   
+   f(src,0,adj,a);
+   cout << result << ln;
+
 }
 
 signed main()

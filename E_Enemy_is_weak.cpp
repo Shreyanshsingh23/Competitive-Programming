@@ -1,16 +1,45 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp> 
+#include <ext/pb_ds/tree_policy.hpp> 
 using namespace std;
 #ifndef ONLINE_JUDGE
-    #define debug(...) cout << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__);
+#define debug(...) cout << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__);
 #else
-    #define debug(...);
+#define debug(...);
 #endif
+#define int long long
 
+
+using namespace __gnu_pbds; 
+template <typename T>
+class OrderedSet {
+private:
+    tree< T, null_type, less<T>, rb_tree_tag,tree_order_statistics_node_update> st;
+public:
+    int countElementsLessThanX(T x) {
+        return st.order_of_key(x);
+    }
+
+    int countElementsAtleastX(T x) {
+        return st.size() - countElementsLessThanX(x);
+    }
+
+    T getKthElement(int k) {
+        return *st.find_by_order(k);
+    }
+    
+    void insert(T x) {
+        st.insert(x);
+    }
+    
+    void erase(T x) {
+        st.erase(x);
+    }
+};
 
 template <typename T> std::ostream &operator<<(std::ostream &stream, const vector<T> &vec) {for(size_t i = 0; i < vec.size(); i++) { stream << vec[i]; if (i != vec.size() - 1) stream << ' '; }; return stream; } template <typename T> std::istream &operator>>(std::istream &stream, vector<T> &vec) {for (T &x : vec) stream >> x; return stream; } template <typename T, typename U> std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr) {stream << pr.first << ' ' << pr.second; return stream; } template <typename T, typename U> std::istream &operator>>(std::istream &stream, pair<T, U> &pr) {stream >> pr.first >> pr.second; return stream; } template <typename A, typename B> string to_string(pair<A, B> p); template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p); template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p); string to_string(const string &s) { return '"' + s + '"'; } string to_string(char c) {string s; s += c; return s; } string to_string(const char *s) { return to_string((string)s); } string to_string(bool b) { return (b ? "1" : "0"); } string to_string(vector<bool> v) {bool first = true; string res = "{"; for (int i = 0; i < static_cast<int>(v.size()); i++) {if (!first) {res += ", "; } first = false; res += to_string(v[i]); } res += "}"; return res; } template <size_t N> string to_string(bitset<N> v) {string res = ""; for (size_t i = 0; i < N; i++) {res += static_cast<char>('0' + v[i]); } return res; } template <typename A> string to_string(A v) {bool first = true; string res = "{"; for (const auto &x : v) {if (!first) {res += ", "; } first = false; res += to_string(x); } res += "}"; return res; } template <typename A, typename B> string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; } template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; } template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; } void debug_out() { cout << endl; } template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) {cout << " " << to_string(H); debug_out(T...); }
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
-#define int long long
 #define ln '\n';
 #define all(x) x.begin(), x.end()
 #define rall(x) x.rbegin(), x.rend()
@@ -58,83 +87,36 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int n;
-vii a;
-vi parent;
-
 void solve()
 {
-   cin >> n;
-   a.resize(n+1);
-   FOR(i,n-1)
+   int1(n)
+   v<pi> a (n);
+   FOR(i,n) cin >> a[i].S, a[i].F = i;
+   
+   OrderedSet<int> st;
+//    mpii mp;
+//    for(int i = 0; i < n; ++i)
+//    {
+//         mp[a[i].S] = st.countElementsAtleastX(a[i].S);
+//         st.insert(a[i].S);
+//    }
+//    debug(mp)
+   int temp = 0;
+   for(int i = 0; i < n; ++i)
    {
-        int u,v;
-        cin >> u >> v;
-        a[u].pb(v);
-        a[v].pb(u);
+        st.erase(a[i].S); j
+   }
+   int ans = 0;
+   for(int i = 0; i < n; ++i)
+   {
+        int x = st.countElementsAtleastX(a[i].S);
+        st.insert(a[i].S);
+        ans += (x*temp)/2;
+        temp = x;
    }
 
-   vi dist(n+1,-1);
-   vii topTwo(n+1, vi(2, -1));
-
-   function<void(int,int)> dfs = [&] (int node, int prev)
-   {
-        int ans = -1;
-        priority_queue<int> pq;
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                dfs(e,node);
-                pq.push(dist[e]);
-                dist[node] = max(dist[node], dist[e]);
-            }
-        }
-        dist[node]++;
-        if(pq.size()) topTwo[node][0] = pq.top();
-        if(pq.size())pq.pop();
-        if(pq.size()) topTwo[node][1] = pq.top();
-   };
-
-   function<void(int,int)> f = [&] (int node, int prev)
-   {
-
-        if(prev == -1)
-        {
-
-        }
-        else
-        {
-            if(dist[node] == topTwo[prev][0])
-            {
-                dist[node] = max(dist[node], topTwo[prev][1] + 1);
-                debug(node,topTwo[1])
-            }
-            else
-            {
-                dist[node] = max(dist[node], topTwo[prev][0] + 1);
-            }
-        }
-        
-        debug(node, dist[node])
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                f(e,node);
-            }
-        }
-
-   };
-
-   dfs(1,-1);
-//    for(auto& e: dist)e--;
-   debug(dist)
-   f(1,-1);
-   debug(dist)
-   debug(topTwo)
    
-   
+   cout << ans << ln;
 }
 
 signed main()

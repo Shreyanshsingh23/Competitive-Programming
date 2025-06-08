@@ -58,54 +58,59 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-bool dfs(int node, int n, v<v<pi>>& a, v<bool>& vis, v<bool>& poss)
-{
-    if(node == n)return poss[node] = true;
-    if(vis[node])return poss[node] == true? true: false;
-    vis[node] = true;
-
-    bool ans = poss[node];
-    for(auto [e, wt]: a[node])
-    {
-        if(vis[e] == false)ans |= dfs(e, n, a, vis, poss);
-    }
-
-    return poss[node] = ans;
-}
-
-
-bool rdfs(int node, int n, v<v<pi>>& a, v<bool>& vis, v<bool>& poss)
-{
-    if(node == n)return poss[node] = true;
-    if(vis[node])return poss[node] == true? true: false;
-    vis[node] = true;
-
-    bool ans = poss[node];
-    for(auto [e, wt]: a[node])
-    {
-        if(vis[e] == false)ans |= rdfs(e, n, a, vis, poss);
-    }
-
-    return poss[node] = ans;
-}
-
+using t = tuple<int,int,int>;
 void solve()
 {
    int n,m;
    cin >> n >> m;
-   v<v<pi>> a(n+1);
-   
+   v<t> a(m);
+    
    for(int i = 0; i < m; ++i)
    {
         int u,v,wt;
         cin >> u >> v >> wt;
-        a[u].pb({v,wt});
-        a[v].pb({u,wt});
+        a[i] = {u,v,-wt};
    }
    
+   vi dist(n+1,1e9);
+   dist[1] = 0;
+   for(int i = 0; i < n; ++i)
+   {
+        for(auto& [x,y,wt]: a)
+        {
+            if(dist[y] > dist[x] + wt)
+            {
+                dist[y] = dist[x] + wt;
+            }
+        }
+   }
    
-   vi dist(n+1,MIN);
+   v<bool> inNegCycle(n+1,false);
+
+   for(int i = 0; i < n; ++i)
+   {
+        for(auto& [x,y,wt]: a)
+        {
+            if(dist[y] > dist[x] + wt)
+            {
+                dist[y] = dist[x] + wt;
+                inNegCycle[y] = true;
+            }
+            if(inNegCycle[y])inNegCycle[x] = true;
+        }
+   }
+  
    
+
+    if(inNegCycle[1] or inNegCycle[n])
+    {
+        cout << -1 << ln;
+        return;
+    }
+
+    cout << -dist[n] << ln;
+   
+
 }
 
 signed main()

@@ -58,83 +58,33 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-int n;
-vii a;
-vi parent;
-
 void solve()
 {
-   cin >> n;
-   a.resize(n+1);
-   FOR(i,n-1)
+   int1(n)
+   vi a (n);
+   cin >> a;
+
+   mpii mp;
+   for(auto e: a)mp[e]++;
+
+   int l = 0, r = 1e10, mid, ans = 0;
+   while(l <= r)
    {
-        int u,v;
-        cin >> u >> v;
-        a[u].pb(v);
-        a[v].pb(u);
+        mid = (l+r) >> 1;
+        int sum = 0;
+        for(auto &[x,y]: mp)
+        {
+            if((x >= mid))sum += y;
+        }
+        if(sum >= mid)
+        {
+            ans = mid;
+            l = mid + 1;
+        }
+        else r = mid - 1;
    }
+   cout << ans <<ln;
 
-   vi dist(n+1,-1);
-   vii topTwo(n+1, vi(2, -1));
-
-   function<void(int,int)> dfs = [&] (int node, int prev)
-   {
-        int ans = -1;
-        priority_queue<int> pq;
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                dfs(e,node);
-                pq.push(dist[e]);
-                dist[node] = max(dist[node], dist[e]);
-            }
-        }
-        dist[node]++;
-        if(pq.size()) topTwo[node][0] = pq.top();
-        if(pq.size())pq.pop();
-        if(pq.size()) topTwo[node][1] = pq.top();
-   };
-
-   function<void(int,int)> f = [&] (int node, int prev)
-   {
-
-        if(prev == -1)
-        {
-
-        }
-        else
-        {
-            if(dist[node] == topTwo[prev][0])
-            {
-                dist[node] = max(dist[node], topTwo[prev][1] + 1);
-                debug(node,topTwo[1])
-            }
-            else
-            {
-                dist[node] = max(dist[node], topTwo[prev][0] + 1);
-            }
-        }
-        
-        debug(node, dist[node])
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                f(e,node);
-            }
-        }
-
-   };
-
-   dfs(1,-1);
-//    for(auto& e: dist)e--;
-   debug(dist)
-   f(1,-1);
-   debug(dist)
-   debug(topTwo)
-   
-   
 }
 
 signed main()

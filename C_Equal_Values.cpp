@@ -56,85 +56,41 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-int n;
-vii a;
-vi parent;
+const bool testcase = 1;
 
 void solve()
 {
-   cin >> n;
-   a.resize(n+1);
-   FOR(i,n-1)
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+   
+   vi t(a);
+   sort(all(t));
+   if(t[0] == t.back())
    {
-        int u,v;
-        cin >> u >> v;
-        a[u].pb(v);
-        a[v].pb(u);
+        cout << 0 << ln;
+        return;
    }
 
-   vi dist(n+1,-1);
-   vii topTwo(n+1, vi(2, -1));
-
-   function<void(int,int)> dfs = [&] (int node, int prev)
+   vi p(n);
+   p[0] = 1;
+   for(int i=1; i < n; ++i)
    {
-        int ans = -1;
-        priority_queue<int> pq;
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                dfs(e,node);
-                pq.push(dist[e]);
-                dist[node] = max(dist[node], dist[e]);
-            }
-        }
-        dist[node]++;
-        if(pq.size()) topTwo[node][0] = pq.top();
-        if(pq.size())pq.pop();
-        if(pq.size()) topTwo[node][1] = pq.top();
-   };
-
-   function<void(int,int)> f = [&] (int node, int prev)
+        if(a[i] == a[i-1])p[i] = p[i-1] + 1;
+        else p[i]=1;
+   }
+//    debug(p)
+   int ans =  MAX;
+   for(int i = 1; i < n - 1; ++i)
    {
-
-        if(prev == -1)
-        {
-
-        }
-        else
-        {
-            if(dist[node] == topTwo[prev][0])
-            {
-                dist[node] = max(dist[node], topTwo[prev][1] + 1);
-                debug(node,topTwo[1])
-            }
-            else
-            {
-                dist[node] = max(dist[node], topTwo[prev][0] + 1);
-            }
-        }
-        
-        debug(node, dist[node])
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                f(e,node);
-            }
-        }
-
-   };
-
-   dfs(1,-1);
-//    for(auto& e: dist)e--;
-   debug(dist)
-   f(1,-1);
-   debug(dist)
-   debug(topTwo)
-   
-   
+        int cost = (n-i-1)*a[i];
+        cost += (i - p[i] + 1) * a[i];
+        ans = min(ans, cost);
+        // debug(cost)
+   }
+   ans = min(ans, (n-1)*a[0]);
+   ans = min(ans, (n-1 - p[n-1] + 1) * a[n-1]);
+   cout << ans << ln;
 }
 
 signed main()

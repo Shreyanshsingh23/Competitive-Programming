@@ -56,87 +56,52 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-int n;
-vii a;
-vi parent;
-
+const bool testcase = 1;
 void solve()
 {
-   cin >> n;
-   a.resize(n+1);
-   FOR(i,n-1)
-   {
-        int u,v;
-        cin >> u >> v;
-        a[u].pb(v);
-        a[v].pb(u);
-   }
-
-   vi dist(n+1,-1);
-   vii topTwo(n+1, vi(2, -1));
-
-   function<void(int,int)> dfs = [&] (int node, int prev)
-   {
-        int ans = -1;
-        priority_queue<int> pq;
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                dfs(e,node);
-                pq.push(dist[e]);
-                dist[node] = max(dist[node], dist[e]);
+    int n;
+    cin >> n;
+    vi a(n);
+    for(int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+    
+    int ans = 0;
+    for(int l = 0; l < n; l++) {
+        for(int r = l; r < n; r++) {
+            int len = r - l + 1;
+            bool unsortable = false;
+            
+            if(len >= 3) {
+                int run_len = 1;
+                for(int i = l; i < r; i++) {
+                    if(a[i] == a[i+1]) {
+                        run_len++;
+                        if(run_len >= 3) {
+                            unsortable = true;
+                            break;
+                        }
+                    } else {
+                        run_len = 1;
+                    }
+                }
             }
-        }
-        dist[node]++;
-        if(pq.size()) topTwo[node][0] = pq.top();
-        if(pq.size())pq.pop();
-        if(pq.size()) topTwo[node][1] = pq.top();
-   };
-
-   function<void(int,int)> f = [&] (int node, int prev)
-   {
-
-        if(prev == -1)
-        {
-
-        }
-        else
-        {
-            if(dist[node] == topTwo[prev][0])
-            {
-                dist[node] = max(dist[node], topTwo[prev][1] + 1);
-                debug(node,topTwo[1])
+            
+            if(!unsortable) {
+                for(int i = 0; i < len; i++) {
+                    if(a[l + i] < i) {
+                        unsortable = true;
+                        break;
+                    }
+                }
             }
-            else
-            {
-                dist[node] = max(dist[node], topTwo[prev][0] + 1);
-            }
+            
+            if(!unsortable) ans++;
         }
-        
-        debug(node, dist[node])
-        for(auto e: a[node])
-        {
-            if(e != prev)
-            {
-                f(e,node);
-            }
-        }
-
-   };
-
-   dfs(1,-1);
-//    for(auto& e: dist)e--;
-   debug(dist)
-   f(1,-1);
-   debug(dist)
-   debug(topTwo)
-   
-   
+    }
+    
+    cout << ans << ln;
 }
-
 signed main()
 {
     ShreyanshSinghGautam
