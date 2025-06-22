@@ -56,80 +56,31 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-struct segmentTree {
-    int size = 1;
-    vi arr;
-
-    void init(int n) {
-        while(size < n) {
-            size <<= 1;
-        }
-        arr.assign(2 * size, 0ll);
-    }
-
-    
-
-    void set(int i, int val, int x, int l, int r) {
-        if(r - l == 1) {
-            arr[x] = val;
-            return;
-        }
-        
-        int mid = (l + r) >> 1;
-
-        if(i < mid) {
-            set(i, val, x * 2 + 1, l, mid);
-        } else {
-            set(i, val, x * 2 + 2, mid, r);
-        }
-
-        arr[x] = arr[x * 2 + 1] +  arr[x * 2 + 2];
-    }
-
-    void set(int i, int val) {
-        set(i, val, 0, 0, size);
-    }
-
-    int get(int x, int lx, int rx, int l, int r) {
-        
-        if(lx >= l and rx <= r) {
-            return arr[x];
-        }
-
-        if(lx >= r or rx <= l) {
-            return 0;
-        }
-
-        int mid = (lx + rx) >> 1;
-
-        int ans1 = get(x * 2 + 1, lx, mid, l, r);
-        int ans2 = get(x * 2 + 2, mid, rx, l, r);
-        
-        return ans1 + ans2;
-    }
-
-    int get(int l, int r) {
-        return get(0, 0, size, l, r);
-    }
-
-};
-
-void solve()
+bool solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   segmentTree visited;
-   visited.init(n);
-
-   vi ans(n);
-   for(int i = 0; i < n; ++i) {
-        ans[i] = visited.get(a[i], n);
-        visited.set(a[i]-1, 1);
-   }
-   cout << ans << ln;
+   int w, h, a, b;
+    cin >> w >> h >> a >> b;
+    int x1, y1, x2, y2;
+    cin >> x1 >> y1 >> x2 >> y2;
+    bool poss = true;
+    if (!(y1 + b <= y2 or y2 + b <= y1)) {
+        if ((x1 - x2) % a != 0) {
+            poss = false;
+        }
+    }
+    if (!(x1 + a <= x2 or x2 + a <= x1)) {
+        if ((y1 - y2) % b != 0) {
+            poss = false;
+        }
+    }
+    if ((y1 + b <= y2 or y2 + b <= y1) and (x1 + a <= x2 or x2 + a <= x1)) {
+        if (!((x1 - x2) % a == 0 or (y1 - y2) % b == 0)) {
+            poss = false;
+        }
+    }
+    return poss;
    
 }
 
@@ -143,8 +94,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-     //   cout << (solve() ? "YES": "NO") << ln;
-        solve();
+       cout << (solve() ? "YES": "NO") << ln;
+        // solve();
     }
     return 0;
 }

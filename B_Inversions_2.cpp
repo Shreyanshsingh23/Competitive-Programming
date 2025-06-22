@@ -69,7 +69,26 @@ struct segmentTree {
         arr.assign(2 * size, 0ll);
     }
 
-    
+    void build(int x, int lx, int rx, vi& a) {
+        if(rx - lx == 1){
+            if(lx < sz(a)) {
+                arr[x] = 1;
+            }
+            return;
+        }
+
+        int mid = (lx + rx) >> 1;
+        build(x * 2 + 1, lx, mid, a);
+        build(x * 2 + 2, mid, rx, a);
+
+        arr[x] = arr[x * 2 + 1] + arr[x * 2 + 2];
+    }
+
+    void build(vi& a) {
+        build(0, 0, size, a);
+    }
+
+
 
     void set(int i, int val, int x, int l, int r) {
         if(r - l == 1) {
@@ -92,28 +111,24 @@ struct segmentTree {
         set(i, val, 0, 0, size);
     }
 
-    int get(int x, int lx, int rx, int l, int r) {
-        
-        if(lx >= l and rx <= r) {
-            return arr[x];
-        }
 
-        if(lx >= r or rx <= l) {
-            return 0;
+    int get(int k, int x, int lx, int rx) {
+        if(rx - lx == 1) {
+            return lx;
         }
 
         int mid = (lx + rx) >> 1;
-
-        int ans1 = get(x * 2 + 1, lx, mid, l, r);
-        int ans2 = get(x * 2 + 2, mid, rx, l, r);
-        
-        return ans1 + ans2;
+        int right = arr[x * 2 + 2];
+        if(k - right >= 0) {
+            return get(k-right, x * 2 + 1, lx, mid);
+        } else {
+            return get(k, x * 2 + 2, mid, rx);
+        }
     }
 
-    int get(int l, int r) {
-        return get(0, 0, size, l, r);
+    int get(int k) {
+        return get(k, 0, 0, size);
     }
-
 };
 
 void solve()
@@ -121,16 +136,22 @@ void solve()
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
+
+   vi b(n);
+   for(int i = 0; i< n; ++i) {
+      b[i] = n-i-1;
+   }
    segmentTree visited;
    visited.init(n);
-
+   visited.build(a);
    vi ans(n);
-   for(int i = 0; i < n; ++i) {
-        ans[i] = visited.get(a[i], n);
-        visited.set(a[i]-1, 1);
+   for(int i = n-1; i >= 0; --i) {
+      ans[i] = visited.get(a[i])  + 1;
+      visited.set(ans[i]-1, 0ll);
    }
+
    cout << ans << ln;
-   
+
 }
 
 signed main()

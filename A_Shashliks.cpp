@@ -56,80 +56,80 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-struct segmentTree {
-    int size = 1;
-    vi arr;
-
-    void init(int n) {
-        while(size < n) {
-            size <<= 1;
-        }
-        arr.assign(2 * size, 0ll);
-    }
-
-    
-
-    void set(int i, int val, int x, int l, int r) {
-        if(r - l == 1) {
-            arr[x] = val;
-            return;
-        }
-        
-        int mid = (l + r) >> 1;
-
-        if(i < mid) {
-            set(i, val, x * 2 + 1, l, mid);
-        } else {
-            set(i, val, x * 2 + 2, mid, r);
-        }
-
-        arr[x] = arr[x * 2 + 1] +  arr[x * 2 + 2];
-    }
-
-    void set(int i, int val) {
-        set(i, val, 0, 0, size);
-    }
-
-    int get(int x, int lx, int rx, int l, int r) {
-        
-        if(lx >= l and rx <= r) {
-            return arr[x];
-        }
-
-        if(lx >= r or rx <= l) {
-            return 0;
-        }
-
-        int mid = (lx + rx) >> 1;
-
-        int ans1 = get(x * 2 + 1, lx, mid, l, r);
-        int ans2 = get(x * 2 + 2, mid, rx, l, r);
-        
-        return ans1 + ans2;
-    }
-
-    int get(int l, int r) {
-        return get(0, 0, size, l, r);
-    }
-
-};
+const bool testcase = 1;
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   segmentTree visited;
-   visited.init(n);
-
-   vi ans(n);
-   for(int i = 0; i < n; ++i) {
-        ans[i] = visited.get(a[i], n);
-        visited.set(a[i]-1, 1);
-   }
-   cout << ans << ln;
+   int k, a, b, x, y;
+    cin >> k >> a >> b >> x >> y;
+    
+    int ans = 0;
+    
+    if (k >= a) {
+        ans = max(ans, (k - a) / x + 1);
+    }
+    
+    if (k >= b) {
+        ans = max(ans, (k - b) / y + 1);
+    }
+    
+    if (k >= a) {
+        vi vec;
+        vec.pb(0);
+        
+        int mxn = (k - a) / x + 1;
+        vec.pb(mxn);
+        
+        if (k >= b) {
+            int trans = (k - b) / x;
+            vec.pb(trans);
+            vec.pb(trans + 1);
+        }
+        
+        for (int n1 : vec) {
+            if (n1 < 0 or n1 > mxn) {
+                continue;
+            }
+            
+            int rem = k - n1 * x;
+            int n2 = 0;
+            if (rem >= b) {
+                n2 = (rem - b)/y + 1;
+            }
+            
+            ans = max(ans, n1 + n2);
+        }
+    }
+    
+    if (k >= b) {
+        vi vec;
+        vec.pb(0); 
+        
+        int max_n2 = (k - b)/y + 1;
+        vec.pb(max_n2);
+        
+        if (k >= a) {
+            int trans = (k - a)/y;
+            vec.pb(trans);
+            vec.pb(trans + 1);
+        }
+        
+        for (int n2 : vec) {
+            if (n2 < 0 or n2 > max_n2) {
+                continue;
+            }
+            
+            int rem = k - n2 * y;
+            int n1 = 0;
+            if (rem >= a) {
+                n1 = (rem - a)/x + 1;
+            }
+            
+            ans = max(ans, n1 + n2);
+        }
+    }
+    
+    cout << ans << ln;
    
 }
 

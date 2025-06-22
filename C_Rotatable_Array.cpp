@@ -58,79 +58,35 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-struct segmentTree {
-    int size = 1;
-    vi arr;
-
-    void init(int n) {
-        while(size < n) {
-            size <<= 1;
-        }
-        arr.assign(2 * size, 0ll);
-    }
-
-    
-
-    void set(int i, int val, int x, int l, int r) {
-        if(r - l == 1) {
-            arr[x] = val;
-            return;
-        }
-        
-        int mid = (l + r) >> 1;
-
-        if(i < mid) {
-            set(i, val, x * 2 + 1, l, mid);
-        } else {
-            set(i, val, x * 2 + 2, mid, r);
-        }
-
-        arr[x] = arr[x * 2 + 1] +  arr[x * 2 + 2];
-    }
-
-    void set(int i, int val) {
-        set(i, val, 0, 0, size);
-    }
-
-    int get(int x, int lx, int rx, int l, int r) {
-        
-        if(lx >= l and rx <= r) {
-            return arr[x];
-        }
-
-        if(lx >= r or rx <= l) {
-            return 0;
-        }
-
-        int mid = (lx + rx) >> 1;
-
-        int ans1 = get(x * 2 + 1, lx, mid, l, r);
-        int ans2 = get(x * 2 + 2, mid, rx, l, r);
-        
-        return ans1 + ans2;
-    }
-
-    int get(int l, int r) {
-        return get(0, 0, size, l, r);
-    }
-
-};
-
 void solve()
 {
    int1(n)
+   int q;cin >> q;
    vi a (n);
-   FOR(i,n) cin >> a[i];
-   segmentTree visited;
-   visited.init(n);
-
-   vi ans(n);
-   for(int i = 0; i < n; ++i) {
-        ans[i] = visited.get(a[i], n);
-        visited.set(a[i]-1, 1);
-   }
-   cout << ans << ln;
-   
+   FOR(i,n)a[i] = i+1;
+    int z = 0;
+    
+    while(q--) {
+        int t;
+        cin >> t;
+        if(t == 1) {
+            int p, x;
+            cin >> p >> x;
+            int idx = (p - 1 + z) % n;
+            a[idx] = x;
+        }
+        else if(t == 2) {
+            int p;
+            cin >> p;
+            int idx = (p - 1 + z) % n;
+            cout << a[idx] << ln;
+        } else {
+            int k;
+            cin >> k;
+            z = (z + k) % n;
+        }
+    }
+    
 }
 
 signed main()

@@ -58,77 +58,15 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-struct segmentTree {
-    int size = 1;
-    vi arr;
-
-    void init(int n) {
-        while(size < n) {
-            size <<= 1;
-        }
-        arr.assign(2 * size, 0ll);
-    }
-
-    
-
-    void set(int i, int val, int x, int l, int r) {
-        if(r - l == 1) {
-            arr[x] = val;
-            return;
-        }
-        
-        int mid = (l + r) >> 1;
-
-        if(i < mid) {
-            set(i, val, x * 2 + 1, l, mid);
-        } else {
-            set(i, val, x * 2 + 2, mid, r);
-        }
-
-        arr[x] = arr[x * 2 + 1] +  arr[x * 2 + 2];
-    }
-
-    void set(int i, int val) {
-        set(i, val, 0, 0, size);
-    }
-
-    int get(int x, int lx, int rx, int l, int r) {
-        
-        if(lx >= l and rx <= r) {
-            return arr[x];
-        }
-
-        if(lx >= r or rx <= l) {
-            return 0;
-        }
-
-        int mid = (lx + rx) >> 1;
-
-        int ans1 = get(x * 2 + 1, lx, mid, l, r);
-        int ans2 = get(x * 2 + 2, mid, rx, l, r);
-        
-        return ans1 + ans2;
-    }
-
-    int get(int l, int r) {
-        return get(0, 0, size, l, r);
-    }
-
-};
-
 void solve()
 {
    int1(n)
    vi a (n);
    FOR(i,n) cin >> a[i];
-   segmentTree visited;
-   visited.init(n);
-
-   vi ans(n);
-   for(int i = 0; i < n; ++i) {
-        ans[i] = visited.get(a[i], n);
-        visited.set(a[i]-1, 1);
-   }
+   int k;
+   cin >> k;
+   int ans = 0;
+   FOR(i,n)ans += a[i] >= k;
    cout << ans << ln;
    
 }

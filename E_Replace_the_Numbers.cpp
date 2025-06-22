@@ -49,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 500010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,81 +57,63 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+struct DSU{
+    vector<int> parent;
+    vector<int> size;
 
-struct segmentTree {
-    int size = 1;
-    vi arr;
+    DSU(int n)
+    {
+        parent.resize(n);
+        size.resize(n);
 
-    void init(int n) {
-        while(size < n) {
-            size <<= 1;
+        for(int i = 0; i < n; ++i)
+        {
+            parent[i] = i;
+            size[i] = 1;
         }
-        arr.assign(2 * size, 0ll);
     }
 
-    
+    int getLeader(int node)
+    {
+        if(parent[node] == node)return node;
 
-    void set(int i, int val, int x, int l, int r) {
-        if(r - l == 1) {
-            arr[x] = val;
-            return;
-        }
-        
-        int mid = (l + r) >> 1;
-
-        if(i < mid) {
-            set(i, val, x * 2 + 1, l, mid);
-        } else {
-            set(i, val, x * 2 + 2, mid, r);
-        }
-
-        arr[x] = arr[x * 2 + 1] +  arr[x * 2 + 2];
+        return parent[node] = getLeader(parent[node]);
     }
 
-    void set(int i, int val) {
-        set(i, val, 0, 0, size);
-    }
+    void merge(int x, int y)
+    {
+        x = getLeader(x);
+        y = getLeader(y);
 
-    int get(int x, int lx, int rx, int l, int r) {
-        
-        if(lx >= l and rx <= r) {
-            return arr[x];
+        if(x == y)return;
+
+        int sizeX = size[x];
+        int sizeY = size[y];
+
+        if(sizeX < sizeY){
+            parent[x] = y;
+            size[y] += size[x];
+        }else{
+            parent[y] = x;
+            size[x] += size[y];
         }
-
-        if(lx >= r or rx <= l) {
-            return 0;
-        }
-
-        int mid = (lx + rx) >> 1;
-
-        int ans1 = get(x * 2 + 1, lx, mid, l, r);
-        int ans2 = get(x * 2 + 2, mid, rx, l, r);
-        
-        return ans1 + ans2;
-    }
-
-    int get(int l, int r) {
-        return get(0, 0, size, l, r);
     }
 
 };
 
 void solve()
 {
-   int1(n)
-   vi a (n);
-   FOR(i,n) cin >> a[i];
-   segmentTree visited;
-   visited.init(n);
-
-   vi ans(n);
-   for(int i = 0; i < n; ++i) {
-        ans[i] = visited.get(a[i], n);
-        visited.set(a[i]-1, 1);
+   int q;
+   cin >> q;
+   DSU d(N);
+   vi ans;
+   for(int i = 0; i < q; ++i) {
+        int t;cin >> t;
+        if(t == 1) {
+            
+        }
    }
-   cout << ans << ln;
-   
-}
+}            
 
 signed main()
 {
