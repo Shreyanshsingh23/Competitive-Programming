@@ -7,7 +7,6 @@ using namespace std;
 #endif
 
 
-template <typename T> std::ostream &operator<<(std::ostream &stream, const vector<T> &vec) {for(size_t i = 0; i < vec.size(); i++) { stream << vec[i]; if (i != vec.size() - 1) stream << ' '; }; return stream; } template <typename T> std::istream &operator>>(std::istream &stream, vector<T> &vec) {for (T &x : vec) stream >> x; return stream; } template <typename T, typename U> std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr) {stream << pr.first << ' ' << pr.second; return stream; } template <typename T, typename U> std::istream &operator>>(std::istream &stream, pair<T, U> &pr) {stream >> pr.first >> pr.second; return stream; } template <typename A, typename B> string to_string(pair<A, B> p); template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p); template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p); string to_string(const string &s) { return '"' + s + '"'; } string to_string(char c) {string s; s += c; return s; } string to_string(const char *s) { return to_string((string)s); } string to_string(bool b) { return (b ? "1" : "0"); } string to_string(vector<bool> v) {bool first = true; string res = "{"; for (int i = 0; i < static_cast<int>(v.size()); i++) {if (!first) {res += ", "; } first = false; res += to_string(v[i]); } res += "}"; return res; } template <size_t N> string to_string(bitset<N> v) {string res = ""; for (size_t i = 0; i < N; i++) {res += static_cast<char>('0' + v[i]); } return res; } template <typename A> string to_string(A v) {bool first = true; string res = "{"; for (const auto &x : v) {if (!first) {res += ", "; } first = false; res += to_string(x); } res += "}"; return res; } template <typename A, typename B> string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; } template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; } template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; } void debug_out() { cout << endl; } template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) {cout << " " << to_string(H); debug_out(T...); }
 
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
@@ -56,23 +55,48 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
-   
-   if(cnt >= 7)return 1;
-   return 0;
+    int n, k;
+    cin >> n >> k;
+
+    vector<int> a(n);
+    int s = 0;
+    for (int i = 0; i < n; ++i) {
+        cin >> a[i];
+        s += a[i];
+    }
+
+    sort(all(a));
+
+    int m1 = a[0];
+    int m2 = a[1];
+
+    int nsum = 0;
+    int temp = m2;
+
+    while (k > 0 && temp > m1)
+    {
+        int val = (m1 + temp + 1) / 2;
+        if (val == temp) {
+            nsum += k * val;
+            k = 0; 
+            break;
+        }
+
+        nsum += val;
+        temp = val;
+        k--;
+    }
+    
+    if (k > 0)
+    {
+        nsum += k * m1;
+    }
+
+    cout << s + nsum << ln;
 }
 
 signed main()
@@ -85,8 +109,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }
