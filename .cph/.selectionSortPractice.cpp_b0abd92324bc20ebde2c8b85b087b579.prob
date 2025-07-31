@@ -1,1 +1,0 @@
-{"name":"Local: selectionSortPractice","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/selectionSortPractice.cpp","tests":[{"id":1729662664067,"input":"6\n2 2 2 2 2 22","output":"2 2 2 2 2 22"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/selectionSortPractice.cpp","group":"local","local":true}

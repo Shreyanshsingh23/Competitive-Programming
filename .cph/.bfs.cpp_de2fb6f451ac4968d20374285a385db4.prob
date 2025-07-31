@@ -1,1 +1,0 @@
-{"name":"Local: bfs","url":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/bfs.cpp","tests":[{"id":1728085440972,"input":"","output":"0 1 1 \n1 0 1 \n1 1 0 "},{"id":1728087412955,"input":"","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/shreyansh-singh-gautam/Desktop/java-codefiles/bfs.cpp","group":"local","local":true}

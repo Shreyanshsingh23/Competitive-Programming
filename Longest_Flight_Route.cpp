@@ -1,0 +1,246 @@
+#include <bits/stdc++.h>
+using namespace std;
+#ifndef ONLINE_JUDGE
+#define debug(...) cout << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__);
+#else
+#define debug(...) ;
+#endif
+
+template <typename T>
+std::ostream &operator<<(std::ostream &stream, const vector<T> &vec)
+{
+    for (size_t i = 0; i < vec.size(); i++)
+    {
+        stream << vec[i];
+        if (i != vec.size() - 1)
+            stream << ' ';
+    };
+    return stream;
+}
+template <typename T>
+std::istream &operator>>(std::istream &stream, vector<T> &vec)
+{
+    for (T &x : vec)
+        stream >> x;
+    return stream;
+}
+template <typename T, typename U>
+std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr)
+{
+    stream << pr.first << ' ' << pr.second;
+    return stream;
+}
+template <typename T, typename U>
+std::istream &operator>>(std::istream &stream, pair<T, U> &pr)
+{
+    stream >> pr.first >> pr.second;
+    return stream;
+}
+template <typename A, typename B>
+string to_string(pair<A, B> p);
+template <typename A, typename B, typename C>
+string to_string(tuple<A, B, C> p);
+template <typename A, typename B, typename C, typename D>
+string to_string(tuple<A, B, C, D> p);
+string to_string(const string &s) { return '"' + s + '"'; }
+string to_string(char c)
+{
+    string s;
+    s += c;
+    return s;
+}
+string to_string(const char *s) { return to_string((string)s); }
+string to_string(bool b) { return (b ? "1" : "0"); }
+string to_string(vector<bool> v)
+{
+    bool first = true;
+    string res = "{";
+    for (int i = 0; i < static_cast<int>(v.size()); i++)
+    {
+        if (!first)
+        {
+            res += ", ";
+        }
+        first = false;
+        res += to_string(v[i]);
+    }
+    res += "}";
+    return res;
+}
+template <size_t N>
+string to_string(bitset<N> v)
+{
+    string res = "";
+    for (size_t i = 0; i < N; i++)
+    {
+        res += static_cast<char>('0' + v[i]);
+    }
+    return res;
+}
+template <typename A>
+string to_string(A v)
+{
+    bool first = true;
+    string res = "{";
+    for (const auto &x : v)
+    {
+        if (!first)
+        {
+            res += ", ";
+        }
+        first = false;
+        res += to_string(x);
+    }
+    res += "}";
+    return res;
+}
+template <typename A, typename B>
+string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; }
+template <typename A, typename B, typename C>
+string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; }
+template <typename A, typename B, typename C, typename D>
+string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; }
+void debug_out() { cout << endl; }
+template <typename Head, typename... Tail>
+void debug_out(Head H, Tail... T)
+{
+    cout << " " << to_string(H);
+    debug_out(T...);
+}
+
+#define ShreyanshSinghGautam \
+    cin.tie(nullptr);        \
+    cout.tie(nullptr);       \
+    ios::sync_with_stdio(false);
+#define int long long
+#define ln '\n';
+#define all(x) x.begin(), x.end()
+#define rall(x) x.rbegin(), x.rend()
+#define MAX LLONG_MAX
+#define MIN INT32_MIN
+#define sz(x) (int)x.size()
+#define vi vector<int>
+#define v vector
+#define vii vector<vector<int>>
+#define mpci map<char, int>
+#define mpii map<int, int> // vii a (n,vi(m,0))
+#define pii pair<int, int> #define all(v) v.begin(), v.end()
+#define int1(t) \
+    int t;      \
+    cin >> t;
+#define int2(n, k) \
+    int n, k;      \
+    cin >> n >> k;
+#define int3(n, k, r) \
+    int n, k, r;      \
+    cin >> n >> k >> r;
+#define pb push_back
+#define FOR(i, n) for (int i = 0; i < n; i++)
+#define FORa(i, a, n) for (int i = a; i < n; i++)
+#define F first
+#define S second
+#define sett(n) cout << fixed << setprecision(n)
+
+typedef pair<int, int> pi;
+
+const int MOD = 1e9 + 7;
+const int mod = 998244353;
+const int N = 100010;
+
+
+int dx[4] = {-1, 1, 1, -1}, dy[4] = {1, 1, -1, -1};
+const bool testcase = 0;
+
+
+
+void solve()
+{
+    int n, m;
+    cin >> n >> m;
+    vii a(n+5);
+    for (int i = 0; i < m; ++i)
+    {
+        int u, v;
+        cin >> u >> v;
+        a[u].pb(v);
+    }
+    // debug(a)
+    vi dist(n+5, MIN);
+    v<bool> vis(n+5, false);
+    dist[n] = 1;
+    // vis[n] = true;
+
+    function<void(int)> dfs = [&](int node)
+    {
+        // debug(node)
+        vis[node] = true;
+        for (auto e : a[node])
+        {
+            if (!vis[e])
+            {
+                dfs(e);
+            }
+            // else debug("no dfs", e, dist[e])
+            if (dist[node] < 1 + dist[e])
+            {
+                // debug(node, e)
+                dist[node] = 1 + dist[e];
+            }
+        }
+    };
+
+    for (int i = 1; i <= n; ++i)
+    {
+        if (!vis[i])dfs(i);
+    }
+
+    if (dist[1] == MIN or a[1].size() == 0)
+    {
+        cout << "IMPOSSIBLE" << ln;
+        return;
+    }
+
+    vi ans;
+    int cur = 1;
+    
+    // debug(dist)
+    
+    while (cur != n)
+    {
+        ans.pb(cur);
+        int mxx = -1, mxxNode = -1;
+        for(auto e: a[cur])
+        {
+            if(dist[e] > mxx)
+            {
+                mxx = dist[e];
+                mxxNode = e;
+            }
+        }
+        if(mxxNode == -1)
+        {
+            cout << "IMPOSSIBLE" << ln;
+            return;
+        }
+        cur = mxxNode;
+    }
+    ans.pb(n);
+    cout << dist[1] << ln;
+    cout << ans << ln;
+}
+
+signed main()
+{
+    ShreyanshSinghGautam
+
+        int t = 1;
+    testcase and cin >> t;
+    // compFact();
+    for (int i = 1; i <= t; ++i)
+    {
+        //  cout << "Case #" << i << ": ";
+        //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
+    }
+    return 0;
+}
