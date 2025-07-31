@@ -67,7 +67,7 @@ void solve()
    int inv = 0; 
     FOR(i,n)
     { 
-        for (int j = i + 1; j < n; ++j) 
+        for (int j = i + 1; j < n; ++j)
         { 
             if (a[i] > a[j]) 
             { 
