@@ -49,30 +49,56 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 1010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
+int n,k;
+int a[N];
 
-bool solve()
+int f(int i, int y)
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
+    if(i == n-1){
+        if(a[i] >= y) return 0;
+        else return 1e9;
+    }
+    if(a[i] >= y)return 0;
+
+    int ans = max(0ll, y - a[i]) + f(i+1, y-1);
+    return ans;
+}
+
+bool check(int mid)
+{
+    for(int i = 0; i < n; ++i) 
+    {
+        if(f(i,mid) <= k)return 1;
+    }
+    return 0;
+}
+
+void solve()
+{
+   cin >> n >> k;
+   FOR(i,n) cin >> a[i];
+
+   int l = 0, r = *max_element(a,a+n) + k, mid, ans = 0;
+   while(l <= r) 
+   {
+        mid = (l + r) >> 1;
+        if(check(mid)){
+            ans = mid;
+            l = mid + 1;
+        } else {
+            r = mid - 1;
+        }
    }
    
-   if(cnt >= 7)return 1;
-   return 0;
+   cout << ans << ln;   
 }
 
 signed main()
@@ -85,8 +111,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

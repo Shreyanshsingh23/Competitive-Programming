@@ -58,21 +58,100 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-bool solve()
+struct segmentTree {
+    int size = 1;
+    vi arr;
+
+    void init(int n) {
+        while(size < n) {
+            size <<= 1;
+        }
+        arr.assign(2 * size, 0ll);
+    }
+
+    void build(int x, int lx, int rx, vi& a) {
+        if(rx - lx == 1){
+            if(lx < sz(a)) {
+                arr[x] = 1;
+            }
+            return;
+        }
+
+        int mid = (lx + rx) >> 1;
+        build(x * 2 + 1, lx, mid, a);
+        build(x * 2 + 2, mid, rx, a);
+
+        arr[x] = arr[x * 2 + 1] + arr[x * 2 + 2];
+    }
+
+    void build(vi& a) {
+        build(0, 0, size, a);
+    }
+
+
+
+    void set(int i, int val, int x, int l, int r) {
+        if(r - l == 1) {
+            arr[x] = val;
+            return;
+        }
+        
+        int mid = (l + r) >> 1;
+
+        if(i < mid) {
+            set(i, val, x * 2 + 1, l, mid);
+        } else {
+            set(i, val, x * 2 + 2, mid, r);
+        }
+
+        arr[x] = arr[x * 2 + 1] +  arr[x * 2 + 2];
+    }
+
+    void set(int i, int val) {
+        set(i, val, 0, 0, size);
+    }
+
+
+    int get(int k, int x, int lx, int rx) {
+        if(rx - lx == 1) {
+            return lx;
+        }
+
+        int mid = (lx + rx) >> 1;
+        int right = arr[x * 2 + 2];
+        if(k - right >= 0) {
+            return get(k-right, x * 2 + 1, lx, mid);
+        } else {
+            return get(k, x * 2 + 2, mid, rx);
+        }
+    }
+
+    int get(int k) {
+        return get(k, 0, 0, size);
+    }
+};
+
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
+
+   vi b(n);
+   for(int i = 0; i< n; ++i) {
+      b[i] = n-i-1;
    }
-   
-   if(cnt >= 7)return 1;
-   return 0;
+   segmentTree visited;
+   visited.init(n);
+   visited.build(a);
+   vi ans(n);
+   for(int i = n-1; i >= 0; --i) {
+      ans[i] = visited.get(a[i])  + 1;
+      visited.set(ans[i]-1, 0ll);
+   }
+
+   cout << ans << ln;
+
 }
 
 signed main()
@@ -85,8 +164,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

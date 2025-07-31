@@ -33,11 +33,10 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define S second
 #define sett(n)          cout<<fixed<<setprecision(n)
 int log(int num , int base){int ans = 0; while(num){num /= base;ans++;} return ans;}//an extra
-int mex(vi& a, int n){set<int> st {all(a)};int res = 0;while(st.count(res)) res++;return res;}
 int gcd(int a, int b){if(b == 0)return a; return gcd(b, a % b);}
 int poww(int a,int b){if(b == 0)return 1; if(!(b&1)){int ans = poww(a,b/2);return 1ll*ans*ans;} else {int ans =
 poww(a,(b-1)/2);return 1ll*ans*ans*a;}}
-bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n % 2 == 0 || n % 3 == 0) return false; for (int i = 5; i * i <= n; i = i + 6) if (n % i == 0 || n % (i + 2) == 0) return false; return true; }
+bool isPrime(int n) { if (n <= 1) return false; if (n <= 3) return true; if (n % 2 == 0 or n % 3 == 0) return false; for (int i = 5; i * i <= n; i = i + 6) if (n % i == 0 || n % (i + 2) == 0) return false; return true; }
 int modPow(int a, int b, int m) { int ans = 1; while (b) { if (b & 1) ans = (ans * a) % m; b /= 2; a = (a * a) % m; } return ans; }
 int modInv(int n, int m){return modPow(n, m - 2, m); }
 int modMul(int a, int b, int m){return ((a % m) * (b % m)) % m;}
@@ -56,23 +55,56 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   int s;
+    cin >> s;
+    int cnt0 = 0, cnt1 = 0, cnt2 = 0;
+    FOR(i,n) {
+        int val;
+        cin >> val;
+        if (val == 0) {
+            cnt0++;
+        } else if (val == 1) {
+            cnt1++;
+        } else {
+            cnt2++;
+        }
+    }
+
+    int mn = (int)cnt1 * 1 + (int)cnt2 * 2;
+
+    if (s < mn or s == mn + 1) {
+        bool first = true;
+        for (int i = 0; i < cnt0; ++i) {
+            if (!first) {
+                cout << " ";
+            }
+            cout << 0;
+            first = false;
+        }
+        for (int i = 0; i < cnt2; ++i) {
+            if (!first) {
+                cout << " ";
+            }
+            cout << 2;
+            first = false;
+        }
+        for (int i = 0; i < cnt1; ++i) {
+            if (!first) {
+                cout << " ";
+            }
+            cout << 1;
+            first = false;
+        }
+        cout << ln;
+    } else {
+        cout << -1 << ln;
+    }
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +117,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

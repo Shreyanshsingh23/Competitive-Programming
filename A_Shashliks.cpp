@@ -56,23 +56,81 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int k, a, b, x, y;
+    cin >> k >> a >> b >> x >> y;
+    
+    int ans = 0;
+    
+    if (k >= a) {
+        ans = max(ans, (k - a) / x + 1);
+    }
+    
+    if (k >= b) {
+        ans = max(ans, (k - b) / y + 1);
+    }
+    
+    if (k >= a) {
+        vi vec;
+        vec.pb(0);
+        
+        int mxn = (k - a) / x + 1;
+        vec.pb(mxn);
+        
+        if (k >= b) {
+            int trans = (k - b) / x;
+            vec.pb(trans);
+            vec.pb(trans + 1);
+        }
+        
+        for (int n1 : vec) {
+            if (n1 < 0 or n1 > mxn) {
+                continue;
+            }
+            
+            int rem = k - n1 * x;
+            int n2 = 0;
+            if (rem >= b) {
+                n2 = (rem - b)/y + 1;
+            }
+            
+            ans = max(ans, n1 + n2);
+        }
+    }
+    
+    if (k >= b) {
+        vi vec;
+        vec.pb(0); 
+        
+        int max_n2 = (k - b)/y + 1;
+        vec.pb(max_n2);
+        
+        if (k >= a) {
+            int trans = (k - a)/y;
+            vec.pb(trans);
+            vec.pb(trans + 1);
+        }
+        
+        for (int n2 : vec) {
+            if (n2 < 0 or n2 > max_n2) {
+                continue;
+            }
+            
+            int rem = k - n2 * y;
+            int n1 = 0;
+            if (rem >= a) {
+                n1 = (rem - a)/x + 1;
+            }
+            
+            ans = max(ans, n1 + n2);
+        }
+    }
+    
+    cout << ans << ln;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +143,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

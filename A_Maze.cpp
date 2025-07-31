@@ -55,24 +55,46 @@ int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
-int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
+int dx[4] = {-1,1,0,0}, dy[4] = {0,0,-1,1};
 const bool testcase = 0;
 
-bool solve()
+int n,m,k;
+v<string> a;
+bool vis[510][510];
+
+void dfs(int x, int y)
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+    if(x < 0 or x >= n or y < 0 or y >= m or a[x][y] != '.' or vis[x][y] or k <= 0)return;
+
+    vis[x][y] = true;
+    FOR(i,4){
+        dfs(x+ dx[i], y + dy[i]);
+    }
+
+    if(k > 0){
+        a[x][y] = 'X';
+        k--;
+    }
+
+}
+
+void solve()
+{
+   cin >> n >> m >> k;
+   a.resize(n);
+   cin >> a;
+
+    FOR(i,n){
+        FOR(j,m){
+            if(a[i][j] == '.'){
+                dfs(i,j);
+                // break;
+            }
+        }
+    }
+
+    for(auto& e: a)cout << e << ln;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +107,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

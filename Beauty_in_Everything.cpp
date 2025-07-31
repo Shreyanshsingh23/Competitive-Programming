@@ -7,8 +7,6 @@ using namespace std;
 #endif
 
 
-template <typename T> std::ostream &operator<<(std::ostream &stream, const vector<T> &vec) {for(size_t i = 0; i < vec.size(); i++) { stream << vec[i]; if (i != vec.size() - 1) stream << ' '; }; return stream; } template <typename T> std::istream &operator>>(std::istream &stream, vector<T> &vec) {for (T &x : vec) stream >> x; return stream; } template <typename T, typename U> std::ostream &operator<<(std::ostream &stream, const pair<T, U> &pr) {stream << pr.first << ' ' << pr.second; return stream; } template <typename T, typename U> std::istream &operator>>(std::istream &stream, pair<T, U> &pr) {stream >> pr.first >> pr.second; return stream; } template <typename A, typename B> string to_string(pair<A, B> p); template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p); template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p); string to_string(const string &s) { return '"' + s + '"'; } string to_string(char c) {string s; s += c; return s; } string to_string(const char *s) { return to_string((string)s); } string to_string(bool b) { return (b ? "1" : "0"); } string to_string(vector<bool> v) {bool first = true; string res = "{"; for (int i = 0; i < static_cast<int>(v.size()); i++) {if (!first) {res += ", "; } first = false; res += to_string(v[i]); } res += "}"; return res; } template <size_t N> string to_string(bitset<N> v) {string res = ""; for (size_t i = 0; i < N; i++) {res += static_cast<char>('0' + v[i]); } return res; } template <typename A> string to_string(A v) {bool first = true; string res = "{"; for (const auto &x : v) {if (!first) {res += ", "; } first = false; res += to_string(x); } res += "}"; return res; } template <typename A, typename B> string to_string(pair<A, B> p) { return "(" + to_string(p.first) + ", " + to_string(p.second) + ")"; } template <typename A, typename B, typename C> string to_string(tuple<A, B, C> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ")"; } template <typename A, typename B, typename C, typename D> string to_string(tuple<A, B, C, D> p) { return "(" + to_string(get<0>(p)) + ", " + to_string(get<1>(p)) + ", " + to_string(get<2>(p)) + ", " + to_string(get<3>(p)) + ")"; } void debug_out() { cout << endl; } template <typename Head, typename... Tail> void debug_out(Head H, Tail... T) {cout << " " << to_string(H); debug_out(T...); }
-
 #define ShreyanshSinghGautam cin.tie(nullptr);cout.tie(nullptr);ios::sync_with_stdio(false);  
 #define int long long
 #define ln '\n';
@@ -56,23 +54,117 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   string a;
+    cin >> a;
+
+    if (n <= 2) {
+        cout << n << ln;
+        return;
+    }
+    vi prezero(n + 1);
+    vi preone(n + 1);
+
+    int lastz = -1;
+    for (int i = 0; i < n; ++i) {
+        prezero[i] = lastz;
+        if (a[i] == '0') {
+            lastz = i;
+        }
+    }
+    prezero[n] = lastz;
+
+    int lastone = -1;
+    for (int i = 0; i < n; ++i) {
+        preone[i] = lastone;
+        if (a[i] == '1') {
+            lastone = i;
+        }
+    }
+    preone[n] = lastone;
+
+    int len = 0;
+    for (int j = 0; j < n; ++j) {
+        int pj = -1;
+        int k1, k2, k3, k4;
+
+        k4 = preone[j + 1];
+        if (k4 != -1) 
+        {
+        k3 = preone[k4];
+        if (k3 != -1) 
+        {
+            k2 = prezero[k3];
+            if (k2 != -1) 
+            {
+                k1 = prezero[k2];
+                if (k1 != -1) 
+                {
+                    pj = max(pj, k1);
+                }
+            }
+        }
+    }
+        
+        k4 = prezero[j + 1];
+        if (k4 != -1) {
+            k3 = prezero[k4];
+            if (k3 != -1) {
+                k2 = preone[k3];
+                if (k2 != -1) 
+                {
+                    k1 = preone[k2];
+                    if (k1 != -1) 
+                    {
+                        pj = max(pj, k1);
+                    }
+                }
+            }
+        }
+        
+        k4 = prezero[j + 1];
+        if (k4 != -1) {
+            k3 = preone[k4];
+            if (k3 != -1) 
+            {
+                k2 = preone[k3];
+                if (k2 != -1) 
+                {
+                    k1 = prezero[k2];
+                    if (k1 != -1) {
+                        pj = max(pj, k1);
+                    }
+                }
+            }
+        }
+        
+        k4 = preone[j + 1];
+        if (k4 != -1) 
+        {
+            k3 = prezero[k4];
+            if (k3 != -1) 
+            {
+                k2 = prezero[k3];
+                if (k2 != -1) {
+                    k1 = preone[k2];
+                    if (k1 != -1) 
+                    {
+                        pj = max(pj, k1);
+                    }
+                }
+            }
+        }
+
+        int cur = j - pj;
+        len = max(len, cur);
+    }
+    
+    cout << len << ln;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +177,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

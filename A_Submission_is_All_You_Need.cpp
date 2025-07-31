@@ -56,23 +56,48 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   int sum = 0;
+    mpii mp;
+    for (int i = 0; i < n; ++i)
+    {
+        int x;
+        cin >> x;
+        sum += x;
+        mp[x]++;
+    }
+
+    vii dp(52, vi(n + 1, 0));
+
+    for (int i = 50; i >= 1; --i)
+    {
+        int cur = mp.count(i) ? mp[i] : 0;
+        dp[i][0] = dp[i + 1][0];
+        for (int j = 1; j <= n; ++j)
+        {
+            if (j <= cur)
+            {
+                dp[i][j] = max(dp[i][j - 1], j * (1 - i) + dp[i + 1][j]);
+            }
+            else
+            {
+                dp[i][j] = dp[i][j - 1];
+            }
+        }
+    }
+
+    int ans = 0;
+    int zero = mp.count(0) ? mp[0] : 0;
+    for (int k = 0; k <= zero; ++k)
+    {
+        ans = max(ans, (int)k + dp[1][k]);
+    }
+    cout << sum + ans << ln;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +110,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

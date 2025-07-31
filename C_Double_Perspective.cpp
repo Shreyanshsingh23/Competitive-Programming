@@ -56,23 +56,92 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
-{
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
-   
-   if(cnt >= 7)return 1;
-   return 0;
+struct DSU{
+    vector<int> parent;
+    vector<int> size;
+
+    DSU(int n)
+    {
+        parent.resize(n);
+        size.resize(n);
+
+        for(int i = 0; i < n; ++i)
+        {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    int getLeader(int node)
+    {
+        if(parent[node] == node)return node;
+
+        return parent[node] = getLeader(parent[node]);
+    }
+
+    void merge(int x, int y)
+    {
+        x = getLeader(x);
+        y = getLeader(y);
+
+        if(x == y)return;
+
+        int sizeX = size[x];
+        int sizeY = size[y];
+
+        if(sizeX < sizeY){
+            parent[x] = y;
+            size[y] += size[x];
+        }else{
+            parent[y] = x;
+            size[x] += size[y];
+        }
+    }
+};
+
+
+struct edge {
+    int u, v, id, len;
+};
+
+bool cmp(edge& a, edge& b) {
+    if (a.len != b.len) {
+        return a.len > b.len;
+    }
+    return a.id < b.id; 
+}
+
+void solve() {
+    int1(n)
+    v<edge> a(n);
+    int mxx = 0;
+    for (int i = 0; i < n; ++i) {
+        a[i].id = i + 1;
+        cin >> a[i].u >> a[i].v;
+        a[i].len = a[i].v - a[i].u;
+        mxx = max({mxx, a[i].u, a[i].v});
+    }
+
+    sort(all(a), cmp);
+
+    DSU dsu(mxx + 1);
+    vi idx;
+
+    for (auto& e : a) {
+        if (dsu.getLeader(e.u) != dsu.getLeader(e.v)) {
+            dsu.merge(e.u, e.v);
+            idx.pb(e.id);
+        }
+    }
+    int m = sz(idx);
+    cout << m << ln;
+    sort(all(idx));
+    for (int i = 0; i < m; ++i) {
+        cout << idx[i] << " ";
+    }
+    cout << ln;
 }
 
 signed main()
@@ -85,8 +154,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

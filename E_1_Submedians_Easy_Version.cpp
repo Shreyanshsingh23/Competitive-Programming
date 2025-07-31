@@ -56,23 +56,69 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+
+bool check(int v, int n, int k, vi& a, int& templ, int& tempr) {
+    vi p(n + 1, 0);
+    FOR(i,n) {
+        p[i + 1] = p[i] + (a[i] >= v ? 1 : -1);
+    }
+
+    vi mn(n + 1);
+    vi mnIdx(n + 1);
+    mn[0] = p[0];
+    mnIdx[0] = 0;
+
+    for (int i = 1; i <= n; ++i) 
+    {
+        if (p[i] < mn[i - 1]) 
+        {
+            mn[i] = p[i];
+            mnIdx[i] = i;
+        } 
+        else 
+        {
+            mn[i] = mn[i - 1];
+            mnIdx[i] = mnIdx[i - 1];
+        }
+    }
+
+    for (int j = k; j <= n; ++j) 
+    {
+        if (p[j] > mn[j - k]) 
+        {
+            templ = mnIdx[j - k] + 1;
+            tempr = j;
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
-   
-   if(cnt >= 7)return 1;
-   return 0;
+   int n, k;
+    cin >> n >> k;
+    vi a(n);
+    FOR(i,n) cin >> a[i];
+
+    int l = 1, r = n, ans = 0, ll = 0, rr = 0;
+
+    while (l <= r) {
+        int mid = l + (r - l) / 2;
+        int templ, tempr;
+        if (check(mid, n, k, a, templ, tempr)) {
+            ans = mid;
+            ll = templ;
+            rr = tempr;
+            l = mid + 1;
+        } else {
+            r = mid - 1;
+        }
+    }
+    cout << ans << " " << ll << " " << rr << "\n";
 }
 
 signed main()
@@ -85,8 +131,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

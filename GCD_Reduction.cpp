@@ -56,23 +56,50 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   int x, y;
+    cin >> x >> y;
+    if(n == 2) 
+    {
+        cout << -1 << ln;
+        return;
+    }
+    int d = gcd(y, x);
+    int a = -1;
+    for(int i = 1; i <= n; i++) {
+        if(i != x and i != y and gcd(i, x) > d) {
+            a = i;
+            break;
+        }
+    }
+    if(a == -1) 
+    {
+        cout << -1 << ln;
+        return;
+    }
+    vi vec;
+    for(int i = 1; i <= n; i++) {
+        if(i != x and i != y and i != a) {
+            vec.pb(i);
+        }
+    }
+    sort(all(vec));
+    vi arr(n);
+    for(int i = 0; i < n - 3; i++) {
+        arr[i] = vec[i];
+    }
+    arr[n - 3] = a;
+    arr[n - 2] = y;
+    arr[n - 1] = x;
+    for(int e : arr) {
+        cout << e << " ";
+    }
+    cout << ln;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +112,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

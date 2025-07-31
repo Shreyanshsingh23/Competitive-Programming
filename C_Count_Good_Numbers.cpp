@@ -56,23 +56,28 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
-
-bool solve()
+const bool testcase = 1;
+vi primes = {2, 3, 5, 7};
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int l, r;
+    cin >> l >> r;
+    int ans = 0;
+    for (int i = 0; i < 16; i++) {
+        int lcm = 1;
+        int k = 0;
+        for (int j = 0; j < 4; j++) {
+            if (i & (1 << j)) {
+                lcm *= primes[j];
+                k++;
+            }
+        }
+        int cnt = (r / lcm) - ((l - 1) / lcm);
+        int sign = (k % 2 == 0) ? 1 : -1;
+        ans += sign * cnt;
+    }
+    cout << ans << ln;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +90,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

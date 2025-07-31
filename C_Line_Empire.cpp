@@ -56,23 +56,26 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   int x,y;
+   cin >> x >> y;
+   vi a (n+1, 0ll);
+   FOR(i,n) cin >> a[i+1];
    
-   if(cnt >= 7)return 1;
-   return 0;
+   int ans = MAX, cur = 0;
+  
+    vi pref(n+1);
+    for(int i = 1; i <= n; ++i)pref[i] = pref[i-1] + a[i];
+
+    for(int i = 0; i < n+1; ++i) {
+        ans = min(ans, x * a[i] + y * (pref[n] - pref[i] - (n-i-1) * a[i]));
+    }
+
+   cout << ans << ln;
 }
 
 signed main()
@@ -85,8 +88,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

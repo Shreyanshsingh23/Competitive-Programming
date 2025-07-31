@@ -56,23 +56,32 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
 bool solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int w, h, a, b;
+    cin >> w >> h >> a >> b;
+    int x1, y1, x2, y2;
+    cin >> x1 >> y1 >> x2 >> y2;
+    bool poss = true;
+    if (!(y1 + b <= y2 or y2 + b <= y1)) {
+        if ((x1 - x2) % a != 0) {
+            poss = false;
+        }
+    }
+    if (!(x1 + a <= x2 or x2 + a <= x1)) {
+        if ((y1 - y2) % b != 0) {
+            poss = false;
+        }
+    }
+    if ((y1 + b <= y2 or y2 + b <= y1) and (x1 + a <= x2 or x2 + a <= x1)) {
+        if (!((x1 - x2) % a == 0 or (y1 - y2) % b == 0)) {
+            poss = false;
+        }
+    }
+    return poss;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()

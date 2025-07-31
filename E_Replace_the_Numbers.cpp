@@ -49,7 +49,7 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 500010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
@@ -57,23 +57,63 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
+struct DSU{
+    vector<int> parent;
+    vector<int> size;
 
-bool solve()
+    DSU(int n)
+    {
+        parent.resize(n);
+        size.resize(n);
+
+        for(int i = 0; i < n; ++i)
+        {
+            parent[i] = i;
+            size[i] = 1;
+        }
+    }
+
+    int getLeader(int node)
+    {
+        if(parent[node] == node)return node;
+
+        return parent[node] = getLeader(parent[node]);
+    }
+
+    void merge(int x, int y)
+    {
+        x = getLeader(x);
+        y = getLeader(y);
+
+        if(x == y)return;
+
+        int sizeX = size[x];
+        int sizeY = size[y];
+
+        if(sizeX < sizeY){
+            parent[x] = y;
+            size[y] += size[x];
+        }else{
+            parent[y] = x;
+            size[x] += size[y];
+        }
+    }
+
+};
+
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
+   int q;
+   cin >> q;
+   DSU d(N);
+   vi ans;
+   for(int i = 0; i < q; ++i) {
+        int t;cin >> t;
+        if(t == 1) {
+            
+        }
    }
-   
-   if(cnt >= 7)return 1;
-   return 0;
-}
+}            
 
 signed main()
 {
@@ -85,8 +125,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

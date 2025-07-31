@@ -56,23 +56,124 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
-{
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
-   
-   if(cnt >= 7)return 1;
-   return 0;
+bool isBad(deque<int>& dq, int nVal) {
+    if (dq.size() < 4) {
+        return false;
+    }
+    vi v;
+    for (int x : dq) {
+        v.pb(x);
+    }
+    v.pb(nVal);
+
+    bool inc = true;
+    FOR(i, 4) {
+        if (v[i] >= v[i + 1]) {
+            inc = false;
+            break;
+        }
+    }
+    if (inc) return true;
+
+    bool dec = true;
+    FOR(i, 4) {
+        if (v[i] <= v[i + 1]) {
+            dec = false;
+            break;
+        }
+    }
+    return dec;
+}
+
+void solve() {
+    int1(n);
+    vi p(n);
+    for (int i = 0; i < n; ++i) {
+        cin >> p[i];
+    }
+
+    int l = 0, r = n - 1;
+    string ans = "";
+    deque<int> dq;
+
+    for (int k = 0; k < n; ++k) {
+        char ch;
+
+        if (l == r) {
+            ch = 'L';
+        } else {
+            bool lb = isBad(dq, p[l]);
+            bool rb = isBad(dq, p[r]);
+
+            if (lb) 
+            {
+                ch = 'R';
+            } 
+            else if (rb) 
+            {
+                ch = 'L';
+            } else 
+            {
+                bool lPoss = false;
+                if (l + 1 <= r) {
+                    deque<int> nql = dq;
+                    if (nql.size() == 4) nql.pop_front();
+                    nql.pb(p[l]);
+                    if (l + 1 == r) {
+                        lPoss = isBad(nql, p[l + 1]);
+                    } else {
+                        lPoss = isBad(nql, p[l + 1]) && isBad(nql, p[r]);
+                    }
+                }
+
+                bool rPoss = false;
+                if (l <= r - 1) {
+                    deque<int> nrl = dq;
+                    if (nrl.size() == 4) nrl.pop_front();
+                    nrl.pb(p[r]);
+                    if (l == r - 1) {
+                        rPoss = isBad(nrl, p[l]);
+                    } else {
+                        rPoss = isBad(nrl, p[l]) and isBad(nrl, p[r - 1]);
+                    }
+                }
+
+                if (lPoss && !rPoss) 
+                {
+                    ch = 'R';
+                } 
+                else if (!lPoss and rPoss) 
+                {
+                    ch = 'L';
+                } else 
+                {
+                    if (p[l] <= p[r]) {
+                        ch = 'L';
+                    } else {
+                        ch = 'R';
+                    }
+                }
+            }
+        }
+
+        if (ch == 'L') 
+        {
+            ans += 'L';
+            if (dq.size() == 4) dq.pop_front();
+            dq.pb(p[l]);
+            l++;
+        } else 
+        {
+            ans += 'R';
+            if (dq.size() == 4) dq.pop_front();
+            dq.pb(p[r]);
+            r--;
+        }
+    }
+    
+    cout << ans << ln;
 }
 
 signed main()
@@ -85,8 +186,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

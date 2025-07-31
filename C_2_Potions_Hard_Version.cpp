@@ -58,21 +58,26 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   vi a (n);
+   FOR(i,n) cin >> a[i];
    
-   if(cnt >= 7)return 1;
-   return 0;
+   priority_queue<int, vi, greater<int> > pq;
+	int sum = 0;
+	
+	FOR(i,n){
+		sum += a[i];
+		pq.push(a[i]);
+		
+		while(sum < 0){
+			sum -= pq.top();
+			pq.pop();
+		}
+	}
+	
+	cout << sz(pq);
 }
 
 signed main()
@@ -85,8 +90,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

@@ -56,23 +56,51 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   int c; cin  >> c;
+    vi a(n);
+    cin >> a;
+    int p = 0;
+    vi ks;
+    FOR(i,n) 
+    {
+        if (a[i] > c) p++;
+        else 
+        {
+            int k = 0;
+            for (int m = 1; m <= n; m++) 
+            {
+                if (a[i] * (1LL << (m - 1)) <= c) k = m;
+                else break;
+            }
+            ks.pb(k);
+        }
+    }
+    sort(all(ks));
+    set<int> st;
+    for (int i = 1; i <= n; i++) st.insert(i);
+    int temp = 0;
+    for (int k : ks) 
+    {
+        auto it = st.upper_bound(k);
+        if (it != st.begin()) 
+        {
+            --it;
+            int m = *it;
+            if (m <= k) {
+                st.erase(it);
+                temp++;
+            }
+        }
+    }
+    int q = ks.size();
+    int ans = p + (q - temp);
+    cout << ans << ln;
    
-   if(cnt >= 7)return 1;
-   return 0;
 }
 
 signed main()
@@ -85,8 +113,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

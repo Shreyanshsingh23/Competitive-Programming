@@ -22,7 +22,7 @@ template <typename T> std::ostream &operator<<(std::ostream &stream, const vecto
 #define vii vector<vector<int>>
 #define mpci map<char, int>
 #define mpii map<int, int>                //vii a (n,vi(m,0))
-#define pii pair<int,int>#define all(v) v.begin(), v.end()
+#define pii pair<int,int>
 #define int1(t) int t; cin >> t;
 #define int2(n, k) int n, k; cin >> n >> k;
 #define int3(n, k, r) int n, k, r;cin >> n >> k >> r;
@@ -49,30 +49,66 @@ typedef pair<int, int> pi;
 
 const int MOD = 1e9 + 7;
 const int mod = 998244353;
-const int N = 1000010;
+const int N = 100010;
 int fact [N] ;
 int invFact[N] ;
 void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1],i,MOD);invFact[N-1] = modInv(fact[N-1],MOD);for(int i = N-2; i >= 0; --i)invFact[i] = modMul(invFact[i+1],(i+1),MOD);}
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
-bool solve()
+int n,m,q;
+v<pi> b;
+vi c;
+
+bool check(int mid)
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
+    if(mid > q)return 0;
+    vi pref(n, 0ll);
+    for(int i = 0; i < mid; ++i)
+    {
+        pref[c[i]-1] = 1;
+    }
+    for(int i = 1; i < n; ++i)
+    {
+        pref[i] += pref[i-1];
+    }
+    vi scr(m);
+    for(int i = 0; i < m; ++i) 
+    {
+        int scr = pref[b[i].S] - ((b[i].F == 0)? 0: pref[b[i].F - 1]);
+        if(scr > (b[i].S - b[i].F + 1)/2){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void solve()
+{
+   cin >> n >> m;
+   b.resize(m);
+   FOR(i,m){
+    cin >> b[i].F >> b[i].S;
+    b[i].F--; b[i].S--;
    }
-   
-   if(cnt >= 7)return 1;
-   return 0;
+   cin >> q;
+   c.resize(q);
+   cin >> c;
+
+   int l = 0, r = q, mid, ans = -1;
+   while(l <= r)
+   {
+        mid = (l+r) >> 1;
+        if(check(mid)){
+            ans = mid;
+            r = mid - 1;
+        } else {
+            l = mid + 1;
+        }
+   }
+   cout << ans << ln;
 }
 
 signed main()
@@ -85,8 +121,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }

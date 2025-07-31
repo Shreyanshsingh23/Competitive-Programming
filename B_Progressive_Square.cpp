@@ -56,23 +56,47 @@ void compFact(){fact[0] = 1;for(int i = 1; i < N; ++i)fact[i] = modMul(fact[i-1]
 
 void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.size()) {freopen((name + ".in").c_str(), "r", stdin);freopen((name + ".out").c_str(), "w", stdout);}}
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
-const bool testcase = 0;
+const bool testcase = 1;
 
 bool solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
-   }
+   int1(n)
+   int c,d;
+   cin >> c >> d;
+   vi a (n*n);
+   FOR(i,n*n) cin >> a[i];
+   sort(all(a));
    
-   if(cnt >= 7)return 1;
-   return 0;
+   int i = 0, j = 0;
+   vii b(n, vi(n));
+   b[i][j] = a[0];
+    
+    vi cc {a[0]};
+   v<v<bool>> ok(n, v<bool>(n,false));
+   FOR(i,n) {
+        FOR(j,n) {
+            if(i+1 < n){
+                b[i+1][j] = b[i][j] + c;
+                if(ok[i+1][j] == false){
+                    cc.pb(b[i+1][j]);
+                    ok[i+1][j] = true;
+                }
+            }
+            if(j+1 < n){
+                b[i][j+1] = b[i][j] + d;
+                if(ok[i][j+1] == false){
+                    cc.pb(b[i][j+1]);
+                    ok[i][j+1] = true;
+                }
+            }
+        }
+    }
+    sort(all(cc));
+    // debug(cc)
+    // debug(a)
+
+   return a == cc;
+
 }
 
 signed main()

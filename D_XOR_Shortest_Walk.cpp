@@ -58,21 +58,43 @@ void setIO(string name = ""){ios_base::sync_with_stdio(0);cin.tie(0);if (name.si
 int dx[4] = {-1,1,1,-1}, dy[4] = {1,1,-1,-1};
 const bool testcase = 0;
 
-bool solve()
+void solve()
 {
-   string s;
-   cin >> s;
-   int cnt = 1;
-   for(int i = 1; i < sz(s); ++i) {
-     if(s[i] == s[i-1])cnt++;
-     else{
-        cnt = 1;
-     }
-     if(cnt >= 7)return 1;
+   int1(n)
+   int m;
+   cin >> m;
+   v<v<pi>> adj(n+1);
+   vii a (m, vi(3));
+   FOR(i,m) {
+     cin >> a[i];
+     adj[a[i][0]].pb({a[i][1], a[i][2]});
+     adj[a[i][1]].pb({a[i][0], a[i][2]});
    }
-   
-   if(cnt >= 7)return 1;
-   return 0;
+
+   v<bool> vis(n+1, false);
+   queue<int> q;
+
+   q.push(1);
+   vis[1] = true;
+
+   while(!q.empty()) {
+     auto s = q.front();
+     q.pop();
+     for(auto& [x,y] : adj[s]) {
+     if(!vis[x]) {
+        q.push(x);
+        vis[x] = true;
+     }
+    }
+   }
+
+   if(vis[n] == false) {
+        cout << -1 << ln;
+        return;
+   }
+
+    
+
 }
 
 signed main()
@@ -85,8 +107,8 @@ signed main()
     for(int i = 1; i <= t; ++i)
     {
       //  cout << "Case #" << i << ": "; 
-       cout << (solve() ? "YES": "NO") << ln;
-        // solve();
+     //   cout << (solve() ? "YES": "NO") << ln;
+        solve();
     }
     return 0;
 }
